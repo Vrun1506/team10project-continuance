@@ -1,0 +1,17 @@
+@startuml PositiveEvent
+
+Actor player as P
+Participant roomManager as R
+Participant eventGreggs as G
+
+autonumber
+skinparam MaxMessageSize 100
+
+P -> R : Player enters room, whose room number is assigned an event.
+R -> G : Tells the Greggs event to start the event.
+G -> G : Event is initialised with an interactable sprite.
+P -> G : Player interacts with the sprite by pressing a key.
+G -> G : Sprite disappears off the screen.
+G -> P : Player speed value is increased.
+ 
+@enduml
