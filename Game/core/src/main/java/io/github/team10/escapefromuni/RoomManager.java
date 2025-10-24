@@ -7,6 +7,7 @@ public class RoomManager {
 
     public void initialiseMap() {
         // Iniitalise all the rooms (Create room objects)
+        
     }
 
     public void changeRoom(DoorDirection direction) {
