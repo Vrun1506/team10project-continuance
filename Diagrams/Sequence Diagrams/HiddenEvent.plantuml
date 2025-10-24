@@ -1,0 +1,16 @@
+@startuml HiddenEvent
+
+Actor player as P
+Participant roomManager as R
+Participant eventLongboi as L
+
+autonumber
+skinparam MaxMessageSize 125
+
+P -> R : Player enters room, whose room number is assigned an event.
+R -> L : Tells the longboi event to start the event.
+L -> L : The event class creates a hidden sprite.
+P -> L : Player enters a certain radius within the sprite.
+L -> L : The sprite becomes visible and displays a text bubble.
+
+@enduml
