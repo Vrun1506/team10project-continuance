@@ -1,39 +1,31 @@
 package io.github.team10.escapefromuni;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Player extends ApplicationAdapter {
+public class Player {
     public Texture playerTexture;
     public Sprite playerSprite;
+    public float speed;
+    public EscapeGame game;
 
-    private int speed;
-    private SpriteBatch batch;
-
-    public void SetSpeed(int speed) {
+    public Player(float speed, EscapeGame game)
+    {
         this.speed = speed;
-    }
-
-    @Override
-    public void create() {
+        this.game = game;
         playerTexture = new Texture("Player.png");
         playerSprite = new Sprite(playerTexture);
         playerSprite.setSize(1, 1);
-        batch = new SpriteBatch();
     }
 
-    @Override
-    public void render() {
-        move();
-        draw();
+    public void update(float delta)
+    {
+        move(delta);
     }
 
-    private void move() {
-        float delta = Gdx.graphics.getDeltaTime();
+    private void move(float delta) {
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             playerSprite.translateX(speed * delta);
         } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
@@ -46,9 +38,7 @@ public class Player extends ApplicationAdapter {
         }
     }
 
-    private void draw() {
-        batch.begin();
-        playerSprite.draw(batch);
-        batch.end();
+    public void draw() {
+        playerSprite.draw(game.batch);
     }
 }

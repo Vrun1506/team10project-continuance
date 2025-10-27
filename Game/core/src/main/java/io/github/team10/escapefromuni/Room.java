@@ -5,6 +5,7 @@ public class Room {
     public Event event;
     public Room[] adjacentRooms = new Room[4];
 
+    /* 
     public EventType getEventType() {
         // Return the event type of event
     }
@@ -12,5 +13,5 @@ public class Room {
     
     public void start() {
         // Actions to perform when room is started i.e. play event
-    }
+    }*/
 }
