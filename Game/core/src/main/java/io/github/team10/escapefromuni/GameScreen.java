@@ -14,11 +14,14 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class GameScreen extends ScreenAdapter {
     final EscapeGame game;
     Texture backgroundTexture;
+    Player player;
 
     public GameScreen(final EscapeGame game)
     {
         this.game = game;
         backgroundTexture = new Texture("TempBackground.png");
+
+        player = new Player(5f, game);
     }
 
     @Override
@@ -29,7 +32,7 @@ public class GameScreen extends ScreenAdapter {
 
     private void update(float delta)
     {
-
+        player.update(delta);
     }
 
     private void draw()
@@ -42,6 +45,7 @@ public class GameScreen extends ScreenAdapter {
         float worldWidth = game.viewport.getWorldWidth();
 		float worldHeight = game.viewport.getWorldHeight();
         game.batch.draw(backgroundTexture, 0, 0, worldWidth, worldHeight);
+        player.draw();
 
         game.batch.end();
     }
