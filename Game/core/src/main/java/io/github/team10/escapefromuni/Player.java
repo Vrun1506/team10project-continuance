@@ -5,6 +5,11 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+/**
+ * Represents the player character.
+ * 
+ * Handles player rendering, movement and collision detection.
+ */
 public class Player {
     public Texture playerTexture;
     public Sprite playerSprite;
@@ -13,6 +18,13 @@ public class Player {
 
     private final float EDGE_LIMIT = 1f;
 
+    /**
+     * Creates a new player instance.
+     * @param speed The player's movement speed (world units per second).
+     * @param playerWidth The width of the player in world units.
+     * @param playerHeight The height of the player in world units.
+     * @param game Reference to the main {@link EscapeGame} instance.
+     */
     public Player(float speed, float playerWidth, float playerHeight, EscapeGame game)
     {
         this.speed = speed;
@@ -26,11 +38,21 @@ public class Player {
         playerSprite.setCenter(centerX, centerY);
     }
 
+    /**
+     * Called every frame to perform player logic.
+     * @param delta The time in seconds since the last frame.
+     */
     public void update(float delta)
     {
         move(delta);
     }
 
+    /**
+     * Handles player movement and constrains movement to within screen edge boundaries.
+     * 
+     * Uses arrow key input. Center of player remains at least {@link #EDGE_LIMIT} units from the world edges.
+     * @param delta The time in seconds since the last frame.
+     */
     private void move(float delta) {
         float worldWidth = game.viewport.getWorldWidth();
         float worldHeight = game.viewport.getWorldHeight();
@@ -61,25 +83,48 @@ public class Player {
         }
     }
 
+    /**
+     * Draws the player sprite.
+     */
     public void draw() {
         playerSprite.draw(game.batch);
     }
 
+    /**
+     * Checks whether the player has collided (overlaps) with another sprite.
+     * @param objectSprite The other object's sprite.
+     * @return boolean representing whether collision has occured.
+     */
     public boolean checkCollision(Sprite objectSprite)
     {
         return playerSprite.getBoundingRectangle().overlaps(objectSprite.getBoundingRectangle());
     }
 
+    /**
+     * Dispose of player texture to free GPU memory.
+     * 
+     * Should be called when the GameScreen is disposed.
+     */
     public void dispose()
     {
         playerTexture.dispose();
     }
 
+    /**
+     * Set the position of the player sprite, updating from the bottom left corner.
+     * @param x The x-coord of new position.
+     * @param y The y-coord of new position.
+     */
     public void setPosition(float x, float y)
     {
         playerSprite.setPosition(x, y);
     }
 
+    /**
+     * Sets the center position of the player sprite. 
+     * @param x The x-coord of the new position.
+     * @param y The y-coord of the new position.
+     */
     public void setCenter(float x, float y)
     {
         playerSprite.setCenter(x, y);
