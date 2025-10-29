@@ -76,7 +76,7 @@ public class Room {
         {
             return event.type;
         }
-        return null;
+        return EventType.NONE;
     }
 
     /**

@@ -16,6 +16,8 @@ public class RoomManager {
     private Room currentRoom;
     private Door[] doors = new Door[4];
     private final ObjectMap<String, Texture> roomTextures = new ObjectMap<>();
+    private Texture[] indicatorTextures = new Texture[4];
+    
 
     /**
      * Initialises a RoomManager.
@@ -51,8 +53,12 @@ public class RoomManager {
         room2.addAdjacent(room3, DoorDirection.NORTH);
         room3.addAdjacent(room2, DoorDirection.SOUTH);
 
+        // Initialise Events
+        room2.setEvent(new Event(EventType.POSITIVE));
+
         currentRoom = room1;
         updateDoors(currentRoom);
+        updateEventIndicators();
     }
 
     /**
@@ -70,6 +76,7 @@ public class RoomManager {
 
         currentRoom = newRoom;
         updatePlayerPosition(direction);
+        updateEventIndicators();
     }
 
     /**
@@ -92,6 +99,7 @@ public class RoomManager {
     {
         drawCurrentRoom();
         drawDoors();
+        drawIndicators();
     }
 
     private void drawCurrentRoom()
@@ -104,9 +112,33 @@ public class RoomManager {
 
     private void drawDoors()
     {
+        // FIXME: After loading and unloading a door, leads to black box where door was.
         for (Door door : doors)
         {
             door.draw();
+        }
+    }
+
+    /**
+     * Will draw event indicator textures, if required, by each door.
+     */
+    private void drawIndicators()
+    {
+        if (indicatorTextures[0] != null)
+        {
+            game.batch.draw(indicatorTextures[0], 7.5f, 8f, 1f, 1f);
+        }
+        if (indicatorTextures[1] != null)
+        {
+            game.batch.draw(indicatorTextures[1], 15f, 4f, 1f, 1f);
+        }
+        if (indicatorTextures[2] != null)
+        {
+            game.batch.draw(indicatorTextures[2], 7.5f, 0f, 1f, 1f);
+        }
+        if (indicatorTextures[3] != null)
+        {
+            game.batch.draw(indicatorTextures[3], 0f, 4f, 1f, 1f);
         }
     }
 
@@ -136,7 +168,24 @@ public class RoomManager {
      * Update the event type indicators by the doors.
      */
     private void updateEventIndicators() {
-        //TODO: Implement event indicators.
+        Room[] rooms = currentRoom.getAllAdjacent();
+        for (int i = 0; i < 4; i++)
+        {
+            if (indicatorTextures[i] != null)
+            {
+                indicatorTextures[i].dispose();
+            }
+            // Check Room actually exists before trying to access event type.
+            if (rooms[i] == null) continue;
+            if (rooms[i].getEventType() == EventType.POSITIVE)
+            {
+                indicatorTextures[i] = new Texture("PositiveIndicator.png");
+            }
+            else if (rooms[i].getEventType() == EventType.NEGATIVE)
+            {
+                indicatorTextures[i] = new Texture("NegativeIndicator.png");
+            }
+        }
     }
 
     /**
@@ -166,6 +215,11 @@ public class RoomManager {
         for (Door door : doors)
         {
             door.dispose();
+        }
+
+        for (Texture t : indicatorTextures)
+        {
+            if (t != null) t.dispose();
         }
     }
 }
