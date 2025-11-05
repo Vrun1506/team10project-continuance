@@ -20,6 +20,7 @@ public class MainMenu implements Screen {
     
     private final EscapeGame game;
     private Texture backgroundImage;
+    private Texture buttonTexture;
     private BitmapFont font;
     private GlyphLayout layout;
     
@@ -45,6 +46,9 @@ public class MainMenu implements Screen {
     public void show() {
         // Load background image
         backgroundImage = new Texture(Gdx.files.internal("mainmenu_background.png"));
+        
+        // Load button background texture
+        buttonTexture = new Texture(Gdx.files.internal("ButtonBG.png"));
         
         // Use the game's existing font
         font = game.font;
@@ -91,13 +95,16 @@ public class MainMenu implements Screen {
     }
     
     /**
-     * Draws a button with text.
+     * Draws a button with background texture and text.
      */
     private void drawButton(Rectangle button, String text, boolean hovered) {
-        // Draw button background (simple colored rectangle)
-        Color buttonColor = hovered ? Color.LIGHT_GRAY : Color.DARK_GRAY;
-        game.batch.setColor(buttonColor);
-        game.batch.draw(backgroundImage, button.x, button.y, button.width, button.height);
+        // Draw button background texture
+        if (hovered) {
+            game.batch.setColor(1f, 1f, 0.5f, 1f); // Yellowish tint when hovered
+        } else {
+            game.batch.setColor(Color.WHITE);
+        }
+        game.batch.draw(buttonTexture, button.x, button.y, button.width, button.height);
         game.batch.setColor(Color.WHITE);
         
         // Draw button text
@@ -201,5 +208,6 @@ public class MainMenu implements Screen {
     @Override
     public void dispose() {
         backgroundImage.dispose();
+        buttonTexture.dispose();
     }
 }
