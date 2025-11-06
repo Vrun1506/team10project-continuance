@@ -6,6 +6,12 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * A hidden event where the player encounters the Ghost of Longboi.
+ * 
+ * The event begins hidden (only outline is visible) and is revealed when the player approaches within a certain 
+ * distance. Once revealed, Longboi appears and displays a dialogue panel.
+ */
 public class EventLongboi extends Event {
 
     private boolean hidden = true;
@@ -15,6 +21,9 @@ public class EventLongboi extends Event {
     private final Texture speechPanelTexture;
     private final Sprite speechPanelSprite;
 
+    /**
+     * Creates a new EventLongboi.
+     */
     public EventLongboi(Player player, EscapeGame game)
     {
         super(EventType.HIDDEN, player, game);
@@ -28,7 +37,6 @@ public class EventLongboi extends Event {
     @Override
     public void startEvent()
     {
-        // Check that the event has not finished (has not been activated previously).
         if (eventFinished) return;
 
         longboiSprite = new Sprite(longboiHiddenTexture);
@@ -71,6 +79,10 @@ public class EventLongboi extends Event {
         longboiSprite.setPosition(8f, 4.5f);
     }
 
+    /**
+     * Calculates the distance between the center of the player and Longboi.
+     * @return The distance between the player and longboi.
+     */
     private float getPlayerLongboiDist()
     {
         Vector2 playerPos = player.getCenter();
