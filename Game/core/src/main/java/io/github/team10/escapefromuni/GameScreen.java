@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 /**
@@ -17,12 +19,20 @@ public class GameScreen extends ScreenAdapter {
     Player player;
     RoomManager roomManager;
 
+    private Timer timer; 
+    private BitmapFont font;
+
     public GameScreen(final EscapeGame game)
     {
         this.game = game;
         player = new Player(3f, 1f, 1f, game);
         roomManager = new RoomManager(game, player);
         roomManager.initialiseMap();
+
+
+        timer = new Timer(); 
+        font = new BitmapFont();
+        font.getData().setScale(3);
     }
 
     @Override
@@ -33,9 +43,22 @@ public class GameScreen extends ScreenAdapter {
         game.setScreen(new PauseMenu(game, this, currentTime));
         return;
     }
+
     
     update(delta);
     draw();
+
+
+
+    timer.update(delta); 
+
+        if (timer.hasReached(300)) { // 300 seconds = 5 minutes
+            game.setScreen(new GameOverScreen(game));
+        }
+
+        game.batch.begin();
+        font.draw(game.batch, "Time: " + timer.getTimeSeconds() + "s", 50, 450);
+        game.batch.end();
     }
 
     /**
@@ -79,5 +102,13 @@ public class GameScreen extends ScreenAdapter {
     {
         roomManager.dispose();
         player.dispose();
+        font.dispose(); 
     }
+
+    @Override public void show() {} 
+    @Override public void resize(int width, int height) {}
+    @Override public void pause() {}
+    @Override public void resume() {}
+    @Override public void hide() {}
 }
+
