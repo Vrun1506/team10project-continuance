@@ -52,7 +52,7 @@ public class GameScreen extends ScreenAdapter {
 
     timer.update(delta); 
 
-        if (timer.hasReached(300)) { // 300 seconds = 5 minutes
+        if (timer.isFinished()) {
             game.setScreen(new GameOverScreen(game));
         }
 
