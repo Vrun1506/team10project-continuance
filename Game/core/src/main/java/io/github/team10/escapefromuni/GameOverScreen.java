@@ -1,10 +1,13 @@
 package io.github.team10.escapefromuni;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.utils.ScreenUtils;
 
 public class GameOverScreen implements Screen {
 
@@ -14,34 +17,73 @@ public class GameOverScreen implements Screen {
     private Texture winScreen;
     private Texture loseScreen;
 
-    public GameOverScreen(final EscapeGame game, boolean isWon) {
+    private final Timer timer;
+    private final ScoreManager scoreManager;
+
+    public GameOverScreen(final EscapeGame game, boolean isWon, Timer timer, ScoreManager scoreManager) {
         this.game = game;
         this.isWon = isWon;
-        font = new BitmapFont();
-        winScreen = new Texture("WinScreen.png");
-        loseScreen = new Texture("LoseScreen.png");
+        font = game.font;
+        // TODO: Update below with proper end screen images.
+        winScreen = new Texture("PossibleRoom1.png");
+        loseScreen = new Texture("PossibleRoom2.png");
+        this.timer = timer;
+        this.scoreManager = scoreManager;
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            AudioManager.getInstance().playClickSound();
+            game.setScreen(new MainMenu(game));
+            dispose();
+            return;
+        }
+
+        ScreenUtils.clear(Color.BLACK);
+        game.uiViewport.apply();
+        game.batch.setProjectionMatrix(game.uiCamera.combined);
         game.batch.begin();
-        font.draw(game.batch, "GAME OVER", 200, 250);
-        font.draw(game.batch, "Press ESC or close window", 200, 200);
-        game.batch.end();
+
         if(isWon){
             renderWinScreen();
         }
         else{
             renderLoseScreen();
         }
+
+
+
+        game.batch.end();
     }
 
     private void renderWinScreen(){
-        game.batch.draw(winScreen, 0, 0, game.viewport.getWorldWidth(), game.viewport.getWorldHeight());
+        game.batch.draw(winScreen, 0, 0, game.uiViewport.getWorldWidth(), game.uiViewport.getWorldHeight());
+        String timeText = "Time Elapsed: " + timer.getTimeSeconds();
+        int finalScore = scoreManager.CalculateFinalScore(timer.getTimeLeftSeconds());
+        String scoreText = "Score: " + finalScore;
+
+        game.font.setColor(Color.BLACK);
+        GlyphLayout layout = new GlyphLayout();
+
+        float uiWidth = game.uiViewport.getWorldWidth();
+        float uiHeight = game.uiViewport.getWorldHeight();
+
+        // Draw time elapsed text
+        layout.setText(game.font, timeText);
+        float timeX = (uiWidth - layout.width) / 2f;
+        float timeY = uiHeight * 0.4f;
+        game.font.draw(game.batch, layout, timeX, timeY);
+
+        // Draw score text
+        layout.setText(game.font, scoreText);
+        float scoreX = (uiWidth - layout.width) / 2f;
+        float scoreY = uiHeight * 0.3f;
+        font.draw(game.batch, scoreText, scoreX, scoreY);
     }
+
     private void renderLoseScreen(){
-        game.batch.draw(loseScreen, 0, 0, game.viewport.getWorldWidth(), game.viewport.getWorldHeight());
+        game.batch.draw(loseScreen, 0, 0, game.uiViewport.getWorldWidth(), game.uiViewport.getWorldHeight());
     }
 
     @Override public void show() {}
@@ -49,5 +91,8 @@ public class GameOverScreen implements Screen {
     @Override public void pause() {}
     @Override public void resume() {}
     @Override public void hide() {}
-    @Override public void dispose() { font.dispose(); }
+    @Override public void dispose() { 
+        winScreen.dispose();
+        loseScreen.dispose();
+    }
 }
