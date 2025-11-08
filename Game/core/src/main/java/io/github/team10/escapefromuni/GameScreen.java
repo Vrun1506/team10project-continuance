@@ -17,8 +17,8 @@ public class GameScreen extends ScreenAdapter {
     final EscapeGame game;
     Player player;
     RoomManager roomManager;
-
-    private Timer timer; 
+    Timer timer; 
+    
     private BitmapFont font;
     private boolean isPaused;
 
@@ -29,9 +29,8 @@ public class GameScreen extends ScreenAdapter {
         roomManager = new RoomManager(game, player);
         roomManager.initialiseMap();
 
-
         timer = new Timer(); 
-        font = new BitmapFont();
+        font = game.font;
         font.getData().setScale(3);
         isPaused = false;
     }
@@ -48,20 +47,17 @@ public class GameScreen extends ScreenAdapter {
 
     if (!isPaused) {
         update(delta);
-        timer.update(delta);
+        CheckLose();
     }
+
     draw();
+    }
 
-
-    timer.update(delta); 
-
+    public void CheckLose()
+    {   
         if (timer.hasReached(300)) { // 300 seconds = 5 minutes
             game.setScreen(new GameOverScreen(game));
         }
-
-        game.batch.begin();
-        font.draw(game.batch, "Time: " + timer.getTimeSeconds() + "s", 50, 450);
-        game.batch.end();
     }
 
     //timer resuming form pause menu
@@ -79,6 +75,7 @@ public class GameScreen extends ScreenAdapter {
     {
         player.update(delta);
         roomManager.update(delta);
+        timer.update(delta);
     }
 
     /**
@@ -101,6 +98,7 @@ public class GameScreen extends ScreenAdapter {
         game.batch.setProjectionMatrix(game.uiCamera.combined);
         game.batch.begin();
         roomManager.drawEventUI();
+        font.draw(game.batch, "Time: " + timer.getTimeLeftSeconds() + "s", 50, 450);
 
         game.batch.end();
     }

@@ -1,3 +1,5 @@
+package io.github.team10.escapefromuni;
+
 public class Timer {
 
     private float time;
@@ -10,23 +12,28 @@ public class Timer {
 
     public void update(float delta) {
         time += delta;
-    }
-
-    public float getTime() {
-        return time;
         timeLeft -= delta;
         if (timeLeft < 0) {
             timeLeft = 0;
         }
     }
 
+    public float getTime() {
+        return time;
+    }
+
     public int getTimeSeconds() {
         return (int) time;
+    }
+
+    public int getTimeLeftSeconds() {
         return (int) timeLeft;
     }
 
     public boolean hasReached(float seconds) {
         return time >= seconds;
+    }
+
     public boolean isFinished() {
         return timeLeft <= 0;
     }
