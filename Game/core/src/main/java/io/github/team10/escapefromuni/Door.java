@@ -29,7 +29,7 @@ public class Door {
     {
         this.roomManager = roomManager;
         this.direction = direction;
-        doorTexture = new Texture("Door_opened.png");
+        doorTexture = new Texture("DoorNew.png");
         doorSprite = new Sprite(doorTexture);
         doorSprite.setSize(1f, 1f);
         doorSprite.setPosition(x, y);
