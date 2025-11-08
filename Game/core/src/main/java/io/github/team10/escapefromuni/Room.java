@@ -12,19 +12,40 @@ public class Room {
     private Event event;
     private Room[] adjacentRooms = new Room[4];
     private Texture roomTexture;
+    private final boolean isExit;
 
     /**
      * Initialises a new room.
+     * @param roomTexture The texture for this room.
+     * @param isExit boolean representing whether reaching this room means the player wins.
+     */
+    public Room(Texture roomTexture, boolean isExit)
+    {
+        this.roomTexture = roomTexture;
+        this.isExit = isExit;
+    }
+
+    /**
+     * Initialises a new room, with isExit set to false (the case for most rooms).
      * @param roomTexture The texture for this room.
      */
     public Room(Texture roomTexture)
     {
         this.roomTexture = roomTexture;
+        this.isExit = false;
     }
 
     public Texture getRoomTexture()
     {
         return roomTexture;
+    }
+
+    /**
+     * Returns whether this room is a final exit room.
+     */
+    public boolean getExit()
+    {
+        return isExit;
     }
 
     /**

@@ -50,6 +50,7 @@ public class RoomManager {
         Room room2 = new Room(roomTextures.get("room2"));
         Room room3 = new Room(roomTextures.get("room3"));
         Room room4 = new Room(roomTextures.get("room1"));
+        Room room5 = new Room(roomTextures.get("room2"), true);
 
         // Initialise connections - remember both ways.
         room1.addAdjacent(room2, DoorDirection.EAST);
@@ -58,6 +59,8 @@ public class RoomManager {
         room3.addAdjacent(room2, DoorDirection.SOUTH);
         room2.addAdjacent(room4, DoorDirection.EAST);
         room4.addAdjacent(room2, DoorDirection.WEST);
+        room4.addAdjacent(room5, DoorDirection.SOUTH);
+        room5.addAdjacent(room4, DoorDirection.NORTH);
 
         // Initialise Events
         room2.setEvent(new EventLongboi(player, game));
@@ -83,6 +86,9 @@ public class RoomManager {
         // Will unload current room and load next room
         // Will update which doors are visible. Note that only 4 door objects are used -
         // they can be made visible or invisible.
+
+        
+
         if (currentRoom.getEventType() != EventType.NONE)
         {
             currentRoom.getEvent().endEvent();
@@ -98,6 +104,12 @@ public class RoomManager {
         if (newRoom.getEventType() != EventType.NONE)
         {
             newRoom.getEvent().startEvent();
+        }
+
+        if (newRoom.getExit())
+        {
+            // TODO: Make sure it game over screen shows player has won - maybe pass additional isWin parameter.
+            game.setScreen(new GameOverScreen(game));
         }
     }
 
