@@ -45,10 +45,14 @@ public class RoomManager {
 
         // Store room textures in list for easy access and disposal.
         roomTextures.put("room1", new Texture("Room1.png"));
-        roomTextures.put("room2", new Texture("Room5.png"));
+        roomTextures.put("room2", new Texture("Room3.png"));
         roomTextures.put("room3", new Texture("Room4.png"));
-        roomTextures.put("room4", new Texture("Room3.png"));
-        roomTextures.put("room5", new Texture("Room2.png"));
+        roomTextures.put("room4", new Texture("Room7.png"));
+        roomTextures.put("room5", new Texture("Room6.png"));
+        roomTextures.put("room6", new Texture("Room8.png"));
+        roomTextures.put("room7", new Texture("Room5.png"));
+        roomTextures.put("room8", new Texture("Room9.png"));
+        roomTextures.put("room9", new Texture("Room10.png"));
 
         // Iniitalise all the rooms
         // TODO: Update room textures, and add more rooms.
@@ -56,22 +60,47 @@ public class RoomManager {
         Room room2 = new Room(roomTextures.get("room2"));
         Room room3 = new Room(roomTextures.get("room3"));
         Room room4 = new Room(roomTextures.get("room4"));
-        Room room5 = new Room(roomTextures.get("room5"), true);
+        Room room5 = new Room(roomTextures.get("room5"));
+        Room room6 = new Room(roomTextures.get("room6"));
+        Room room7 = new Room(roomTextures.get("room7"));
+        Room room8 = new Room(roomTextures.get("room8"));
+        Room room9 = new Room(roomTextures.get("room9"));
+
+        // Exit room is not actually displayed - game ends as soon as player steps inside.
+        Room exit = new Room(roomTextures.get("room1"), true);
+
 
         // Initialise connections - remember both ways.
         room1.addAdjacent(room2, DoorDirection.EAST);
         room2.addAdjacent(room1, DoorDirection.WEST);
+
         room2.addAdjacent(room3, DoorDirection.NORTH);
         room3.addAdjacent(room2, DoorDirection.SOUTH);
         room2.addAdjacent(room4, DoorDirection.EAST);
         room4.addAdjacent(room2, DoorDirection.WEST);
+        room2.addAdjacent(room6, DoorDirection.SOUTH);
+        room6.addAdjacent(room2, DoorDirection.NORTH);
+
         room4.addAdjacent(room5, DoorDirection.SOUTH);
         room5.addAdjacent(room4, DoorDirection.NORTH);
 
+        room5.addAdjacent(room6, DoorDirection.WEST);
+        room6.addAdjacent(room5, DoorDirection.EAST);
+        room5.addAdjacent(room7, DoorDirection.SOUTH);
+        room7.addAdjacent(room5, DoorDirection.NORTH);
+        room5.addAdjacent(room8, DoorDirection.EAST);
+        room8.addAdjacent(room5, DoorDirection.WEST);
+
+        room8.addAdjacent(room9, DoorDirection.EAST);
+        room9.addAdjacent(room8, DoorDirection.WEST);
+
+        room9.addAdjacent(exit, DoorDirection.EAST);
+
+
         // Initialise Events
-        room2.setEvent(new EventLongboi(player, game));
+        room7.setEvent(new EventLongboi(player, game));
         room3.setEvent(new EventGreggs(player, game));
-        room4.setEvent(new EventTHE3(player, game, scoreManager));
+        room5.setEvent(new EventTHE3(player, game, scoreManager));
 
         currentRoom = room1;
         updateDoors(currentRoom);
