@@ -13,6 +13,8 @@ public class RoomManager {
     public EscapeGame game;
 
     private final Player player;
+    private final ScoreManager scoreManager;
+    private final Timer timer;
     private Room currentRoom;
     private Door[] doors = new Door[4];
     private final ObjectMap<String, Texture> roomTextures = new ObjectMap<>();
@@ -24,10 +26,12 @@ public class RoomManager {
     /**
      * Initialises a RoomManager.
      */
-    public RoomManager(EscapeGame game, Player player)
+    public RoomManager(EscapeGame game, Player player, ScoreManager scoreManager, Timer timer)
     {
         this.game = game;
         this.player = player;
+        this.scoreManager = scoreManager;
+        this.timer = timer;
     }
 
     /**
@@ -65,7 +69,7 @@ public class RoomManager {
         // Initialise Events
         room2.setEvent(new EventLongboi(player, game));
         room3.setEvent(new EventGreggs(player, game));
-        room4.setEvent(new EventTHE3(player, game));
+        room4.setEvent(new EventTHE3(player, game, scoreManager));
 
         currentRoom = room1;
         updateDoors(currentRoom);
@@ -108,8 +112,7 @@ public class RoomManager {
 
         if (newRoom.getExit())
         {
-            // TODO: Make sure it game over screen shows player has won - maybe pass additional isWin parameter.
-            game.setScreen(new GameOverScreen(game));
+            game.setScreen(new GameOverScreen(game, true, timer, scoreManager));
         }
     }
 

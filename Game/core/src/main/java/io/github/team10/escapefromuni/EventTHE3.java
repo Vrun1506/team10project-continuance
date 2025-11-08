@@ -17,6 +17,8 @@ import com.badlogic.gdx.math.Vector3;
  */
 public class EventTHE3 extends Event{
 
+    private final ScoreManager scoreManager;
+
     private final Texture titlePanelTexture;
     private final Texture questionPanelTexture;
     private final Texture trueButtonTexture;
@@ -35,11 +37,12 @@ public class EventTHE3 extends Event{
 
     private Rectangle trueButtonBounds;
     private Rectangle falseButtonBounds;
+    
 
     /**
      * Creates a new instance of EventTHE3.
      */
-    public EventTHE3(Player player, EscapeGame game)
+    public EventTHE3(Player player, EscapeGame game, ScoreManager scoreManager)
     {
         super(EventType.NEGATIVE, player, game);
 
@@ -52,6 +55,8 @@ public class EventTHE3 extends Event{
         questionPanelSprite = new Sprite(questionPanelTexture);
         trueButtonSprite = new Sprite(trueButtonTexture);
         falseButtonSprite = new Sprite(falseButtonTexture);
+
+        this.scoreManager = scoreManager;
     }
 
     /**
@@ -168,7 +173,7 @@ public class EventTHE3 extends Event{
 
         if (answer) {
             feedbackText = "Correct: Score +500";
-            // TODO: Call Update Score
+            scoreManager.increaseScore(500);
         } 
         else {
             feedbackText = "Incorrect: Speed Decrease";

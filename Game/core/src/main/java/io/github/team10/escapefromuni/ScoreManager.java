@@ -8,12 +8,9 @@ public class ScoreManager {
         this.score = 0;
     }
 
-    public void addEventPoint() {
-        score++;
-    }
-
-    public void subtractEventPoint() {
-        score--;
+    public void increaseScore(int scoreIncrease)
+    {
+        score += scoreIncrease;
     }
 
     public int getScore() {
@@ -22,5 +19,11 @@ public class ScoreManager {
 
     public void reset() {
         score = 0;
+    }
+
+    public int CalculateFinalScore(int timeLeftSeconds)
+    {
+        int timeScore = 50 * timeLeftSeconds;
+        return timeScore + score;
     }
 }

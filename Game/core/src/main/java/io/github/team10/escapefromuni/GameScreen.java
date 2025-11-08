@@ -17,19 +17,23 @@ public class GameScreen extends ScreenAdapter {
     final EscapeGame game;
     Player player;
     RoomManager roomManager;
+    ScoreManager scoreManager;
     Timer timer; 
 
-    private BitmapFont font;
+    private final BitmapFont font;
     private boolean isPaused;
 
     public GameScreen(final EscapeGame game)
     {
         this.game = game;
+        timer = new Timer(); 
+        scoreManager = new ScoreManager();
+
         player = new Player(3f, 1f, 1f, game);
-        roomManager = new RoomManager(game, player);
+        roomManager = new RoomManager(game, player, scoreManager, timer);
         roomManager.initialiseMap();
 
-        timer = new Timer(); 
+
         font = game.font;
         isPaused = false;
     }
@@ -55,7 +59,7 @@ public class GameScreen extends ScreenAdapter {
     public void CheckLose()
     {   
         if (timer.hasReached(300)) { // 300 seconds = 5 minutes
-            game.setScreen(new GameOverScreen(game));
+            game.setScreen(new GameOverScreen(game, false, timer, scoreManager));
         }
     }
 
@@ -109,7 +113,6 @@ public class GameScreen extends ScreenAdapter {
     {
         roomManager.dispose();
         player.dispose();
-        font.dispose(); 
     }
 
     @Override public void show() {
