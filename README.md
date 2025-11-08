@@ -22,8 +22,9 @@ https://docs.google.com/document/d/1ttgzSkKAa-nU32mumbeGtjiTOcdinZ63kUqj-hlkOJo/
 
 
 
-### Risk Assessment and Mitigation
+### Risk Assessment and Mitigation (Table at the very end)
 
+https://docs.google.com/document/d/1ib__qU7JRzAEIXeXTKm5G1zbhA6kSTIAK-MLs1ewC-Q/edit?usp=sharing
 
 
 ### Log book
