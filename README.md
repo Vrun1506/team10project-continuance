@@ -18,6 +18,14 @@ https://docs.google.com/document/d/1Z5EULXh2rezTe4XgGwQYjvJAbz6ApW7z0xSND8PmUJk/
 
 https://docs.google.com/document/d/1ttgzSkKAa-nU32mumbeGtjiTOcdinZ63kUqj-hlkOJo/edit?usp=sharing
 
+### Method Selection and Planning
+
+
+
+### Risk Assessment and Mitigation
+
+
+
 ### Log book
 
 https://docs.google.com/document/d/1nefS_T2zxws9ahAw4WhI1m7xnQswVGlH6SUdeZW3maE/edit?usp=sharing
