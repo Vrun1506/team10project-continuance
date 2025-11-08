@@ -10,9 +10,22 @@ https://trello.com/b/FkccrNpt/eng1-team-10
 
 https://docs.google.com/document/d/1ib__qU7JRzAEIXeXTKm5G1zbhA6kSTIAK-MLs1ewC-Q/edit?usp=sharing
 
+### Requirements
+
+https://docs.google.com/document/d/1Z5EULXh2rezTe4XgGwQYjvJAbz6ApW7z0xSND8PmUJk/edit?usp=sharing
+
 ### Architecture
 
 https://docs.google.com/document/d/1ttgzSkKAa-nU32mumbeGtjiTOcdinZ63kUqj-hlkOJo/edit?usp=sharing
+
+### Method Selection and Planning
+
+
+
+### Risk Assessment and Mitigation (Table at the very end)
+
+https://docs.google.com/document/d/1ib__qU7JRzAEIXeXTKm5G1zbhA6kSTIAK-MLs1ewC-Q/edit?usp=sharing
+
 
 ### Log book
 
