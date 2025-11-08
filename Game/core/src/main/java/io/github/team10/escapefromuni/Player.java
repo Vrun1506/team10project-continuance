@@ -31,7 +31,7 @@ public class Player {
     {
         this.speed = speed;
         this.game = game;
-        playerTexture = new Texture("Player.png");
+        playerTexture = new Texture("MalePlayer.png");
         playerSprite = new Sprite(playerTexture);
         playerSprite.setSize(playerWidth, playerHeight);
 
