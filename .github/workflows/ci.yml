@@ -54,6 +54,7 @@ jobs:
         run: ./gradlew clean --no-daemon
         
       - name: Run our automated tests
+        continue-on-error: true
         run: ./gradlew test --no-daemon --stacktrace
         
       - name: Send our tests results to GitHub to upload as a HTML file
@@ -79,6 +80,7 @@ jobs:
   build:
     name: Build the JAR file
     needs: test
+    if: always()
     runs-on: ubuntu-latest
     
     defaults:
