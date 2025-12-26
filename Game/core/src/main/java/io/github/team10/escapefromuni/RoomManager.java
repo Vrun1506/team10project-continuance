@@ -51,53 +51,172 @@ public class RoomManager {
         roomTextures.put("room7", new Texture("Room5.png"));
         roomTextures.put("room8", new Texture("Room9.png"));
         roomTextures.put("room9", new Texture("Room10.png"));
+        roomTextures.put("t", new Texture("RoomsTemp1.png"));
 
-        // Iniitalise all the rooms
-        Room room1 = new Room(roomTextures.get("room1"));
+        // Initialise all the rooms
+        Room room1 = new Room(roomTextures.get("room1")); // Start
         Room room2 = new Room(roomTextures.get("room2"));
-        Room room3 = new Room(roomTextures.get("room3"));
+        Room room3 = new Room(roomTextures.get("room3")); // EventGreggs
         Room room4 = new Room(roomTextures.get("room4"));
-        Room room5 = new Room(roomTextures.get("room5"));
+        Room room5 = new Room(roomTextures.get("room5")); // EventTHE3
         Room room6 = new Room(roomTextures.get("room6"));
-        Room room7 = new Room(roomTextures.get("room7"));
+        Room room7 = new Room(roomTextures.get("room7")); // EventLongboi
         Room room8 = new Room(roomTextures.get("room8"));
-        Room room9 = new Room(roomTextures.get("room9"));
+        Room room9 = new Room(roomTextures.get("room9")); // Contains Exit
+
+        // NEW initialising rooms
+        Room room10 = new Room(roomTextures.get("room6")); // EventSYS2
+        Room room11 = new Room(roomTextures.get("room8"));
+        Room room12 = new Room(roomTextures.get("room7")); // EventBob
+        Room room13 = new Room(roomTextures.get("room3"));
+        Room room14 = new Room(roomTextures.get("room9"));
+        Room room15 = new Room(roomTextures.get("room7")); // EventMonster
+        Room room16 = new Room(roomTextures.get("room5"));
+        Room room17 = new Room(roomTextures.get("room8")); // EventCupNoodles
+        Room room18 = new Room(roomTextures.get("room9")); // EventInverse
+        Room room19 = new Room(roomTextures.get("room6")); // EventPlacement
+        Room room20 = new Room(roomTextures.get("room9"));
+        Room room21 = new Room(roomTextures.get("room5"));
+        Room room22 = new Room(roomTextures.get("room3"));
+        Room room23 = new Room(roomTextures.get("room1")); // EventNetworking
+        Room room24 = new Room(roomTextures.get("room1"));
+        Room room25 = new Room(roomTextures.get("room5"));
+        Room room26 = new Room(roomTextures.get("room7")); // EventClubNight
+        Room room27 = new Room(roomTextures.get("room8")); // EventDominoes
+        Room room28 = new Room(roomTextures.get("room3"));
+        Room room29 = new Room(roomTextures.get("room6")); // EventENG1
+        Room room30 = new Room(roomTextures.get("room4"));
+        Room room31 = new Room(roomTextures.get("room9")); // EventNegative
 
         // Exit room is not actually displayed - game ends as soon as player steps inside.
         Room exit = new Room(roomTextures.get("room1"), true);
 
-
         // Initialise connections - remember both ways.
+        room1.addAdjacent(room22, DoorDirection.NORTH);
         room1.addAdjacent(room2, DoorDirection.EAST);
-        room2.addAdjacent(room1, DoorDirection.WEST);
+        room1.addAdjacent(room13, DoorDirection.SOUTH);
+        room1.addAdjacent(room21, DoorDirection.WEST);
 
         room2.addAdjacent(room3, DoorDirection.NORTH);
-        room3.addAdjacent(room2, DoorDirection.SOUTH);
         room2.addAdjacent(room4, DoorDirection.EAST);
-        room4.addAdjacent(room2, DoorDirection.WEST);
         room2.addAdjacent(room6, DoorDirection.SOUTH);
-        room6.addAdjacent(room2, DoorDirection.NORTH);
+        room2.addAdjacent(room1, DoorDirection.WEST);
+
+        room3.addAdjacent(room2, DoorDirection.SOUTH);
+        room3.addAdjacent(room22, DoorDirection.WEST);
 
         room4.addAdjacent(room5, DoorDirection.SOUTH);
-        room5.addAdjacent(room4, DoorDirection.NORTH);
+        room4.addAdjacent(room2, DoorDirection.WEST);
 
-        room5.addAdjacent(room6, DoorDirection.WEST);
-        room6.addAdjacent(room5, DoorDirection.EAST);
-        room5.addAdjacent(room7, DoorDirection.SOUTH);
-        room7.addAdjacent(room5, DoorDirection.NORTH);
+        room5.addAdjacent(room4, DoorDirection.NORTH);
         room5.addAdjacent(room8, DoorDirection.EAST);
-        room8.addAdjacent(room5, DoorDirection.WEST);
+        room5.addAdjacent(room7, DoorDirection.SOUTH);
+        room5.addAdjacent(room6, DoorDirection.WEST);
+
+        room6.addAdjacent(room2, DoorDirection.NORTH);
+        room6.addAdjacent(room5, DoorDirection.EAST);
+        room6.addAdjacent(room13,  DoorDirection.WEST);
+
+        room7.addAdjacent(room5, DoorDirection.NORTH);
 
         room8.addAdjacent(room9, DoorDirection.EAST);
+        room8.addAdjacent(room5, DoorDirection.WEST);
+
+        room9.addAdjacent(room10, DoorDirection.NORTH);
+        room9.addAdjacent(exit, DoorDirection.EAST);
+        room9.addAdjacent(room11, DoorDirection.SOUTH);
         room9.addAdjacent(room8, DoorDirection.WEST);
 
-        room9.addAdjacent(exit, DoorDirection.EAST);
+        room10.addAdjacent(room9, DoorDirection.SOUTH);
 
+        room11.addAdjacent(room9, DoorDirection.NORTH);
+        room11.addAdjacent(room12, DoorDirection.SOUTH);
+
+        room12.addAdjacent(room11, DoorDirection.NORTH);
+
+        room13.addAdjacent(room1,  DoorDirection.NORTH);
+        room13.addAdjacent(room6,  DoorDirection.EAST);
+        room13.addAdjacent(room14,  DoorDirection.SOUTH);
+        room13.addAdjacent(room20,  DoorDirection.WEST);
+
+        room14.addAdjacent(room13,  DoorDirection.NORTH);
+        room14.addAdjacent(room15,  DoorDirection.SOUTH);
+        room14.addAdjacent(room19,  DoorDirection.WEST);
+
+        room15.addAdjacent(room14,  DoorDirection.NORTH);
+        room15.addAdjacent(room16,  DoorDirection.SOUTH);
+
+        room16.addAdjacent(room15,  DoorDirection.NORTH);
+        room16.addAdjacent(room17,  DoorDirection.EAST);
+        room16.addAdjacent(room18,  DoorDirection.WEST);
+
+        room17.addAdjacent(room16,  DoorDirection.WEST);
+
+        room18.addAdjacent(room16,  DoorDirection.EAST);
+
+        room19.addAdjacent(room20,  DoorDirection.NORTH);
+        room19.addAdjacent(room14,  DoorDirection.EAST);
+
+        room20.addAdjacent(room21,  DoorDirection.NORTH);
+        room20.addAdjacent(room13,  DoorDirection.EAST);
+        room20.addAdjacent(room19,  DoorDirection.SOUTH);
+
+        room21.addAdjacent(room23,  DoorDirection.NORTH);
+        room21.addAdjacent(room1,  DoorDirection.EAST);
+        room21.addAdjacent(room20,  DoorDirection.SOUTH);
+        room21.addAdjacent(room29,  DoorDirection.WEST);
+
+        room22.addAdjacent(room24,  DoorDirection.NORTH);
+        room22.addAdjacent(room3,  DoorDirection.EAST);
+        room22.addAdjacent(room1,  DoorDirection.SOUTH);
+        room22.addAdjacent(room23,  DoorDirection.WEST);
+
+        room23.addAdjacent(room25,  DoorDirection.NORTH);
+        room23.addAdjacent(room22,  DoorDirection.EAST);
+        room23.addAdjacent(room21,  DoorDirection.SOUTH);
+        room23.addAdjacent(room28,  DoorDirection.WEST);
+
+        room24.addAdjacent(room26,  DoorDirection.NORTH);
+        room24.addAdjacent(room22,  DoorDirection.SOUTH);
+        room24.addAdjacent(room25,  DoorDirection.WEST);
+
+        room25.addAdjacent(room24,  DoorDirection.EAST);
+        room25.addAdjacent(room23,  DoorDirection.SOUTH);
+        room25.addAdjacent(room27,  DoorDirection.WEST);
+
+        room26.addAdjacent(room24,  DoorDirection.SOUTH);
+
+        room27.addAdjacent(room25,  DoorDirection.EAST);
+        room27.addAdjacent(room28,  DoorDirection.SOUTH);
+
+        room28.addAdjacent(room27,  DoorDirection.NORTH);
+        room28.addAdjacent(room23,  DoorDirection.EAST);
+        room28.addAdjacent(room29,  DoorDirection.SOUTH);
+        room28.addAdjacent(room30,  DoorDirection.WEST);
+
+        room29.addAdjacent(room28,  DoorDirection.NORTH);
+        room29.addAdjacent(room21,  DoorDirection.EAST);
+
+        room30.addAdjacent(room28,  DoorDirection.EAST);
+        room30.addAdjacent(room31,  DoorDirection.WEST);
+
+        room31.addAdjacent(room30,  DoorDirection.EAST);
 
         // Initialise Events
-        room7.setEvent(new EventLongboi(player, game));
         room3.setEvent(new EventGreggs(player, game));
         room5.setEvent(new EventTHE3(player, game, scoreManager));
+        room7.setEvent(new EventLongboi(player, game));
+        //room10.setEvent(new EventSYS2(player, game, scoreManager));
+        //room12.setEvent(new EventBob(player, game));
+        //room15.setEvent(new EventMonster(player, game));
+        //room17.setEvent(new EventCupNoodles(player, game));
+        //room18.setEvent(new EventInverse(player, game));
+        //room19.setEvent(new EventPlacement(player, game, scoreManager));
+        //room23.setEvent(new EventNetworking(player, game));
+        //room26.setEvent(new EventClubNight(player, game));
+        //room27.setEvent(new EventDominoes(player, game));
+        //room29.setEvent(new EventENG1(player, game, scoreManager));
+        //room31.setEvent(new EventNegative(player, game));
 
         currentRoom = room1;
         updateDoors(currentRoom);

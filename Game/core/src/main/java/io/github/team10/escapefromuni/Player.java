@@ -76,24 +76,25 @@ public class Player {
         float playerCenterX = playerSprite.getX() + halfWidth;
         float playerCenterY = playerSprite.getY() + halfHeight;
 
+
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             if (playerCenterX < worldWidth - EDGE_LIMIT) {
-                playerSprite.translateX(speed * delta);
+                playerSprite.translateX(speed * delta * 2);
             }
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             if (playerCenterX > EDGE_LIMIT) {
-                playerSprite.translateX(-speed * delta);
+                playerSprite.translateX(-speed * delta * 2);
             }
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             if (playerCenterY < worldHeight - EDGE_LIMIT) {
-                playerSprite.translateY(speed * delta);
+                playerSprite.translateY(speed * delta * 2);
             }
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             if (playerCenterY > EDGE_LIMIT) {
-                playerSprite.translateY(-speed * delta);
+                playerSprite.translateY(-speed * delta * 2);
             }
         }
     }

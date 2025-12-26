@@ -56,7 +56,6 @@ public abstract class Event {
 
     /**
      * Called when the event should end.
-     *
      * Disposes of resources and restores normal gameplay.
      */
     public abstract void endEvent();
