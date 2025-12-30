@@ -8,67 +8,57 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
-/**
- * Represents the THE3 exam negative event.
- * This event temporarily disables player movement, displays a quiz question with TRUE/FALSE achievement_texts, and provides
- * feedback based on the player's answer. If the player gets the answer correct the score increases, otherwise the
- * player is slowed down.
- */
-public class EventTHE3 extends Event{
+public class NegativeEvent extends Event {
 
+    private final NegativeEventType type;
     private final ScoreManager scoreManager;
 
     private final Texture titlePanelTexture;
     private final Texture questionPanelTexture;
-    private final Texture trueButtonTexture;
-    private final Texture falseButtonTexture;
+    private final Texture leftButtonTexture;
+    private final Texture rightButtonTexture;
 
     private final Sprite titlePanelSprite;
     private final Sprite questionPanelSprite;
-    private final Sprite trueButtonSprite;
-    private final Sprite falseButtonSprite;
+    private final Sprite leftButtonSprite;
+    private final Sprite rightButtonSprite;
 
     private boolean questionAnswered = false;
     private float answerDisplayTimer = 0f;
 
-    private String questionText;
+    private final String questionText;
     private String feedbackText = "";
 
-    private Rectangle trueButtonBounds;
-    private Rectangle falseButtonBounds;
-
+    private Rectangle leftButtonBounds;
+    private Rectangle rightButtonBounds;
 
     /**
-     * Creates a new instance of EventTHE3.
+     * Creates a new negative event.
      */
-    public EventTHE3(Player player, EscapeGame game, ScoreManager scoreManager)
-    {
+    public NegativeEvent(NegativeEventType type, Player player, EscapeGame game, ScoreManager scoreManager) {
         super(EventType.NEGATIVE, player, game);
-
+        this.type = type;
+        questionText = type.getQuestionText();
         titlePanelTexture = new Texture("UI/Blue4x1Panel.png");
         questionPanelTexture = new Texture("UI/BlueBorder10x3Panel.png");
-        trueButtonTexture = new Texture("UI/GreenBorder5x2Panel.png");
-        falseButtonTexture = new Texture("UI/OrangeBorder5x2Panel.png");
+        leftButtonTexture = new Texture("UI/GreenBorder5x2Panel.png");
+        rightButtonTexture = new Texture("UI/OrangeBorder5x2Panel.png");
 
         titlePanelSprite = new Sprite(titlePanelTexture);
         questionPanelSprite = new Sprite(questionPanelTexture);
-        trueButtonSprite = new Sprite(trueButtonTexture);
-        falseButtonSprite = new Sprite(falseButtonTexture);
+        leftButtonSprite = new Sprite(leftButtonTexture);
+        rightButtonSprite = new Sprite(rightButtonTexture);
 
         this.scoreManager = scoreManager;
     }
 
-    /**
-     * Starts the event by disabling player movement and initialising the quiz UI.
-     * Does nothing if the event has already finished previously.
-     */
     @Override
     public void startEvent() {
-        super.startEvent();
         if (eventFinished) return;
+        super.startEvent();
 
         player.enableMovement(false);
-        AudioManager.getInstance().playEventSound(this.type);
+        AudioManager.getInstance().playEventSound(EventType.NEGATIVE);
         questionAnswered = false;
         initialiseQuizUI();
     }
@@ -77,11 +67,7 @@ public class EventTHE3 extends Event{
      * Initialises and positions all UI components for the quiz screen.
      * This includes a title, question display and two achievement_texts (true or false).
      */
-    private void initialiseQuizUI()
-    {
-        feedbackText = "";
-        questionText = "True or False:\nThe self-accepting problem SA \nis semi-decidable.";
-
+    private void initialiseQuizUI() {
         float uiWidth = game.uiViewport.getWorldWidth();
         float uiHeight = game.uiViewport.getWorldHeight();
 
@@ -91,25 +77,22 @@ public class EventTHE3 extends Event{
         questionPanelSprite.setSize(1200f, 360f);
         questionPanelSprite.setCenter(uiWidth / 2f, uiHeight * 0.5f);
 
-        trueButtonSprite.setSize(600f, 240f);
-        falseButtonSprite.setSize(600f, 240f);
-        trueButtonSprite.setCenter(uiWidth / 2f - 320f, uiHeight * 0.20f);
-        falseButtonSprite.setCenter(uiWidth / 2f + 320f, uiHeight * 0.20f);
+        leftButtonSprite.setSize(600f, 240f);
+        rightButtonSprite.setSize(600f, 240f);
+        leftButtonSprite.setCenter(uiWidth / 2f - 320f, uiHeight * 0.20f);
+        rightButtonSprite.setCenter(uiWidth / 2f + 320f, uiHeight * 0.20f);
 
-        trueButtonBounds = new Rectangle(
-            trueButtonSprite.getX(), trueButtonSprite.getY(),
-            trueButtonSprite.getWidth(), trueButtonSprite.getHeight()
+        leftButtonBounds = new Rectangle(
+            leftButtonSprite.getX(), leftButtonSprite.getY(),
+            leftButtonSprite.getWidth(), leftButtonSprite.getHeight()
         );
 
-        falseButtonBounds = new Rectangle(
-            falseButtonSprite.getX(), falseButtonSprite.getY(),
-            falseButtonSprite.getWidth(), falseButtonSprite.getHeight()
+        rightButtonBounds = new Rectangle(
+            rightButtonSprite.getX(), rightButtonSprite.getY(),
+            rightButtonSprite.getWidth(), rightButtonSprite.getHeight()
         );
     }
 
-    /**
-     * Ends the event, enabling player movement again and disposing of textures.
-    */
     @Override
     public void endEvent() {
         eventFinished = true;
@@ -117,16 +100,10 @@ public class EventTHE3 extends Event{
 
         titlePanelTexture.dispose();
         questionPanelTexture.dispose();
-        trueButtonTexture.dispose();
-        falseButtonTexture.dispose();
+        leftButtonTexture.dispose();
+        rightButtonTexture.dispose();
     }
 
-    /**
-     * Called every frame to update the event's logic.
-     * Handles input detection for true/false achievement_texts.
-     * Controls the post-answer delay before ending the event.
-     * @param delta The time elapsed since the last frame in seconds.
-     */
     @Override
     public void update(float delta) {
         if (eventFinished) return;
@@ -146,44 +123,42 @@ public class EventTHE3 extends Event{
             Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             game.uiCamera.unproject(touchPos);
 
-            if (trueButtonBounds.contains(touchPos.x, touchPos.y)) {
+            if (leftButtonBounds.contains(touchPos.x, touchPos.y)) {
                 // TRUE selected.
                 handleAnswer(true);
             }
-            else if (falseButtonBounds.contains(touchPos.x, touchPos.y)) {
+            else if (rightButtonBounds.contains(touchPos.x, touchPos.y)) {
                 // FALSE selected.
                 handleAnswer(false);
             }
         }
-
-
     }
 
     /**
      * Apply's effects based on the player's answer.
-     * If correct, score is increased. If incorrect, player speed is decreased.
-     * @param answer {@code true} if the true button was pressed, {@code false} otherwise.
+     * If correct, score is increased.
+     * If incorrect, player speed is decreased and score is decreased.
+     * @param answer {@code true} if the right button was pressed, {@code false} if the left was pressed.
      */
     private void handleAnswer(boolean answer) {
         questionAnswered = true;
         answerDisplayTimer = 0f;
 
-        if (answer) {
+        if (answer == type.getCorrectAnswer()) {
             feedbackText = "Correct: Score +500";
             scoreManager.increaseScore(500);
             game.achievementManager.check_PASS();
         }
         else {
-            feedbackText = "Incorrect: Speed Decrease";
+            feedbackText = "Incorrect: Speed Decrease, Score -250";
             player.increaseSpeed(-2f);
+            scoreManager.increaseScore(-250);
             game.achievementManager.check_FAIL();
         }
     }
 
-
     @Override
-    public void draw() {
-    }
+    public void draw() {}
 
     @Override
     public void drawUI() {
@@ -194,12 +169,12 @@ public class EventTHE3 extends Event{
 
         titlePanelSprite.draw(game.batch);
         questionPanelSprite.draw(game.batch);
-        trueButtonSprite.draw(game.batch);
-        falseButtonSprite.draw(game.batch);
+        leftButtonSprite.draw(game.batch);
+        rightButtonSprite.draw(game.batch);
 
         float uiWidth = game.uiViewport.getWorldWidth();
 
-        String titleText = "THE3 Exam";
+        String titleText = type.getTitle();
         layout.setText(game.font, titleText);
         float titleX = (uiWidth - layout.width) / 2f;
         float titleY = titlePanelSprite.getY() + titlePanelSprite.getHeight() / 2f + layout.height / 2f;
@@ -212,14 +187,65 @@ public class EventTHE3 extends Event{
         float questionY = questionPanelSprite.getY() + questionPanelSprite.getHeight() / 2f + layout.height / 2f;
         game.font.draw(game.batch, layout, questionX, questionY);
 
-        layout.setText(game.font, "TRUE");
-        float trueTextX = trueButtonSprite.getX() + (trueButtonSprite.getWidth() - layout.width) / 2f;
-        float trueTextY = trueButtonSprite.getY() + (trueButtonSprite.getHeight() + layout.height) / 2f;
+        layout.setText(game.font, type.getLeftText());
+        float trueTextX = leftButtonSprite.getX() + (leftButtonSprite.getWidth() - layout.width) / 2f;
+        float trueTextY = leftButtonSprite.getY() + (leftButtonSprite.getHeight() + layout.height) / 2f;
         game.font.draw(game.batch, layout, trueTextX, trueTextY);
 
-        layout.setText(game.font, "FALSE");
-        float falseTextX = falseButtonSprite.getX() + (falseButtonSprite.getWidth() - layout.width) / 2f;
-        float falseTextY = falseButtonSprite.getY() + (falseButtonSprite.getHeight() + layout.height) / 2f;
+        layout.setText(game.font, type.getRightText());
+        float falseTextX = rightButtonSprite.getX() + (rightButtonSprite.getWidth() - layout.width) / 2f;
+        float falseTextY = rightButtonSprite.getY() + (rightButtonSprite.getHeight() + layout.height) / 2f;
         game.font.draw(game.batch, layout, falseTextX, falseTextY);
     }
+
+    // getters and setters
+
+    /**
+     * Used for testing purposes.
+     * @return event type.
+     */
+    public NegativeEventType getType() {
+        return type;
+    }
+
+    /**
+     * Used for testing purposes.
+     * @return questionAnswered value.
+     */
+    public boolean getAnswered() {
+        return questionAnswered;
+    }
+
+    /**
+     * Used for testing purposes.
+     * @return a list contains all sprites.
+     */
+    public Sprite[] getSprites() {
+        return new Sprite[]{titlePanelSprite, questionPanelSprite, leftButtonSprite, rightButtonSprite};
+    }
+
+    /**
+     * Used for testing purposes.
+     * @return feedbackText value.
+     */
+    public String getFeedbackText() {
+        return feedbackText;
+    }
+
+    /**
+     * Used for testing purposes.
+     * @return questionText value.
+     */
+    public String getQuestionText() {
+        return questionText;
+    }
+
+    /**
+     * Used for testing purposes.
+     * @return scoreManager object.
+     */
+    public ScoreManager getScoreManager() {
+        return scoreManager;
+    }
 }
+
