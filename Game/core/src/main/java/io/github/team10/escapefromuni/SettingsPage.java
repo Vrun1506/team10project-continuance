@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -100,7 +101,7 @@ public class SettingsPage implements Screen {
         layout.setText(font, volumeText);
         float volumeX = (game.uiViewport.getWorldWidth() - layout.width) / 2f;
         float volumeY = sliderBar.y + 120f;
-        font.setColor(Color.YELLOW);
+        font.setColor(Color.WHITE);
         font.draw(game.batch, layout, volumeX, volumeY);
         
         // Draw slider bar
@@ -167,20 +168,23 @@ public class SettingsPage implements Screen {
         return audioLevel;
     }
     
+    //click detection
     private boolean isButtonClicked(Rectangle button) {
         if (Gdx.input.justTouched()) {
-            Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            game.uiCamera.unproject(touchPos);
+            Vector2 touchPos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+            game.uiViewport.unproject(touchPos);
             if (button.contains(touchPos.x, touchPos.y)) {
                 return true;
             }
         }
         return false;
     }
-    
+
+    //hover detection
     private boolean isButtonHovered(Rectangle button) {
-        Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-        game.uiCamera.unproject(mousePos);
+        // detect mouse hover in UI coordinates
+        Vector2 mousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+        game.uiViewport.unproject(mousePos);
         return button.contains(mousePos.x, mousePos.y);
     }
     

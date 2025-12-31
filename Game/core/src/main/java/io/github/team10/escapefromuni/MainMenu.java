@@ -22,23 +22,21 @@ public class MainMenu implements Screen {
     private BitmapFont font;
     private GlyphLayout layout;
 
-    // achievement_texts
+    // buttons
     private Rectangle startButton;
     private Rectangle tutorialButton;
     private Rectangle settingsButton;
     private Rectangle exitButton;
-
-    // NEW
     private Rectangle achievementButton;
+    private Rectangle leaderboardButton;
 
-    // hover states for achievement_texts
+    // hover states for buttons
     private boolean startHovered;
     private boolean tutorialHovered;
     private boolean settingsHovered;
     private boolean exitHovered;
-
-    // NEW
     private boolean achievementHovered;
+    private boolean leaderboardHovered;
 
     public MainMenu(EscapeGame game) {
         this.game = game;
@@ -66,8 +64,9 @@ public class MainMenu implements Screen {
         startButton = new Rectangle(centerX - buttonWidth / 2f, screenHeight / 2f + 150f, buttonWidth, buttonHeight);
         tutorialButton = new Rectangle(centerX - buttonWidth / 2f, screenHeight / 2f + 50f, buttonWidth, buttonHeight);
         settingsButton = new Rectangle(centerX - buttonWidth / 2f, screenHeight / 2f - 50f, buttonWidth, buttonHeight);
-        exitButton = new Rectangle(centerX - buttonWidth / 2f, screenHeight / 2f - 150f, buttonWidth, buttonHeight);
-        achievementButton = new Rectangle(centerX - buttonWidth / 2f, screenHeight / 2f - 350f, buttonWidth, buttonHeight);
+        exitButton = new Rectangle(centerX - buttonWidth / 2f, screenHeight / 2f - 450f, buttonWidth, buttonHeight);
+        achievementButton = new Rectangle(centerX - buttonWidth / 2f, screenHeight / 2f - 150f, buttonWidth, buttonHeight);
+        leaderboardButton = new Rectangle(centerX - buttonWidth / 2f, screenHeight / 2f - 250f, buttonWidth, buttonHeight);
 
         //menu music
         AudioManager.getInstance().playMenuMusic();
@@ -91,6 +90,7 @@ public class MainMenu implements Screen {
         drawButton(settingsButton, "Settings", settingsHovered);
         drawButton(exitButton, "Exit", exitHovered);
         drawButton(achievementButton, "Achievements", achievementHovered);
+        drawButton(leaderboardButton, "Leaderboard", leaderboardHovered);
 
         game.batch.end();
     }
@@ -173,6 +173,13 @@ public class MainMenu implements Screen {
         dispose();
     }
 
+    public void onLeaderBoard() {
+        // open the leaderboard screen
+        System.out.println("Opening leaderboard...");
+        game.setScreen(new LeaderboardPage(game,this));
+        dispose();
+    }
+
     @Override
     public void render(float delta) {
 
@@ -184,6 +191,7 @@ public class MainMenu implements Screen {
         settingsHovered = isButtonHovered(settingsButton);
         exitHovered = isButtonHovered(exitButton);
         achievementHovered = isButtonHovered(achievementButton);
+        leaderboardHovered = isButtonHovered(leaderboardButton);
 
 
         if (isButtonClicked(startButton)) {
@@ -196,6 +204,8 @@ public class MainMenu implements Screen {
             onExit();
         } else if (isButtonClicked(achievementButton)) {
             onAchievements();
+        } else if (isButtonClicked(leaderboardButton)) {
+            onLeaderBoard();
         }
 
         // draw everything
