@@ -31,6 +31,8 @@ public class GameOverScreen implements Screen {
     private final Texture winScreen;
     private final Texture loseScreen;
 
+    private final String name;
+
     private int finalScore;
 
     /**
@@ -40,11 +42,12 @@ public class GameOverScreen implements Screen {
      * @param timer The timer used to track playtime.
      * @param scoreManager  The score manager which calculates the final score.
      */
-    public GameOverScreen(final EscapeGame game, boolean isWon, Timer timer, ScoreManager scoreManager) {
+    public GameOverScreen(final EscapeGame game, boolean isWon, Timer timer, ScoreManager scoreManager, String nameString) {
         this.game = game;
         this.isWon = isWon;
         this.timer = timer;
         this.scoreManager = scoreManager;
+        this.name = nameString;
 
         this.font = game.font;
         this.winScreen = new Texture("WinScreen.png");
@@ -143,7 +146,6 @@ public class GameOverScreen implements Screen {
         // System.out.println(("SCORE:"+newScore));
 
         // String name = inputListener.name;
-        String name = "BOB";
 
         try {
             
@@ -160,7 +162,6 @@ public class GameOverScreen implements Screen {
 
                 //grabs just the score  
                 try {
-                    System.out.println(("TEMP IS "+temp));
                     Integer tempInt = Integer.parseInt(temp.split(",")[1]);
                     oldScores.add(tempInt); 
 
@@ -177,7 +178,6 @@ public class GameOverScreen implements Screen {
             Boolean placed = false;
             for (int i=0; i<5; i++) {
                 if (oldScores.get(i) <= newScore && placed == false) {
-                    System.out.println(("Score was greater than score at position"+(i+1)));
                     writer.write((name+","+newScore+"\n"));
                     writer.write((oldRecords.get(i)+"\n"));
                     placed = true;

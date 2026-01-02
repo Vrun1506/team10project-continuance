@@ -240,7 +240,7 @@ public class RoomManager {
 
         if (newRoom.getExit())
         {
-            game.setScreen(new GameOverScreen(game, true, timer, scoreManager));
+            game.setScreen(new UsernameInputScreen(game, timer, scoreManager));
 
             // achievement
             if (timer.getTimeSeconds() <= 10) { game.achievementManager.check_TEN_SECONDS(); }

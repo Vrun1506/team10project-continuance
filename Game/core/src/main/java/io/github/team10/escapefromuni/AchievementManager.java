@@ -26,7 +26,7 @@ public class AchievementManager {
             }
         }
     }
-
+ 
     /**
      * Loads achievements from memory.
      */

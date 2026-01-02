@@ -51,8 +51,8 @@ public class GameOverScreenTest extends HeadlessTestRunner {
         when(mockTimer.getTimeLeftSeconds()).thenReturn(180);
         when(mockScoreManager.CalculateFinalScore(anyInt())).thenReturn(1500);
         
-        winScreen = new GameOverScreen(mockGame, true, mockTimer, mockScoreManager);
-        loseScreen = new GameOverScreen(mockGame, false, mockTimer, mockScoreManager);
+        winScreen = new GameOverScreen(mockGame, true, mockTimer, mockScoreManager, "TEST");
+        loseScreen = new GameOverScreen(mockGame, false, mockTimer, mockScoreManager, "TEST");
     }
     
     @After
