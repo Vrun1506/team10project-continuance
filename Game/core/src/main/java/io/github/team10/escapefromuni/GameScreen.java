@@ -110,6 +110,15 @@ public class GameScreen extends ScreenAdapter {
         font.setColor(Color.BLACK);
         font.draw(game.batch, "Time: " + timer.getTimeLeftSeconds() + "s", 75f, 1000f);
 
+        // rendering text for event counters
+        String positive_text = "Positive Events: " + (int) player.positive_events.x + "/" + (int) player.positive_events.y;
+        String negative_text = "Negative Events: " +  (int) player.negative_events.x + "/" + (int) player.negative_events.y;
+        String hidden_text =  "Hidden Events: " + (int) player.hidden_events.x + "/" + (int) player.hidden_events.y;
+
+        font.draw(game.batch, positive_text, 1300f, 1000f);
+        font.draw(game.batch, negative_text, 1300f, 950f);
+        font.draw(game.batch, hidden_text, 1300f, 900f);
+
         game.batch.end();
     }
 
