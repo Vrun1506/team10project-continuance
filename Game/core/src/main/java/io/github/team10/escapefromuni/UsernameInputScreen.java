@@ -88,6 +88,8 @@ public class UsernameInputScreen implements Screen {
 
     @Override
     public void dispose() {
+        System.out.println("no more input PROCESSSSOR");
+        Gdx.input.setInputProcessor(null);
         screen.dispose();
     }
 
@@ -106,7 +108,10 @@ public class UsernameInputScreen implements Screen {
                 }
 
                 if (character == '\n') {
+                    System.out.println("new game over screen YAAAAAY");
+                    dispose();
                     game.setScreen(new GameOverScreen(game, true, timer, scoreManager, nameText));
+                    
                     return true;
                 }
 

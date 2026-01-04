@@ -3,11 +3,15 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -163,17 +167,19 @@ public class LeaderboardPage implements Screen {
         
         // Read scores from save file and set text on score labels
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("leaderboard.txt"));
-            
+            File scoreFile = new File("leaderboard.txt");
+            scoreFile.createNewFile(); //only creates the file if it had not existed beforehand
+            BufferedReader reader = new BufferedReader(new FileReader(scoreFile));
+
             for (int i=1; i<=5; i++) {
 
                 // formats the record
-                String temp = "Failed to read scores.";
+                String temp = "N/A";
 
                 try {
                     temp = reader.readLine().replace(",", ":   ");
                 } catch (Exception e) {
-                    System.err.println("Couldn't interpret the score files!");
+                    System.err.println("Couldn't interpret the score files! This could be because no high-scores were set yet.");
                     e.printStackTrace();
                 }
 

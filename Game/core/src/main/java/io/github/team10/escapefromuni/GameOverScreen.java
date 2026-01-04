@@ -2,6 +2,7 @@ package io.github.team10.escapefromuni;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -149,7 +150,9 @@ public class GameOverScreen implements Screen {
 
         try {
             
-            BufferedReader reader = new BufferedReader(new FileReader("leaderboard.txt"));
+            File scoreFile = new File("leaderboard.txt");
+            scoreFile.createNewFile(); //only creates the file if it had not existed beforehand
+            BufferedReader reader = new BufferedReader(new FileReader(scoreFile));
 
             // contains data from old scoreboard to be used in comparison
             ArrayList<String> oldRecords = new ArrayList<String>();
@@ -166,17 +169,22 @@ public class GameOverScreen implements Screen {
                     oldScores.add(tempInt); 
 
                 } catch (Exception e) {
-                    System.err.println("Couldn't interpret scores file!");
+                    System.err.println("Couldn't interpret scores file for writing!");
                     e.printStackTrace();
                 }
             }
 
             reader.close();
 
-            BufferedWriter writer = new BufferedWriter(new FileWriter("leaderboard.txt"));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(scoreFile));
+
+            // check if there are any records in the leaderboard file, and perform the necessary countermeasure
+            if (oldScores.size() == 0) {
+                writer.write((name+","+newScore+"\n"));
+            } else {
 
             Boolean placed = false;
-            for (int i=0; i<5; i++) {
+            for (int i=0; i<oldScores.size(); i++) {
                 if (oldScores.get(i) <= newScore && placed == false) {
                     writer.write((name+","+newScore+"\n"));
                     writer.write((oldRecords.get(i)+"\n"));
@@ -184,6 +192,8 @@ public class GameOverScreen implements Screen {
                 } else {
                     writer.write((oldRecords.get(i)+"\n"));
                 }
+            }
+
             }
 
             System.out.println(oldScores);
