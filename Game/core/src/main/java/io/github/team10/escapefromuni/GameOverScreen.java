@@ -194,6 +194,11 @@ public class GameOverScreen implements Screen {
                 }
             }
 
+            // if the score never beats existing ones, check if there is space for it anyway.
+            if (placed == false && oldScores.size() < 5) {
+                writer.write((name+","+newScore+"\n"));
+            }
+
             }
 
             System.out.println(oldScores);
