@@ -1,5 +1,13 @@
 package io.github.team10.escapefromuni;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -24,18 +32,23 @@ public class GameOverScreen implements Screen {
     private final Texture winScreen;
     private final Texture loseScreen;
 
+    private final String name;
+
+    private int finalScore;
+
     /**
-     * Constructs a new GameOVerScreen.
+     * Constructs a new GameOverScreen.
      * @param game  The main game instance.
      * @param isWon Whether the player has won or lost.
      * @param timer The timer used to track playtime.
      * @param scoreManager  The score manager which calculates the final score.
      */
-    public GameOverScreen(final EscapeGame game, boolean isWon, Timer timer, ScoreManager scoreManager) {
+    public GameOverScreen(final EscapeGame game, boolean isWon, Timer timer, ScoreManager scoreManager, String nameString) {
         this.game = game;
         this.isWon = isWon;
         this.timer = timer;
         this.scoreManager = scoreManager;
+        this.name = nameString;
 
         this.font = game.font;
         this.winScreen = new Texture("WinScreen.png");
@@ -77,7 +90,6 @@ public class GameOverScreen implements Screen {
     private void renderWinScreen(){
         game.batch.draw(winScreen, 0, 0, game.uiViewport.getWorldWidth(), game.uiViewport.getWorldHeight());
         String timeText = "Time Elapsed: " + timer.getTimeSeconds();
-        int finalScore = scoreManager.CalculateFinalScore(timer.getTimeLeftSeconds());
         String scoreText = "Score: " + finalScore;
 
         game.font.setColor(Color.BLACK);
@@ -108,7 +120,13 @@ public class GameOverScreen implements Screen {
         game.batch.draw(loseScreen, 0, 0, game.uiViewport.getWorldWidth(), game.uiViewport.getWorldHeight());
     }
 
-    @Override public void show() {}
+    @Override public void show() {
+        finalScore = scoreManager.CalculateFinalScore(timer.getTimeLeftSeconds());
+        writeScores(finalScore);
+        // save achievements
+        game.achievementManager.saveAchievements();
+    }
+
     @Override public void resize(int width, int height) {}
     @Override public void pause() {}
     @Override public void resume() {}
@@ -120,5 +138,77 @@ public class GameOverScreen implements Screen {
     @Override public void dispose() {
         winScreen.dispose();
         loseScreen.dispose();
+    }
+
+    public void writeScores(int newScore) {
+        // NameTextInputListener inputListener = new NameTextInputListener();
+        // Gdx.input.getTextInput(inputListener, "ENTER YOUR NAME", "Enter three characters to represent your score.", "ABC");
+
+        // System.out.println(("SCORE:"+newScore));
+
+        // String name = inputListener.name;
+
+        try {
+            
+            File scoreFile = new File("leaderboard.txt");
+            scoreFile.createNewFile(); //only creates the file if it had not existed beforehand
+            BufferedReader reader = new BufferedReader(new FileReader(scoreFile));
+
+            // contains data from old scoreboard to be used in comparison
+            ArrayList<String> oldRecords = new ArrayList<String>();
+            ArrayList<Integer> oldScores = new ArrayList<Integer>();
+
+            for (int i=0; i<5; i++) {
+                //entire record keeping CSV format
+                String temp = reader.readLine();
+                oldRecords.add(temp);
+
+                //grabs just the score  
+                try {
+                    Integer tempInt = Integer.parseInt(temp.split(",")[1]);
+                    oldScores.add(tempInt); 
+
+                } catch (Exception e) {
+                    System.err.println("Couldn't interpret scores file for writing!");
+                    e.printStackTrace();
+                }
+            }
+
+            reader.close();
+
+            BufferedWriter writer = new BufferedWriter(new FileWriter(scoreFile));
+
+            // check if there are any records in the leaderboard file, and perform the necessary countermeasure
+            if (oldScores.size() == 0) {
+                writer.write((name+","+newScore+"\n"));
+            } else {
+
+            Boolean placed = false;
+            for (int i=0; i<oldScores.size(); i++) {
+                if (oldScores.get(i) <= newScore && placed == false) {
+                    writer.write((name+","+newScore+"\n"));
+                    writer.write((oldRecords.get(i)+"\n"));
+                    placed = true;
+                } else {
+                    writer.write((oldRecords.get(i)+"\n"));
+                }
+            }
+
+            // if the score never beats existing ones, check if there is space for it anyway.
+            if (placed == false && oldScores.size() < 5) {
+                writer.write((name+","+newScore+"\n"));
+            }
+
+            }
+
+            System.out.println(oldScores);
+            System.out.println(oldRecords);
+
+            writer.close();
+
+        } catch (IOException e) {
+            System.err.println("Failed to overwrite scores!");
+            e.printStackTrace();
+        }
     }
 }

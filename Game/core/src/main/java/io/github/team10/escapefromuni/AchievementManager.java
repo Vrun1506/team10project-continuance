@@ -24,6 +24,7 @@ public class AchievementManager {
             for (AchievementType type : AchievementType.values()) {
                 achievements.add(new Achievement(type, false));
             }
+            System.out.println("Initialised " + achievements.size() + "/" + AchievementType.values().length + " achievements!");
         }
     }
 
@@ -46,6 +47,7 @@ public class AchievementManager {
                 System.out.println(e.getMessage());
                 initAchievements();
             }
+            System.out.println("Loaded " + achievements.size() + "/" + AchievementType.values().length + " achievements!");
         }
     }
 
@@ -54,13 +56,16 @@ public class AchievementManager {
      */
     public void saveAchievements() {
         System.out.println("Saving Achievements...");
+        int total = 0;
         StringBuilder text = new  StringBuilder();
         for (Achievement a : achievements) {
             text.append(a).append("\n");
+            total++;
         }
 
         FileHandle file = Gdx.files.external("achievements.txt");
         file.writeString(text.toString(), false);
+        System.out.println("Saved " + total + "/" + AchievementType.values().length + " achievements!");
     }
 
     /**
@@ -71,11 +76,14 @@ public class AchievementManager {
         if  (achievements.isEmpty()) {
             System.out.println("There are no achievements.");
         } else {
+            int total = 0;
             StringBuilder output = new StringBuilder();
             for (Achievement a : achievements) {
                 output.append(a).append("\n");
+                total++;
             }
             System.out.println(output);
+            System.out.println("Printed " + total + "/" + AchievementType.values().length + " achievements!");
         }
     }
 
