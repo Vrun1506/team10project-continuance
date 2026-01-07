@@ -35,7 +35,6 @@ configure(subprojects) {
     inputs.dir("${project.rootDir}/assets/")
 
     File assetsFolder = new File("${project.rootDir}/assets/")
-/assets.txt
     File assetsFile = new File(assetsFolder, "assets.txt")
 
     assetsFile.delete()
