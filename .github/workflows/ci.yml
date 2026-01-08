@@ -107,7 +107,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jacoco-coverage-report
-          path: Game/**/build/reports/jacoco/text/html/
+          path: Game/**/build/reports/jacoco/test/html/
           retention-days: 90
       
       - name: Output in Artifact area
