@@ -1,0 +1,235 @@
+package io.github.team10.escapefromuni;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+
+/**
+ * OLD CLASS
+ * Pause menu displayed during gameplay.
+ * triggered by ESC key. shows paused timer and the options; Resume, Exit.
+ */
+
+public class PauseMenu implements Screen {
+
+    private final EscapeGame game;
+    private final GameScreen gameScreen;
+    private BitmapFont font;
+    private GlyphLayout layout;
+    private int pausedTime;
+    private Texture backgroundImage;
+    private Texture buttonTexture;
+
+    // Button rectangles
+    private Rectangle resumeButton;
+    private Rectangle settingsButton;
+    private Rectangle exitButton;
+
+    // Button states
+    private boolean resumeHovered;
+    private boolean settingsHovered;
+    private boolean exitHovered;
+
+    /**
+     * Initialises a PauseMenu object.
+     * @param game the current EscapeGame object.
+     * @param gameScreen the current GameScreen object.
+     * @param pausedTime the timer value when the pause screen is created.
+     */
+    public PauseMenu(EscapeGame game, GameScreen gameScreen, int pausedTime) {
+        this.game = game;
+        this.gameScreen = gameScreen;
+        this.pausedTime = pausedTime;
+    }
+
+    @Override
+    public void show() {
+        //button designings
+        backgroundImage = new Texture(Gdx.files.internal("pausemenu_background.png"));
+        buttonTexture = new Texture(Gdx.files.internal("ButtonBG.png"));
+
+        font = game.font;
+        layout = new GlyphLayout();
+
+        float buttonWidth = 600f;
+        float buttonHeight = 100f;
+        float screenWidth = game.uiViewport.getWorldWidth();
+        float centerX = screenWidth / 2f;
+
+        // button positioning
+        resumeButton = new Rectangle(centerX - buttonWidth / 2f, 500f, buttonWidth, buttonHeight);
+        settingsButton = new Rectangle(centerX - buttonWidth / 2f, 350f, buttonWidth, buttonHeight);
+        exitButton = new Rectangle(centerX - buttonWidth / 2f, 200f, buttonWidth, buttonHeight);
+
+        AudioManager.getInstance().playMenuMusic();
+    }
+
+    /**
+     * Displays the pause menu UI.
+     */
+    public void display() {
+        game.viewport.apply();
+        game.batch.setProjectionMatrix(game.viewport.getCamera().combined);
+        game.batch.begin();
+        game.batch.draw(backgroundImage, 0, 0, game.viewport.getWorldWidth(), game.viewport.getWorldHeight());
+        game.batch.end();
+
+        //UI
+        game.uiViewport.apply();
+        game.batch.setProjectionMatrix(game.uiCamera.combined);
+        game.batch.begin();
+
+        String title = "You pulled out 'Exceptional Circumstances' card on dean";
+        layout.setText(font, title);
+        float titleX = (game.uiViewport.getWorldWidth() - layout.width) / 2f;
+        float titleY = 750f;
+        font.setColor(Color.YELLOW);
+        font.draw(game.batch, layout, titleX, titleY);
+
+        //pause menu timer
+        showPausedTimer(pausedTime);
+        int minutes = pausedTime / 60;
+        int seconds = pausedTime % 60;
+        String timeText = String.format("Time: %02d:%02d", minutes, seconds);
+        layout.setText(font, timeText);
+        float timeX = (game.uiViewport.getWorldWidth() - layout.width) / 2f;
+        float timeY = 650f;
+        font.setColor(Color.WHITE);
+        font.draw(game.batch, layout, timeX, timeY);
+
+        // button rendering
+        drawButton(resumeButton, "Resume", resumeHovered);
+        drawButton(settingsButton, "Settings", settingsHovered);
+        drawButton(exitButton, "Exit to Menu", exitHovered);
+
+        game.batch.end();
+    }
+
+    private void drawButton(Rectangle button, String text, boolean hovered) {
+        if (hovered) {
+            game.batch.setColor(1f, 1f, 0.5f, 1f);
+        } else {
+            game.batch.setColor(Color.WHITE);
+        }
+        game.batch.draw(buttonTexture, button.x, button.y, button.width, button.height);
+        game.batch.setColor(Color.WHITE);
+
+        layout.setText(font, text);
+        float textX = button.x + (button.width - layout.width) / 2f;
+        float textY = button.y + (button.height + layout.height) / 2f;
+
+        font.setColor(Color.WHITE);
+        font.draw(game.batch, layout, textX, textY);
+    }
+
+    /**
+     * Checks if the button being currently hovered over is clicked.
+     * @param button the current button
+     * @return true if clicked, false otherwise.
+     */
+    private boolean isButtonClicked(Rectangle button) {
+        if (Gdx.input.justTouched()) {
+            Vector2 touchPos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+            game.uiViewport.unproject(touchPos);
+            if (button.contains(touchPos.x, touchPos.y)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the current button is being hovered over.
+     * @param button the current button.
+     * @return true if hovered over, false otherwise.
+     */
+    private boolean isButtonHovered(Rectangle button) {
+        // detect mouse hover in UI coordinates
+        Vector2 mousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+        game.uiViewport.unproject(mousePos);
+        return button.contains(mousePos.x, mousePos.y);
+    }
+
+    /**
+     * Shows the paused timer with the elapsed time.
+     * @param time the elapsed time.
+     */
+    public void showPausedTimer(int time) {
+        this.pausedTime = time;
+    }
+
+    /**
+     * Resumes the game, taking the user back to the game screen.
+     */
+    public void onResume() {
+        System.out.println("Resuming game...");
+        gameScreen.resumeGame();
+        game.setScreen(gameScreen);
+        dispose();
+    }
+
+    /**
+     * Takes the user to the settings screen.
+     */
+    public void onSettings() {
+        System.out.println("Opening settings from pause menu...");
+        game.setScreen(new SettingsPage(game, this));
+        dispose();
+    }
+
+    /**
+     * Exits the game, taking the user back to the main menu.
+     */
+    public void onExit() {
+        System.out.println("Returning to main menu...");
+        gameScreen.dispose();
+        game.setScreen(new MainMenu(game));
+        dispose();
+    }
+
+    @Override
+    public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 0, 0.8f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        resumeHovered = isButtonHovered(resumeButton);
+        settingsHovered = isButtonHovered(settingsButton);
+        exitHovered = isButtonHovered(exitButton);
+
+        if (isButtonClicked(resumeButton)) {
+            onResume();
+        } else if (isButtonClicked(settingsButton)) {
+            onSettings();
+        } else if (isButtonClicked(exitButton)) {
+            onExit();
+        }
+
+        display();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        game.uiViewport.update(width, height, true);
+    }
+
+    @Override
+    public void pause() {}
+
+    @Override
+    public void resume() {}
+
+    @Override
+    public void hide() {}
+
+    @Override
+    public void dispose() {
+        backgroundImage.dispose();
+        buttonTexture.dispose();
+    }
+}

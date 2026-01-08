@@ -1,0 +1,18 @@
+@startuml NegativeEvent
+
+Actor player as P
+Participant roomManager as R
+Participant eventTHE3 as T
+Participant scoreManager as S
+
+autonumber
+skinparam MaxMessageSize 125
+
+P -> R : Player enters room, whose room number is assigned an event.
+R -> T : Tells the THE3 event to start the event.
+T -> T : Creates pop-up on the screen of a THE3/maths question.
+P -> T : Player gives an answer to the question.
+T -> S : If answer is correct player score is increased.
+T -> P : Else player speed is decreased. 
+
+@enduml
