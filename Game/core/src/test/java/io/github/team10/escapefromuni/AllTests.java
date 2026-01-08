@@ -32,7 +32,8 @@ import org.junit.runners.Suite.SuiteClasses;
     HiddenEventTypeTest.class,
     PositiveEventTest.class,
     HiddenEventTest.class,
-    NegativeEventTest.class
+    NegativeEventTest.class,
+    NPCEventTest.class
 
 })
 public class AllTests {
