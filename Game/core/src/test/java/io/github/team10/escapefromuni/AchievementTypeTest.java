@@ -88,6 +88,6 @@ public class AchievementTypeTest extends HeadlessTestRunner {
         assertEquals("Let the timer reach 0.", AchievementType.ZERO_TIMER.getDescription());
         assertEquals("Pass the THE3 exam.", AchievementType.PASS.getDescription());
         assertEquals("Fail the THE3 exam.", AchievementType.FAIL.getDescription());
-        assertEquals("Find the exit in under 10 seconds.", AchievementType.TWENTY_FIVE_SECONDS.getDescription());
+        assertEquals("Find the exit in under 25 seconds.", AchievementType.TWENTY_FIVE_SECONDS.getDescription());
     }
 }
