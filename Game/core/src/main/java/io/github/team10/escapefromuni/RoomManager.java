@@ -241,10 +241,15 @@ public class RoomManager {
         }
 
         if (newRoom.getExit()) {
+            // Check for 25 second achievement
+            if (timer.getTimeSeconds() <= 25) { 
+                game.achievementManager.check_TWENTY_FIVE_SECONDS(); 
+            }
+            
+            game.achievementManager.saveAchievements();
+            
+            // Transition to username input screen
             game.setScreen(new UsernameInputScreen(game, timer, scoreManager));
-
-            // NEW ACHIEVEMENT CHECK
-            if (timer.getTimeSeconds() <= 25) { game.achievementManager.check_TWENTY_FIVE_SECONDS(); }
         }
     }
 
