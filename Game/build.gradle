@@ -7,8 +7,6 @@ buildscript {
     maven { url 'https://central.sonatype.com/repository/maven-snapshots/' }
   }
   dependencies {
-
-
   }
 }
 
@@ -26,8 +24,26 @@ allprojects {
 }
 
 configure(subprojects) {
-  apply plugin: 'java-library'
+  apply plugin: "java-library"
+
+  // I've added these plugins for the JaCoCo reports that we need and the style checking per VLE
+  apply plugin: "eclipse"
+  apply plugin: "idea"
+
+
   sourceCompatibility = 8
+
+  jacoco {
+    toolVersion = "0.8.14"
+  }
+
+  jacocoTestCovReport {
+    dependsOn test
+    reports {
+      xml.required = true
+      html.required = true
+    }
+  }
 
   // From https://lyze.dev/2021/04/29/libGDX-Internal-Assets-List/
   // The article can be helpful when using assets.txt in your project.
@@ -68,5 +84,3 @@ subprojects {
     maven { url 'https://jitpack.io' }
   }
 }
-
-eclipse.project.name = 'Escape_From_Uni' + '-parent'
