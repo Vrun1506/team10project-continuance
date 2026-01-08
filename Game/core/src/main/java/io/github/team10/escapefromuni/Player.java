@@ -51,6 +51,7 @@ public class Player {
         float centerY = game.viewport.getWorldHeight() / 2f;
         playerSprite.setCenter(centerX, centerY);
         this.movementEnabled = true;
+        this.controlsInverted = false;
     }
 
     /**
