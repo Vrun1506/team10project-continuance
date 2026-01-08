@@ -48,9 +48,9 @@ public class AchievementTypeTest extends HeadlessTestRunner {
         assertNotNull("FAIL should exist", type);
         assertEquals("FAIL should equal itself", AchievementType.FAIL, type);
 
-        type = AchievementType.TEN_SECONDS;
-        assertNotNull("TEN_SECONDS should exist", type);
-        assertEquals("TEN_SECONDS should equal itself", AchievementType.TEN_SECONDS, type);
+        type = AchievementType.TWENTY_FIVE_SECONDS;
+        assertNotNull("TWENTY_FIVE_SECONDS should exist", type);
+        assertEquals("TWENTY_FIVE_SECONDS should equal itself", AchievementType.TWENTY_FIVE_SECONDS, type);
     }
 
     @Test
@@ -63,7 +63,7 @@ public class AchievementTypeTest extends HeadlessTestRunner {
         assertEquals(AchievementType.ZERO_TIMER, AchievementType.valueOf("ZERO_TIMER"));
         assertEquals(AchievementType.PASS, AchievementType.valueOf("PASS"));
         assertEquals(AchievementType.FAIL, AchievementType.valueOf("FAIL"));
-        assertEquals(AchievementType.TEN_SECONDS, AchievementType.valueOf("TEN_SECONDS"));
+        assertEquals(AchievementType.TWENTY_FIVE_SECONDS, AchievementType.valueOf("TWENTY_FIVE_SECONDS"));
     }
 
     @Test
@@ -76,7 +76,7 @@ public class AchievementTypeTest extends HeadlessTestRunner {
         assertEquals("Are you still alive?", AchievementType.ZERO_TIMER.getName());
         assertEquals("Library camper", AchievementType.PASS.getName());
         assertEquals("Who's surprised?", AchievementType.FAIL.getName());
-        assertEquals("Please, touch grass", AchievementType.TEN_SECONDS.getName());
+        assertEquals("Please, touch grass", AchievementType.TWENTY_FIVE_SECONDS.getName());
     }
 
     @Test
@@ -88,6 +88,6 @@ public class AchievementTypeTest extends HeadlessTestRunner {
         assertEquals("Let the timer reach 0.", AchievementType.ZERO_TIMER.getDescription());
         assertEquals("Pass the THE3 exam.", AchievementType.PASS.getDescription());
         assertEquals("Fail the THE3 exam.", AchievementType.FAIL.getDescription());
-        assertEquals("Find the exit in under 10 seconds.", AchievementType.TEN_SECONDS.getDescription());
+        assertEquals("Find the exit in under 10 seconds.", AchievementType.TWENTY_FIVE_SECONDS.getDescription());
     }
 }
