@@ -148,7 +148,7 @@ jobs:
 
   build:
     name: Build the JAR file
-    needs: [test, jacoco-tests]
+    needs: [test, jacoco-tests, checkstyle-report]
     if: always()
     runs-on: ubuntu-latest
     

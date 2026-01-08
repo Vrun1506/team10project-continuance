@@ -26,17 +26,16 @@ allprojects {
 configure(subprojects) {
   apply plugin: "java-library"
 
-  // I've added these plugins for the JaCoCo reports that we need and the style checking per VLE
+  // I've added these plugins for the JaCoCo reports that we need and the style checking per VLE slides on CI.
+  // Looked at the slides because for some reason, we don't have a triangle/ folder so I've added it here instead.
   apply plugin: "checkstyle"
   apply plugin: "jacoco"
-  apply plugin: "eclipse"
-  apply plugin: "idea"
 
 
   sourceCompatibility = 8
 
   jacoco {
-    toolVersion = "0.8.14"
+    toolVersion = "0.8.14" // This is the latest version of JaCoCo so if anyone finds that the report no longer works, this is where you have to change it. 
   }
 
   jacocoTestReport {
@@ -48,7 +47,7 @@ configure(subprojects) {
   }
 
   // Report generation for the styling check using Checkstyle (per instructions on VLE).
-  def checkstyleVersion = "10.4"
+  def checkstyleVersion = "10.4" // I tried using the latest possible version of checkstyle which is 11.0.1, but it wasn't working for some reason, so I've resorted to the config which is set up on the VLE slides.
   checkstyle {toolVersion "${checkstyleVersion}"}
 
   configurations {
