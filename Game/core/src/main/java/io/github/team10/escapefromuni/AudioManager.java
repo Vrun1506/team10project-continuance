@@ -70,7 +70,7 @@ public class AudioManager {
             npcEventSound = Gdx.audio.newSound(Gdx.files.internal("PosMus.mp3"));
 
             // NEW CLICK SOUND
-            clickSound = Gdx.audio.newSound(Gdx.files.internal("Click.mp3"));
+            clickSound = Gdx.audio.newSound(Gdx.files.internal("click.mp3"));
 
         } catch (Exception e) {
             Gdx.app.error("AudioManager", "Error loading audio files: " + e.getMessage());
