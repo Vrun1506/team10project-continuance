@@ -123,7 +123,7 @@ public class AchievementManager {
         achievements.get(6).setComplete(true);
     }
 
-    public void check_TEN_SECONDS() { // achievements[7]
+    public void check_TWENTY_FIVE_SECONDS() { // achievements[7]
         achievements.get(7).setComplete(true);
     }
 

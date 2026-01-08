@@ -244,7 +244,7 @@ public class RoomManager {
             game.setScreen(new UsernameInputScreen(game, timer, scoreManager));
 
             // NEW ACHIEVEMENT CHECK
-            if (timer.getTimeSeconds() <= 10) { game.achievementManager.check_TEN_SECONDS(); }
+            if (timer.getTimeSeconds() <= 25) { game.achievementManager.check_TWENTY_FIVE_SECONDS(); }
         }
     }
 

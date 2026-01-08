@@ -21,7 +21,7 @@ public enum AchievementType {
     ZERO_TIMER("Are you still alive?", "Let the timer reach 0."),
     PASS("Library camper", "Pass the THE3 exam."),
     FAIL("Who's surprised?", "Fail the THE3 exam."),
-    TEN_SECONDS("Please, touch grass", "Find the exit in under 10 seconds.");
+    TWENTY_FIVE_SECONDS("Please, touch grass", "Find the exit in under 25 seconds.");
 
     private final String name;
     private final String description;
