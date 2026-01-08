@@ -2,7 +2,6 @@ package io.github.team10.escapefromuni;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-
 import java.util.ArrayList;
 
 /**
@@ -39,7 +38,7 @@ public class AchievementManager {
             System.out.println("Achievements are already loaded!");
         } else {
             try {
-                FileHandle file = Gdx.files.external("achievements.txt");
+                FileHandle file = Gdx.files.local("achievements.txt");
                 String[] text = file.readString().split("\n");
                 for (String substring : text) {
                     String[] values = substring.split("\\|");
@@ -65,7 +64,7 @@ public class AchievementManager {
             total++;
         }
 
-        FileHandle file = Gdx.files.external("achievements.txt");
+        FileHandle file = Gdx.files.local("achievements.txt");
         file.writeString(text.toString(), false);
         System.out.println("Saved " + total + "/" + AchievementType.values().length + " achievements!");
     }
