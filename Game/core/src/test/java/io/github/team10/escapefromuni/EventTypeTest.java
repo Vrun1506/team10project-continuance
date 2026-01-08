@@ -13,7 +13,7 @@ public class EventTypeTest {
     public void EventTypes() {
         // Total number of enum values
         EventType[] types = EventType.values();
-        assertEquals("EventType should have 4 values", 4, types.length);
+        assertEquals("EventType should have 5 values", 5, types.length);
     }
     
     @Test
