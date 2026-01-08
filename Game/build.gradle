@@ -27,6 +27,7 @@ configure(subprojects) {
   apply plugin: "java-library"
 
   // I've added these plugins for the JaCoCo reports that we need and the style checking per VLE
+  apply plugin: "checkstyle"
   apply plugin: "jacoco"
   apply plugin: "eclipse"
   apply plugin: "idea"
