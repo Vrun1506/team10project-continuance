@@ -25,9 +25,9 @@ allprojects {
 
 configure(subprojects) {
   apply plugin: "java-library"
-  apply plugin: "jacoco"
 
   // I've added these plugins for the JaCoCo reports that we need and the style checking per VLE
+  apply plugin: "jacoco"
   apply plugin: "eclipse"
   apply plugin: "idea"
 
@@ -45,6 +45,24 @@ configure(subprojects) {
       html.required = true
     }
   }
+
+  // Report generation for the styling check using Checkstyle (per instructions on VLE).
+  def checkstyleVersion = "10.4"
+  checkstyle {toolVersion "${checkstyleVersion}"}
+
+  configurations {
+    checkstyleRules
+  }
+
+  dependencies {
+    checkstyleRules("com.puppycrawl.tools:checkstyle:11.0.1"){
+      transitive = false
+    }
+  }
+
+  checkstyle {
+    config = resources.text.fromArchiveEntry(configurations.checkstyleRules, "google_checks.xml")
+    }
 
   // From https://lyze.dev/2021/04/29/libGDX-Internal-Assets-List/
   // The article can be helpful when using assets.txt in your project.

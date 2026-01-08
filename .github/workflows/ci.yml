@@ -37,18 +37,6 @@ jobs:
       - name: Make sure Gradle wrapper is valid
         uses: gradle/wrapper-validation-action@v2
 
-      - name: Asset tests to ensure they are all present
-        run: |
-          echo "Setting up test assets"
-          mkdir -p core/src/test/resources
-          
-          if [ -d "assets" ]; then
-            cp -r assets/* core/src/test/resources/
-            echo "Assets have been copied and testing can begin!"
-          else
-            echo "Can't find the assets folder!!!"
-            exit 1
-          fi
 
       - name: Get rid of old build files
         run: ./gradlew clean --no-daemon
@@ -72,9 +60,9 @@ jobs:
         run: |
           echo "# Test Summary" >> $GITHUB_STEP_SUMMARY
           if find . -path "*/test-results/*/TEST-*.xml" -type f | grep -q .; then
-            echo "All of the automated tests have been finished. Test results will appear in the HTML file in the test-results folder." >> $GITHUB_STEP_SUMMARY
+            echo "All of the automated tests have been finished. You can view which tests passed or failed by opening the test-results folder in the Artifacts section in GitHub (you might have to refresh the page after running the workflow dispatch or when you push/pull). The path to access the the index.html containing the JUnit test report is build/reports/tests/test/index.html" >> $GITHUB_STEP_SUMMARY
           else
-            echo "Tests failed to produce output." >> $GITHUB_STEP_SUMMARY
+            echo "Tests failed for some reason. Need to look at the report or test files to figure out what's gone wrong. Note: in VSCode, I have been having issues with the imports disappearing because it thinks it's unused, so when you hit CTRL+S, it just disappears." >> $GITHUB_STEP_SUMMARY
           fi
 
   jacoco-tests:
@@ -113,8 +101,50 @@ jobs:
       - name: Output in Artifact area
         if: always()
         run: |
-          echo "## Cohort 2 Group 7 Test Coverage Report" >> $GITHUB_STEP_SUMMARY
-          echo "The test coverage report created using JaCoCo has been created. Access it as an artifact below." >> $GITHUB_STEP_SUMMARY
+          echo "## Cohort 2 Group 7 Test Coverage Report using JaCoCo" >> $GITHUB_STEP_SUMMARY
+          echo "The test coverage report created using JaCoCo has been created. Access it as an artifact below (sometimes you might have to refresh the page once the pipeline has been executed). The path to access the index.html file is build/reports/jacoco/test/html/index.html. The report covers the coverage of the automated tests and generally covers the logical aspects. We will have to add manual testing for the predominantly visual components as it's not the easiest to test." >> $GITHUB_STEP_SUMMARY
+
+  checkstyle-report:
+    name: Generate code consistency report using Checkstyle
+    needs: test
+    if: always()
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: Game
+    
+    steps:
+      - name: Get the code from GitHub
+        uses: actions/checkout@v4
+
+      - name: Make sure that Java 17 is used
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+      
+      - name: Make the code executable
+        run: chmod +x gradlew
+      
+      - name: Start the process of making the checkstyle report
+        run: ./gradlew checkstyleMain checkstyleTest --no-daemon
+      
+      - name: Upload the checkstyle report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkstyle-report
+          path: Game/**/build/reports/checkstyle/
+          retention-days: 90
+      
+      - name: Code consistency summary
+        if: always()
+        run: |
+          echo "## Code consistency report" >> $GITHUB_STEP_SUMMARY
+          echo "The code consistency report has been created. This will compare the code to the standards set out in the version that we've imported. We might get some errors from this because we've used different styles for our code." >> $GITHUB_STEP_SUMMARY
+          echo "The report has been submitted as an artifact and you should be able to download it below. Refresh the page once the workflow has completed (because it won't be visible from push/pull and when you run a manual dispatch and run the pipeline manually)" >> $GITHUB_STEP_SUMMARY
+
 
   build:
     name: Build the JAR file
@@ -149,6 +179,6 @@ jobs:
       - name: Upload desktop JAR
         uses: actions/upload-artifact@v4
         with:
-          name: Escape_From_Uni-Desktop
+          name: Escape_From_Uni
           path: Game/lwjgl3/build/libs/*.jar
           retention-days: 90
