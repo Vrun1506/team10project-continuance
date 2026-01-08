@@ -1,5 +1,9 @@
 package io.github.team10.escapefromuni;
 
+/**
+ * NEW ENUM
+ * Used for controlling the texture, hidden texture, and text of the HiddenEvent class.
+ */
 public enum HiddenEventType {
 
     LONGBOI("Longboi.png", "LongboiShadow.png", "Ghost of Longboi: \"Quack ... Quack\"") {
@@ -15,6 +19,9 @@ public enum HiddenEventType {
         void doThing(Player player, EscapeGame game) {
             // inverts controls by just reversing player speed
             player.setSpeed(player.getSpeed() * -1);
+
+            // also tells the player to reverse wall collision so that it works lmao
+            player.setControlsInverted(true);
         }
     };
 
@@ -28,6 +35,11 @@ public enum HiddenEventType {
         this.message = message;
     }
 
+    /**
+     * Abstract method to be overridden in each enum value.
+     * @param player the current Player object.
+     * @param game the current EscapeGame object.
+     */
     abstract void doThing(Player player, EscapeGame game);
 
     // getters and setters

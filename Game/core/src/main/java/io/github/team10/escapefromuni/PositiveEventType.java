@@ -1,9 +1,13 @@
 package io.github.team10.escapefromuni;
 
+/**
+ * NEW ENUM
+ * Used for controlling the texture and effect of the PositiveEvent class.
+ */
 public enum PositiveEventType {
 
-    // yeah i know some of the effects are pretty similar but all they need to do is something positive
-    // yes i am lazy
+    // yeah i know some of the effects are pretty similar but at least they do something positive
+    // IT IS NOT LAZY
 
     GREGGS("GreggsSausageRoll.png") {
         @Override
@@ -53,6 +57,12 @@ public enum PositiveEventType {
         this.texture_path = texture_path;
     }
 
+    /**
+     * Abstract method to be overridden in each enum value.
+     * @param player the current Player object.
+     * @param game the current EscapeGame object.
+     * @param scoreManager the current ScoreManager object.
+     */
     abstract void doThing(Player player, EscapeGame game, ScoreManager scoreManager);
 
     // getters and setters

@@ -6,6 +6,7 @@ import com.badlogic.gdx.files.FileHandle;
 import java.util.ArrayList;
 
 /**
+ * NEW CLASS
  * AchievementManager class that handles the loading, saving and updating of game achievements.
  */
 public class AchievementManager {
@@ -14,7 +15,6 @@ public class AchievementManager {
 
     /**
      * Initialises all achievements, setting their complete status to false.
-     * Can also be used to reset all achievements back to incomplete.
      */
     public void initAchievements() {
         System.out.println("Initialising Achievements...");
@@ -29,7 +29,9 @@ public class AchievementManager {
     }
 
     /**
-     * Loads achievements from memory.
+     * Loads achievements from file, 'achievements.txt'.
+     * If achievements are already loaded, does nothing.
+     * If it cannot find the file, then initialises achievements instead.
      */
     public void loadAchievements() {
         System.out.println("Loading Achievements...");
@@ -52,7 +54,7 @@ public class AchievementManager {
     }
 
     /**
-     * Stores achievements into memory, overwriting and data already existing in the file.
+     * Stores achievements to file, 'achievements.txt', overwriting any data.
      */
     public void saveAchievements() {
         System.out.println("Saving Achievements...");
@@ -87,8 +89,11 @@ public class AchievementManager {
         }
     }
 
-    // check-TYPE_NAME methods
-    // probably a much easier and more modular way to do this, but we don't have that many achievements so who really cares :)
+    /**
+     * check_ENUM_TYPE_NAME methods.
+     * probably a much easier and more modular way to do this, but we don't have that many achievements so who really cares :).
+     * used to set their respective achievement to complete once their condition is met.
+     */
 
     public void check_POSITIVE_EVENTS(float count, float total) { // achievements[0]
         if (count >= total) { achievements.get(0).setComplete(true); }
@@ -118,7 +123,7 @@ public class AchievementManager {
         achievements.get(6).setComplete(true);
     }
 
-    public void check_TEN_SECONDS() { // achievements[7]
+    public void check_TWENTY_FIVE_SECONDS() { // achievements[7]
         achievements.get(7).setComplete(true);
     }
 

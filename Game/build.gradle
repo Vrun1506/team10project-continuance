@@ -7,8 +7,6 @@ buildscript {
     maven { url 'https://central.sonatype.com/repository/maven-snapshots/' }
   }
   dependencies {
-
-
   }
 }
 
@@ -16,7 +14,7 @@ allprojects {
   apply plugin: 'eclipse'
   apply plugin: 'idea'
 
-
+  // This allows you to "Build and run using IntelliJ IDEA", an option in IDEA's Settings.
   idea {
     module {
       outputDir file('build/classes/java/main')
@@ -26,22 +24,60 @@ allprojects {
 }
 
 configure(subprojects) {
-  apply plugin: 'java-library'
+  apply plugin: "java-library"
+
+  // I've added these plugins for the JaCoCo reports that we need and the style checking per VLE slides on CI.
+  // Looked at the slides because for some reason, we don't have a triangle/ folder so I've added it here instead.
+  apply plugin: "checkstyle"
+  apply plugin: "jacoco"
+
+
   sourceCompatibility = 8
 
+  jacoco {
+    toolVersion = "0.8.14" // This is the latest version of JaCoCo so if anyone finds that the report no longer works, this is where you have to change it. 
+  }
 
+  jacocoTestReport {
+    dependsOn test
+    reports {
+      xml.required = true
+      html.required = true
+    }
+  }
 
+  // Report generation for the styling check using Checkstyle (per instructions on VLE).
+  def checkstyleVersion = "10.4" // I tried using the latest possible version of checkstyle which is 11.0.1, but it wasn't working for some reason, so I've resorted to the config which is set up on the VLE slides.
+  checkstyle {toolVersion "${checkstyleVersion}"}
+
+  configurations {
+    checkstyleRules
+  }
+
+  dependencies {
+    checkstyleRules("com.puppycrawl.tools:checkstyle:10.4"){
+      transitive = false
+    }
+  }
+
+  checkstyle {
+    config = resources.text.fromArchiveEntry(configurations.checkstyleRules, "google_checks.xml")
+    }
+
+  // From https://lyze.dev/2021/04/29/libGDX-Internal-Assets-List/
+  // The article can be helpful when using assets.txt in your project.
   tasks.register('generateAssetList') {
     inputs.dir("${project.rootDir}/assets/")
-
+    // projectFolder/assets
     File assetsFolder = new File("${project.rootDir}/assets/")
+    // projectFolder/assets/assets.txt
     File assetsFile = new File(assetsFolder, "assets.txt")
-
+    // delete that file in case we've already created it
     assetsFile.delete()
 
-
-
-
+    // iterate through all files inside that folder
+    // convert it to a relative path
+    // and append it to the file assets.txt
     fileTree(assetsFolder).collect { assetsFolder.relativePath(it) }.sort().each {
       assetsFile.append(it + "\n")
     }
@@ -58,14 +94,12 @@ subprojects {
   ext.appName = 'Escape_From_Uni'
   repositories {
     mavenCentral()
-
-
+//    maven { url 'https://s01.oss.sonatype.org' }
+    // You may want to remove the following line if you have errors downloading dependencies.
     mavenLocal()
-
-
+//    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+//    maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
     maven { url 'https://central.sonatype.com/repository/maven-snapshots/' }
     maven { url 'https://jitpack.io' }
   }
 }
-
-eclipse.project.name = 'Escape_From_Uni' + '-parent'

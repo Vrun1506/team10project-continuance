@@ -10,13 +10,12 @@ import com.badlogic.gdx.math.Vector3;
 
 /**
  * NEW CLASS
- * Was originally 'EventTHE3' from the original project, which was the original negative event.
- * Since been changed to 'NegativeEvent' to accommodate the need for multiple negative events.
- * Not much has been changed from the original class, other than it takes an enum that controls the texts, correct answer, and effects.
+ * NPCEvent class that is used to create an NPC in a given room.
+ * Will talk to the player, and provide an answer based on what option the user chooses.
  */
-public class NegativeEvent extends Event {
+public class NPCEvent extends Event {
 
-    private final NegativeEventType type;
+    private final NPCEventType type;
     private final ScoreManager scoreManager;
 
     private final Texture titlePanelTexture;
@@ -39,20 +38,20 @@ public class NegativeEvent extends Event {
     private Rectangle rightButtonBounds;
 
     /**
-     * Initialises a new NegativeEvent object.
-     * @param type a NegativeEventType enum value.
+     * Initialises an NPC event.
+     * @param type an NPCEventType enum value.
      * @param player the current Player object.
      * @param game the current EscapeGame object.
      * @param scoreManager the current ScoreManager object.
      */
-    public NegativeEvent(NegativeEventType type, Player player, EscapeGame game, ScoreManager scoreManager) {
-        super(EventType.NEGATIVE, player, game);
+    public NPCEvent(NPCEventType type, Player player, EscapeGame game, ScoreManager scoreManager) {
+        super(EventType.NPC, player, game);
         this.type = type;
         questionText = type.getQuestionText();
         titlePanelTexture = new Texture("UI/Blue4x1Panel.png");
         questionPanelTexture = new Texture("UI/BlueBorder10x3Panel.png");
         leftButtonTexture = new Texture("UI/GreenBorder5x2Panel.png");
-        rightButtonTexture = new Texture("UI/OrangeBorder5x2Panel.png");
+        rightButtonTexture = new Texture("UI/GreenBorder5x2Panel.png");
 
         titlePanelSprite = new Sprite(titlePanelTexture);
         questionPanelSprite = new Sprite(questionPanelTexture);
@@ -68,7 +67,7 @@ public class NegativeEvent extends Event {
         super.startEvent();
 
         player.enableMovement(false);
-        AudioManager.getInstance().playEventSound(EventType.NEGATIVE);
+        AudioManager.getInstance().playEventSound(EventType.NPC);
         questionAnswered = false;
         initialiseQuizUI();
     }
@@ -122,7 +121,7 @@ public class NegativeEvent extends Event {
         if (questionAnswered)
         {
             answerDisplayTimer += delta;
-            if (answerDisplayTimer > 1f)
+            if (answerDisplayTimer > 6f)
             {
                 endEvent();
             }
@@ -145,25 +144,20 @@ public class NegativeEvent extends Event {
     }
 
     /**
-     * Apply's effects based on the player's answer.
-     * If correct, score is increased.
-     * If incorrect, player speed is decreased and score is decreased.
+     * Respond based on the players answer.
      * @param answer {@code true} if the right button was pressed, {@code false} if the left was pressed.
      */
     private void handleAnswer(boolean answer) {
         questionAnswered = true;
         answerDisplayTimer = 0f;
 
-        if (answer == type.getCorrectAnswer()) {
-            feedbackText = "Correct: Score +500";
-            scoreManager.increaseScore(500);
-            game.achievementManager.check_PASS();
+        if (answer) {
+            feedbackText = "If speed is desired\nSeek the holiest of meals\nThe one they call 'Greggs'";
         }
         else {
-            feedbackText = "Incorrect: Speed Decrease, Score -250";
-            player.increaseSpeed(-2f);
-            scoreManager.increaseScore(-250);
-            game.achievementManager.check_FAIL();
+            feedbackText = "Victory is near\nOne thing is decidable\nBut just partially";
+            // what does this even mean? actual gobbledygook
+            scoreManager.increaseScore(-200);
         }
     }
 
@@ -214,7 +208,7 @@ public class NegativeEvent extends Event {
      * Used for testing purposes.
      * @return event type.
      */
-    public NegativeEventType getType() {
+    public NPCEventType getType() {
         return type;
     }
 

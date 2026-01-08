@@ -4,9 +4,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ObjectMap;
 
 /**
+ * OLD CLASS
  * Manages all {@link Room} and {@link Door} instances in the game.
- * * Responsible for initialising the pre-defined game map, handling transitions between rooms, drawing room and door
+ * Responsible for initialising the pre-defined game map, handling transitions between rooms, drawing room and door
  * textures, and disposing of those textures when no longer needed.
+ * NEW CHANGES:
+ *      added code for creating all the new rooms
+ *      added code for initialising all the new door connections
+ *      added code for adding events to specific rooms
+ *      added achievement checking
  */
 public class RoomManager {
     public EscapeGame game;
@@ -21,12 +27,14 @@ public class RoomManager {
     public Texture positiveIndicator;
     public Texture negativeIndicator;
 
-
     /**
-     * Initialises a RoomManager.
+     * Initialises a RoomManager object.
+     * @param game the current EscapeGame object.
+     * @param player the current Player object.
+     * @param scoreManager the current ScoreManager object.
+     * @param timer the current Timer object.
      */
-    public RoomManager(EscapeGame game, Player player, ScoreManager scoreManager, Timer timer)
-    {
+    public RoomManager(EscapeGame game, Player player, ScoreManager scoreManager, Timer timer) {
         this.game = game;
         this.player = player;
         this.scoreManager = scoreManager;
@@ -35,7 +43,7 @@ public class RoomManager {
 
     /**
      * Initialise the game map, which will be the same every time.
-     * * Initialise 4 doors, create rooms and create room connections. Room textures are stored in a list for easy
+     * Initialises 4 doors, create rooms and create room connections. Room textures are stored in a list for easy
      * access and disposal. Also loads the first room.
      */
     public void initialiseMap() {
@@ -51,7 +59,7 @@ public class RoomManager {
         roomTextures.put("room7", new Texture("Room5.png"));
         roomTextures.put("room8", new Texture("Room9.png"));
         roomTextures.put("room9", new Texture("Room10.png"));
-        roomTextures.put("t", new Texture("RoomsTemp1.png"));
+        roomTextures.put("room10", new Texture("Room11.png"));
 
         // Initialise all the rooms
         Room room1 = new Room(roomTextures.get("room1")); // Start
@@ -77,7 +85,7 @@ public class RoomManager {
         Room room17 = new Room(roomTextures.get("room8")); // CupNoodles
         Room room18 = new Room(roomTextures.get("room9")); // Inverse
         Room room19 = new Room(roomTextures.get("room6")); // Placement
-        Room room20 = new Room(roomTextures.get("room9"));
+        Room room20 = new Room(roomTextures.get("room10")); // Long boi
         Room room21 = new Room(roomTextures.get("room5"));
         Room room22 = new Room(roomTextures.get("room3"));
         Room room23 = new Room(roomTextures.get("room1")); // Networking
@@ -89,7 +97,8 @@ public class RoomManager {
         // Exit room is not actually displayed - game ends as soon as player steps inside.
         Room exit = new Room(roomTextures.get("room1"), true);
 
-        // Initialise connections - remember both ways.
+        // Initialise connections - remember both ways
+        // 90% OF THESE ARE NEW... there is also no better way to do it with what we were given
         room1.addAdjacent(room22, DoorDirection.NORTH);
         room1.addAdjacent(room2, DoorDirection.EAST);
         room1.addAdjacent(room13, DoorDirection.SOUTH);
@@ -186,7 +195,7 @@ public class RoomManager {
         room29.addAdjacent(room28,  DoorDirection.NORTH);
         room29.addAdjacent(room21,  DoorDirection.EAST);
 
-        // Initialise Events
+        // NEW EVENT INITIALISATION
         room3.setEvent(new PositiveEvent(PositiveEventType.GREGGS, player, game, scoreManager));
         room5.setEvent(new NegativeEvent(NegativeEventType.THE3, player, game, scoreManager));
         room7.setEvent(new HiddenEvent(HiddenEventType.LONGBOI, player, game));
@@ -199,6 +208,7 @@ public class RoomManager {
         room23.setEvent(new PositiveEvent(PositiveEventType.NETWORKING, player, game, scoreManager));
         room27.setEvent(new PositiveEvent(PositiveEventType.PIZZA, player, game, scoreManager));
         room29.setEvent(new NegativeEvent(NegativeEventType.ENG1, player, game, scoreManager));
+        room20.setEvent(new NPCEvent(NPCEventType.LONGBOI, player, game, scoreManager));
 
         currentRoom = room1;
         updateDoors(currentRoom);
@@ -211,18 +221,11 @@ public class RoomManager {
 
     /**
      * Will change the current room, given the direction of the new room in relation to the current room.
-     * * Updates the active doors, and repositions the player to the appropriate entrance location in the new room.
+     * Updates the active doors, and repositions the player to the appropriate entrance location in the new room.
      * @param direction The direction of the new room.
      */
     public void changeRoom(DoorDirection direction) {
-        // Will unload current room and load next room
-        // Will update which doors are visible. Note that only 4 door objects are used -
-        // they can be made visible or invisible.
-
-
-
-        if (currentRoom.getEventType() != EventType.NONE)
-        {
+        if (currentRoom.getEventType() != EventType.NONE) {
             currentRoom.getEvent().endEvent();
         }
 
@@ -233,25 +236,27 @@ public class RoomManager {
         updatePlayerPosition(direction);
         updateEventIndicators();
 
-        if (newRoom.getEventType() != EventType.NONE)
-        {
+        if (newRoom.getEventType() != EventType.NONE) {
             newRoom.getEvent().startEvent();
         }
 
-        if (newRoom.getExit())
-        {
+        if (newRoom.getExit()) {
+            // Check for 25 second achievement
+            if (timer.getTimeSeconds() <= 25) { 
+                game.achievementManager.check_TWENTY_FIVE_SECONDS(); 
+            }
+            
+            game.achievementManager.saveAchievements();
+            
+            // Transition to username input screen
             game.setScreen(new UsernameInputScreen(game, timer, scoreManager));
-
-            // achievement
-            if (timer.getTimeSeconds() <= 10) { game.achievementManager.check_TEN_SECONDS(); }
         }
     }
 
     /**
      * Updates the player's position when changing rooms, to prevent the player colliding with the door the next frame.
      */
-    private void updatePlayerPosition(DoorDirection direction)
-    {
+    private void updatePlayerPosition(DoorDirection direction) {
         float worldWidth = game.viewport.getWorldWidth();
         float worldHeight = game.viewport.getWorldHeight();
         if(direction == DoorDirection.NORTH) player.setCenter(worldWidth / 2, 2);
@@ -261,36 +266,39 @@ public class RoomManager {
     }
 
     /**
-     * Draw the current room and it's active doors.
+     * Calls all the necessary draw methods.
      */
-    public void drawMap()
-    {
+    public void drawMap() {
         drawCurrentRoom();
         drawCurrentRoomEvent();
         drawDoors();
         drawIndicators();
     }
 
-    private void drawCurrentRoom()
-    {
+    /**
+     * Draws the current room.
+     */
+    private void drawCurrentRoom() {
         Texture roomTexture = currentRoom.getRoomTexture();
         float worldWidth = game.viewport.getWorldWidth();
         float worldHeight = game.viewport.getWorldHeight();
         game.batch.draw(roomTexture, 0, 0, worldWidth, worldHeight);
     }
 
-    private void drawCurrentRoomEvent()
-    {
-        if (currentRoom.getEventType() != EventType.NONE)
-        {
+    /**
+     * Draws the current room event.
+     */
+    private void drawCurrentRoomEvent() {
+        if (currentRoom.getEventType() != EventType.NONE) {
             currentRoom.getEvent().draw();
         }
     }
 
-    private void drawDoors()
-    {
-        for (Door door : doors)
-        {
+    /**
+     * Draws each door for the current room.
+     */
+    private void drawDoors() {
+        for (Door door : doors) {
             door.draw();
         }
     }
@@ -298,22 +306,17 @@ public class RoomManager {
     /**
      * Will draw event indicator textures, if required, by each door.
      */
-    private void drawIndicators()
-    {
-        if (indicatorTextures[0] != null)
-        {
+    private void drawIndicators() {
+        if (indicatorTextures[0] != null) {
             game.batch.draw(indicatorTextures[0], 7.5f, 8f, 1f, 1f);
         }
-        if (indicatorTextures[1] != null)
-        {
+        if (indicatorTextures[1] != null) {
             game.batch.draw(indicatorTextures[1], 15f, 4f, 1f, 1f);
         }
-        if (indicatorTextures[2] != null)
-        {
+        if (indicatorTextures[2] != null) {
             game.batch.draw(indicatorTextures[2], 7.5f, 0f, 1f, 1f);
         }
-        if (indicatorTextures[3] != null)
-        {
+        if (indicatorTextures[3] != null) {
             game.batch.draw(indicatorTextures[3], 0f, 4f, 1f, 1f);
         }
     }
@@ -321,17 +324,17 @@ public class RoomManager {
     /**
      * Draw the UI associated with any active events.
      */
-    public void drawEventUI()
-    {
-        if (currentRoom.getEventType() != EventType.NONE)
-        {
+    public void drawEventUI() {
+        if (currentRoom.getEventType() != EventType.NONE) {
             currentRoom.getEvent().drawUI();
         }
     }
 
+    /**
+     * Creates four doors at the start of the game.
+     * Assumes a viewport size of width 16 and height 9.
+     */
     private void initialiseDoors() {
-        // Will create the four doors at the start of the game.
-        // Assumes a viewport size of width 16 and height 9.
         Door northDoor = new Door(this, DoorDirection.NORTH, 7.5f, 8f);
         Door eastDoor = new Door(this, DoorDirection.EAST, 15f, 4f);
         Door southDoor = new Door(this, DoorDirection.SOUTH, 7.5f, 0f);
@@ -345,8 +348,7 @@ public class RoomManager {
      */
     private void updateDoors(Room newRoom) {
         Room[] allAdjacent = newRoom.getAllAdjacent();
-        for (int i = 0; i < 4; i++)
-        {
+        for (int i = 0; i < 4; i++) {
             doors[i].setActive(allAdjacent[i] != null);
         }
     }
@@ -356,29 +358,29 @@ public class RoomManager {
      */
     private void updateEventIndicators() {
         Room[] rooms = currentRoom.getAllAdjacent();
-        for (int i = 0; i < 4; i++)
-        {
+        for (int i = 0; i < 4; i++) {
             indicatorTextures[i] = null;
 
             // Check Room actually exists before trying to access event type.
             if (rooms[i] == null) continue;
 
-            if (rooms[i].getEventType() == EventType.POSITIVE)
-            {
+            if (rooms[i].getEventType() == EventType.POSITIVE) {
                 indicatorTextures[i] = positiveIndicator;
             }
-            else if (rooms[i].getEventType() == EventType.NEGATIVE)
-            {
+            else if (rooms[i].getEventType() == EventType.NEGATIVE) {
                 indicatorTextures[i] = negativeIndicator;
             }
         }
     }
 
-    public void update(float delta)
-    {
+    /**
+     * Called each frame.
+     * Checks if the player is colliding with doors and calls the update method of the room's event if it exists.
+     * @param delta the time elapsed since the last rendering.
+     */
+    public void update(float delta) {
         checkDoorCollision();
-        if (currentRoom.getEventType() != EventType.NONE)
-        {
+        if (currentRoom.getEventType() != EventType.NONE) {
             currentRoom.getEvent().update(delta);
         }
     }
@@ -386,12 +388,9 @@ public class RoomManager {
     /**
      * Check whether the player is colliding with any of the doors.
      */
-    public void checkDoorCollision()
-    {
-        for (Door door : doors)
-        {
-            if (door.isActive && player.checkCollision(door.doorSprite))
-            {
+    public void checkDoorCollision() {
+        for (Door door : doors) {
+            if (door.isActive && player.checkCollision(door.doorSprite)) {
                 changeRoom(door.direction);
                 return;
             }
@@ -401,14 +400,12 @@ public class RoomManager {
     /**
      * Dispose of all room and door textures.
      */
-    public void dispose()
-    {
+    public void dispose() {
         for (Texture t : roomTextures.values()) {
             t.dispose();
         }
 
-        for (Door door : doors)
-        {
+        for (Door door : doors) {
             door.dispose();
         }
 

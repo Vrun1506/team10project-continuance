@@ -5,6 +5,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 
+/**
+ * NEW CLASS
+ * Was originally 'EventGreggs' from the original project, which was the original positive event.
+ * Since been changed to 'PositiveEvent' to accommodate the need for multiple positive events.
+ * Not much has been changed from the original class, other than it takes an enum that controls the texture and effect.
+ */
 public class PositiveEvent extends Event implements Disposable {
 
     private final PositiveEventType type;
@@ -16,7 +22,11 @@ public class PositiveEvent extends Event implements Disposable {
     private boolean used = false;
 
     /**
-     * Creates a new positive event.
+     * Initialises a PositiveEvent object.
+     * @param type a PositiveEventType enum value.
+     * @param player the current Player object.
+     * @param game the current EscapeGame object.
+     * @param scoreManager the current ScoreManager object.
      */
     public PositiveEvent(PositiveEventType type, Player player, EscapeGame game, ScoreManager scoreManager) {
         super(EventType.POSITIVE, player, game);

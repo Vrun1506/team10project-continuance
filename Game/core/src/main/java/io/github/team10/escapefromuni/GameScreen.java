@@ -9,8 +9,9 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 
 /**
+ * OLD CLASS
  * This class will deal with the 'main' game logic.
- * * For example, creating the player, calling initialiseMap() on the RoomManager.
+ *      For example, creating the player, calling initialiseMap() on the RoomManager.
  * Will handle rendering of game textures using the SpriteBatch stored in EscapeGame.
  */
 public class GameScreen extends ScreenAdapter {
@@ -24,8 +25,11 @@ public class GameScreen extends ScreenAdapter {
 
     public boolean isPaused;
 
-    public GameScreen(final EscapeGame game)
-    {
+    /**
+     * Initialises a new GameScreen object.
+     * @param game an EscapeGame object.
+     */
+    public GameScreen(final EscapeGame game) {
         this.game = game;
         timer = new Timer();
         scoreManager = new ScoreManager();
@@ -48,11 +52,6 @@ public class GameScreen extends ScreenAdapter {
         return;
     }
 
-    // TEST
-    if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
-        System.out.println(player.positive_events + " : " + player.negative_events + " : " + player.hidden_events + " : " + player.total_events);
-    }
-
     if (!isPaused) {
         update(delta);
         CheckLose();
@@ -61,22 +60,26 @@ public class GameScreen extends ScreenAdapter {
     draw();
     }
 
-    public void CheckLose()
-    {
+    /**
+     * Checks if the timer has reached 5 minutes, indicating the player has run out of time.
+     */
+    public void CheckLose() {
         if (timer.hasReached(300)) { // 300 seconds = 5 minutes
             game.achievementManager.check_ZERO_TIMER();
             game.setScreen(new GameOverScreen(game, false, timer, scoreManager, "N/A"));
         }
     }
 
-    //timer resuming form pause menu
+    /**
+     * Resumes the timer.
+     */
     public void resumeGame() {
         isPaused = false;
     }
 
     /**
      * Performs game logic each frame.
-     * * Always called before drawing textures.
+     *      Always called before drawing textures.
      * @param delta float representing the time since the last frame.
      */
     private void update(float delta)
@@ -110,7 +113,7 @@ public class GameScreen extends ScreenAdapter {
         font.setColor(Color.BLACK);
         font.draw(game.batch, "Time: " + timer.getTimeLeftSeconds() + "s", 75f, 1000f);
 
-        // rendering text for event counters
+        // NEW RENDERING FOR EVENT COUNTERS
         String positive_text = "Positive Events: " + (int) player.positive_events.x + "/" + (int) player.positive_events.y;
         String negative_text = "Negative Events: " +  (int) player.negative_events.x + "/" + (int) player.negative_events.y;
         String hidden_text =  "Hidden Events: " + (int) player.hidden_events.x + "/" + (int) player.hidden_events.y;
@@ -123,8 +126,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     @Override
-    public void dispose()
-    {
+    public void dispose() {
         roomManager.dispose();
         player.dispose();
     }

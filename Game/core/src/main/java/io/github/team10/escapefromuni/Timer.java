@@ -1,15 +1,26 @@
 package io.github.team10.escapefromuni;
 
+/**
+ * OLD CLASS
+ * Timer class that handles the in-game timer.
+ */
 public class Timer {
 
     private float time;
     private float timeLeft;
 
+    /**
+     * Initialises a Timer object with a current time of 0 and a timeLeft of 300 seconds.
+     */
     public Timer() {
         this.time = 0;
         this.timeLeft = 300; // start at 300 seconds
     }
 
+    /**
+     * Updates the timer.
+     * @param delta the time that has elapsed since the last rendering.
+     */
     public void update(float delta) {
         time += delta;
         timeLeft -= delta;

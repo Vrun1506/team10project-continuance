@@ -11,6 +11,11 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
 import java.util.ArrayList;
 
+/**
+ * NEW CLASS
+ * AchievementScreen class that displays all the achievements to the screen.
+ * Accessible from the pause and main menus.
+ */
 public class AchievementScreen implements Screen {
 
     private final EscapeGame game;
@@ -23,13 +28,14 @@ public class AchievementScreen implements Screen {
 
     ArrayList<Achievement> achievements;
 
+    /**
+     * Initialises a new AchievementScreen object.
+     * @param game the current EscapeGame object.
+     */
     public AchievementScreen(EscapeGame game) {
         this.game = game;
         this.game.achievementManager.loadAchievements();
         achievements = this.game.achievementManager.getAchievements();
-
-        // alignment; To be Fixed
-        float screenWidth = game.uiViewport.getWorldWidth();
 
         font = new BitmapFont();
         layout = new GlyphLayout();
@@ -45,7 +51,9 @@ public class AchievementScreen implements Screen {
 
     }
 
-    // Draws the achievement menu UI
+    /**
+     * Draws UI elements to the screen.
+     */
     public void display() {
         game.viewport.apply();
         game.batch.setProjectionMatrix(game.viewport.getCamera().combined);
@@ -88,8 +96,7 @@ public class AchievementScreen implements Screen {
     }
 
     /**
-     * Handles ESC key press.
-     * Returns to main menu.
+     * Returns to the main menu once the escape key is pressed.
      */
     public void onEscPress() {
         game.setScreen(new MainMenu(game));

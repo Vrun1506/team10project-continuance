@@ -1,7 +1,12 @@
 package io.github.team10.escapefromuni;
 
+/**
+ * NEW ENUM
+ * Used for controlling the question text, left answer text, right answer text and correct answer of the NegativeEvent class.
+ */
 public enum NegativeEventType {
 
+    // true means the left answer is correct, false means the right answer is correct.
     THE3("THE3 EXAM",
         "True or False:\nThe self-accepting problem SA \nis semi-decidable.",
         "True",
@@ -9,12 +14,12 @@ public enum NegativeEventType {
         true),
     SYS2("SYS2 EXAM",
         "Which of the following is a valid\nIPv4 address?",
-        "1.2.3.4",
-        "0.1.2.3",
+        "125.20.0.99",
+        "101.256.6.70",
         true),
     ENG1("ENG1 COURSEWORK",
         "Which is an appropriate risk\nto mention in a risk assessment?",
-        "A team member dies",
+        "I stubbed my toe",
         "A team member\nbecomes unavailable",
         false),
     JOB("JOB INTERVIEW",

@@ -1,6 +1,7 @@
 package io.github.team10.escapefromuni;
 
 /**
+ * NEW CLASS
  * Achievement class used for storing information about a single achievement.
  */
 public class Achievement {
@@ -8,6 +9,11 @@ public class Achievement {
     private final AchievementType type;
     private boolean complete;
 
+    /**
+     * Initialises a new Achievement object.
+     * @param type an AchievementType enum value.
+     * @param complete whether it is initialised as complete (true) or incomplete (false).
+     */
     Achievement(AchievementType type, boolean complete) {
         this.type = type;
         this.complete = complete;

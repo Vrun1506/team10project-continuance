@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.utils.ScreenUtils;
 /**
+ * OLD CLASS
  * Represents the Game Over screen, shown when the player either wins or loses.
  * Displays the appropriate background, score, and time information.
  * The player can return to the main menu by pressing the ESC key.
@@ -32,6 +33,7 @@ public class GameOverScreen implements Screen {
     private final Texture winScreen;
     private final Texture loseScreen;
 
+    // NEW
     private final String name;
 
     private int finalScore;
@@ -54,7 +56,7 @@ public class GameOverScreen implements Screen {
         this.winScreen = new Texture("WinScreen.png");
         this.loseScreen = new Texture("LoseScreen.png");
 
-        // save achievements
+        // NEW SAVES ACHIEVEMENTS
         game.achievementManager.saveAchievements();
     }
 
@@ -72,14 +74,8 @@ public class GameOverScreen implements Screen {
         game.batch.setProjectionMatrix(game.uiCamera.combined);
         game.batch.begin();
 
-        if(isWon){
-            renderWinScreen();
-        }
-        else{
-            renderLoseScreen();
-        }
-
-
+        if (isWon){ renderWinScreen(); }
+        else { renderLoseScreen(); }
 
         game.batch.end();
     }
@@ -90,6 +86,7 @@ public class GameOverScreen implements Screen {
     private void renderWinScreen(){
         game.batch.draw(winScreen, 0, 0, game.uiViewport.getWorldWidth(), game.uiViewport.getWorldHeight());
         String timeText = "Time Elapsed: " + timer.getTimeSeconds();
+        int finalScore = scoreManager.CalculateFinalScore(timer.getTimeLeftSeconds());
         String scoreText = "Score: " + finalScore;
 
         game.font.setColor(Color.BLACK);
@@ -112,18 +109,18 @@ public class GameOverScreen implements Screen {
     }
 
     /**
-     * Renders the losing screen with the lose background.
-     *
+     * Renders the losing screen, showing the loss background.
      * Doesn't display the score or time.
      */
     private void renderLoseScreen(){
         game.batch.draw(loseScreen, 0, 0, game.uiViewport.getWorldWidth(), game.uiViewport.getWorldHeight());
     }
 
-    @Override public void show() {
+    // NEW FOR SCORE SAVING
+    @Override
+    public void show() {
         finalScore = scoreManager.CalculateFinalScore(timer.getTimeLeftSeconds());
         writeScores(finalScore);
-        // save achievements
         game.achievementManager.saveAchievements();
     }
 
@@ -140,16 +137,18 @@ public class GameOverScreen implements Screen {
         loseScreen.dispose();
     }
 
+    /**
+     * Writes the player score to file - 'leaderboard.txt'.
+     * @param newScore the new score to write.
+     */
     public void writeScores(int newScore) {
-        // NameTextInputListener inputListener = new NameTextInputListener();
-        // Gdx.input.getTextInput(inputListener, "ENTER YOUR NAME", "Enter three characters to represent your score.", "ABC");
 
         // System.out.println(("SCORE:"+newScore));
 
         // String name = inputListener.name;
 
         try {
-            
+
             File scoreFile = new File("leaderboard.txt");
             scoreFile.createNewFile(); //only creates the file if it had not existed beforehand
             BufferedReader reader = new BufferedReader(new FileReader(scoreFile));
@@ -161,12 +160,16 @@ public class GameOverScreen implements Screen {
             for (int i=0; i<5; i++) {
                 //entire record keeping CSV format
                 String temp = reader.readLine();
+
+                if (temp == null){
+                    break;
+                }
                 oldRecords.add(temp);
 
-                //grabs just the score  
+                //grabs just the score
                 try {
                     Integer tempInt = Integer.parseInt(temp.split(",")[1]);
-                    oldScores.add(tempInt); 
+                    oldScores.add(tempInt);
 
                 } catch (Exception e) {
                     System.err.println("Couldn't interpret scores file for writing!");
@@ -179,13 +182,13 @@ public class GameOverScreen implements Screen {
             BufferedWriter writer = new BufferedWriter(new FileWriter(scoreFile));
 
             // check if there are any records in the leaderboard file, and perform the necessary countermeasure
-            if (oldScores.size() == 0) {
+            if (oldScores.isEmpty()) {
                 writer.write((name+","+newScore+"\n"));
             } else {
 
-            Boolean placed = false;
+            boolean placed = false;
             for (int i=0; i<oldScores.size(); i++) {
-                if (oldScores.get(i) <= newScore && placed == false) {
+                if (oldScores.get(i) <= newScore && !placed) {
                     writer.write((name+","+newScore+"\n"));
                     writer.write((oldRecords.get(i)+"\n"));
                     placed = true;
@@ -195,7 +198,7 @@ public class GameOverScreen implements Screen {
             }
 
             // if the score never beats existing ones, check if there is space for it anyway.
-            if (placed == false && oldScores.size() < 5) {
+            if (!placed && oldScores.size() < 5) {
                 writer.write((name+","+newScore+"\n"));
             }
 

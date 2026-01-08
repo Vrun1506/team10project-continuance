@@ -7,6 +7,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 
+/**
+ * NEW CLASS
+ * Was originally 'EventLongboi' from the original project, which was the original hidden event.
+ * Since been changed to 'HiddenEvent' to accommodate the need for multiple hidden events.
+ * Not much has been changed from the original class, other than it takes an enum that controls the sprite, texts and effects.
+ */
 public class HiddenEvent extends Event implements Disposable {
 
     private final HiddenEventType type;
@@ -20,7 +26,10 @@ public class HiddenEvent extends Event implements Disposable {
     private final Sprite speech_panel_sprite;
 
     /**
-     * Creates a new hidden event.
+     * Initialises a HiddenEvent object.
+     * @param type a HiddenEventType enum value.
+     * @param player the current Player object.
+     * @param game the current EscapeGame object.
      */
     public HiddenEvent(HiddenEventType type, Player player, EscapeGame game) {
         super(EventType.HIDDEN, player, game);

@@ -9,8 +9,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
+
 /**
+ * OLD CLASS
  * Pause menu displayed during gameplay.
  * triggered by ESC key. shows paused timer and the options; Resume, Exit.
  */
@@ -35,6 +36,12 @@ public class PauseMenu implements Screen {
     private boolean settingsHovered;
     private boolean exitHovered;
 
+    /**
+     * Initialises a PauseMenu object.
+     * @param game the current EscapeGame object.
+     * @param gameScreen the current GameScreen object.
+     * @param pausedTime the timer value when the pause screen is created.
+     */
     public PauseMenu(EscapeGame game, GameScreen gameScreen, int pausedTime) {
         this.game = game;
         this.gameScreen = gameScreen;
@@ -55,7 +62,7 @@ public class PauseMenu implements Screen {
         float screenWidth = game.uiViewport.getWorldWidth();
         float centerX = screenWidth / 2f;
 
-        //achievement_texts positioning
+        // button positioning
         resumeButton = new Rectangle(centerX - buttonWidth / 2f, 500f, buttonWidth, buttonHeight);
         settingsButton = new Rectangle(centerX - buttonWidth / 2f, 350f, buttonWidth, buttonHeight);
         exitButton = new Rectangle(centerX - buttonWidth / 2f, 200f, buttonWidth, buttonHeight);
@@ -63,7 +70,9 @@ public class PauseMenu implements Screen {
         AudioManager.getInstance().playMenuMusic();
     }
 
-    ////displays  pause menu
+    /**
+     * Displays the pause menu UI.
+     */
     public void display() {
         game.viewport.apply();
         game.batch.setProjectionMatrix(game.viewport.getCamera().combined);
@@ -94,7 +103,7 @@ public class PauseMenu implements Screen {
         font.setColor(Color.WHITE);
         font.draw(game.batch, layout, timeX, timeY);
 
-        //achievement_texts
+        // button rendering
         drawButton(resumeButton, "Resume", resumeHovered);
         drawButton(settingsButton, "Settings", settingsHovered);
         drawButton(exitButton, "Exit to Menu", exitHovered);
@@ -119,7 +128,11 @@ public class PauseMenu implements Screen {
         font.draw(game.batch, layout, textX, textY);
     }
 
-    //click detection
+    /**
+     * Checks if the button being currently hovered over is clicked.
+     * @param button the current button
+     * @return true if clicked, false otherwise.
+     */
     private boolean isButtonClicked(Rectangle button) {
         if (Gdx.input.justTouched()) {
             Vector2 touchPos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
@@ -131,7 +144,11 @@ public class PauseMenu implements Screen {
         return false;
     }
 
-    //hover detection
+    /**
+     * Checks if the current button is being hovered over.
+     * @param button the current button.
+     * @return true if hovered over, false otherwise.
+     */
     private boolean isButtonHovered(Rectangle button) {
         // detect mouse hover in UI coordinates
         Vector2 mousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
@@ -139,12 +156,17 @@ public class PauseMenu implements Screen {
         return button.contains(mousePos.x, mousePos.y);
     }
 
-    // shows paused timer with ELAPSED TIME
+    /**
+     * Shows the paused timer with the elapsed time.
+     * @param time the elapsed time.
+     */
     public void showPausedTimer(int time) {
         this.pausedTime = time;
     }
 
-
+    /**
+     * Resumes the game, taking the user back to the game screen.
+     */
     public void onResume() {
         System.out.println("Resuming game...");
         gameScreen.resumeGame();
@@ -152,12 +174,18 @@ public class PauseMenu implements Screen {
         dispose();
     }
 
+    /**
+     * Takes the user to the settings screen.
+     */
     public void onSettings() {
         System.out.println("Opening settings from pause menu...");
         game.setScreen(new SettingsPage(game, this));
         dispose();
     }
 
+    /**
+     * Exits the game, taking the user back to the main menu.
+     */
     public void onExit() {
         System.out.println("Returning to main menu...");
         gameScreen.dispose();

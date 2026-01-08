@@ -7,29 +7,30 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 
 /**
+ * OLD CLASS
  * Tutorial page displaying game instructions.
- * * Shows tutorial image. ESC key returns to main menu.
+ * Shows tutorial image. ESC key returns to main menu.
  */
 public class TutorialPage implements Screen {
-    
+
     private final EscapeGame game;
-    
+
     public Texture tutorialImage;
-    
+
     /**
-     * Creates a new TutorialPage instance.
+     * Initialises a new TutorialPage instance.
      * @param game Reference to the main {@link EscapeGame} instance.
      */
     public TutorialPage(EscapeGame game) {
         this.game = game;
     }
-    
+
     @Override
     public void show() {
         // Load tutorial image
         tutorialImage = new Texture(Gdx.files.internal("tutorial1.png"));
     }
-    
+
     /**
      * Displays the tutorial image.
      */
@@ -40,7 +41,7 @@ public class TutorialPage implements Screen {
         game.batch.draw(tutorialImage, 0, 0, game.viewport.getWorldWidth(), game.viewport.getWorldHeight());
         game.batch.end();
     }
-    
+
     /**
      * Handles ESC key press.
      * Returns to main menu.
@@ -49,34 +50,34 @@ public class TutorialPage implements Screen {
         game.setScreen(new MainMenu(game));
         dispose();
     }
-    
+
     @Override
     public void render(float delta) {
         // Check for ESC key press
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             onEscPress();
         }
-        
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
+
         display();
     }
-    
+
     @Override
     public void resize(int width, int height) {
         game.viewport.update(width, height, true);
     }
-    
+
     @Override
     public void pause() {}
-    
+
     @Override
     public void resume() {}
-    
+
     @Override
     public void hide() {}
-    
+
     @Override
     public void dispose() {
         if (tutorialImage != null) tutorialImage.dispose();

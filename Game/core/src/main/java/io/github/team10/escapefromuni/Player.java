@@ -7,8 +7,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
 /**
+ * OLD CLASS
  * Represents the player character.
  * Handles player rendering, movement and collision detection.
+ * NEW CHANGES:
+ *      added event counters
+ *      added some getters and setters
  */
 public class Player {
     public Texture playerTexture;
@@ -16,10 +20,11 @@ public class Player {
     public float speed;
     public EscapeGame game;
     private boolean movementEnabled;
+    public boolean controlsInverted;
 
     private final float EDGE_LIMIT = 1f;
 
-    // EVENT TOTALS
+    // NEW EVENT TOTALS
     // types of events stored as vector2, (interacted_count, total_count)
     // spawning an event of that type: .y++
     // interacting with an event of that type: .x++
@@ -35,8 +40,7 @@ public class Player {
      * @param playerHeight The height of the player in world units.
      * @param game Reference to the main {@link EscapeGame} instance.
      */
-    public Player(float speed, float playerWidth, float playerHeight, EscapeGame game)
-    {
+    public Player(float speed, float playerWidth, float playerHeight, EscapeGame game) {
         this.speed = speed;
         this.game = game;
         playerTexture = new Texture("MalePlayer.png");
@@ -53,10 +57,8 @@ public class Player {
      * Called every frame to perform player logic.
      * @param delta The time in seconds since the last frame.
      */
-    public void update(float delta)
-    {
-        if (movementEnabled)
-        {
+    public void update(float delta) {
+        if (movementEnabled) {
             move(delta);
         }
     }
@@ -74,26 +76,48 @@ public class Player {
         float playerCenterX = playerSprite.getX() + halfWidth;
         float playerCenterY = playerSprite.getY() + halfHeight;
 
-
+        if (!controlsInverted) {
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             if (playerCenterX < worldWidth - EDGE_LIMIT) {
-                playerSprite.translateX(speed * delta * 2);
+                playerSprite.translateX(speed * delta);
             }
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             if (playerCenterX > EDGE_LIMIT) {
-                playerSprite.translateX(-speed * delta * 2);
+                playerSprite.translateX(-speed * delta);
             }
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             if (playerCenterY < worldHeight - EDGE_LIMIT) {
-                playerSprite.translateY(speed * delta * 2);
+                playerSprite.translateY(speed * delta);
             }
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             if (playerCenterY > EDGE_LIMIT) {
-                playerSprite.translateY(-speed * delta * 2);
+                playerSprite.translateY(-speed * delta);
             }
+        }
+        } else { //if the controls are inverted, swap the collision stuff
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            if (playerCenterX < worldWidth - EDGE_LIMIT) {
+                playerSprite.translateX(-speed * delta);
+            }
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            if (playerCenterX > EDGE_LIMIT) {
+                playerSprite.translateX(speed * delta);
+            }
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            if (playerCenterY < worldHeight - EDGE_LIMIT) {
+                playerSprite.translateY(-speed * delta);
+            }
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            if (playerCenterY > EDGE_LIMIT) {
+                playerSprite.translateY(speed * delta);
+            }
+        }
         }
     }
 
@@ -106,6 +130,11 @@ public class Player {
         this.movementEnabled = enabled;
     }
 
+    public void setControlsInverted(boolean newValue)
+    {
+        this.controlsInverted = newValue;
+    }
+
     /**
      * Draws the player sprite.
      */
@@ -116,10 +145,9 @@ public class Player {
     /**
      * Checks whether the player has collided (overlaps) with another sprite.
      * @param objectSprite The other object's sprite.
-     * @return boolean representing whether collision has occured.
+     * @return boolean representing whether collision has occurred.
      */
-    public boolean checkCollision(Sprite objectSprite)
-    {
+    public boolean checkCollision(Sprite objectSprite) {
         return playerSprite.getBoundingRectangle().overlaps(objectSprite.getBoundingRectangle());
     }
 
@@ -127,26 +155,25 @@ public class Player {
      * Dispose of player texture to free GPU memory.
      * Should be called when the GameScreen is disposed.
      */
-    public void dispose()
-    {
+    public void dispose() {
         playerTexture.dispose();
     }
+
+    // getters and setters
 
     /**
      * Sets the center position of the player sprite.
      * @param x The x-coord of the new position.
      * @param y The y-coord of the new position.
      */
-    public void setCenter(float x, float y)
-    {
+    public void setCenter(float x, float y) {
         playerSprite.setCenter(x, y);
     }
 
     /**
      * Return the center position of the player sprite, as a Vector2.
      */
-    public Vector2 getCenter()
-    {
+    public Vector2 getCenter() {
         float centerX = playerSprite.getX() + playerSprite.getWidth() / 2f;
         float centerY = playerSprite.getY() + playerSprite.getHeight() / 2f;
         return new Vector2(centerX, centerY);
@@ -156,8 +183,7 @@ public class Player {
      * Increase the player's speed by a fixed amount.
      * @param speedIncrease the amount by which the speed will increase.
      */
-    public void increaseSpeed(float speedIncrease)
-    {
+    public void increaseSpeed(float speedIncrease) {
         speed += speedIncrease;
     }
 

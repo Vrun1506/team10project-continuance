@@ -1,39 +1,38 @@
 package io.github.team10.escapefromuni;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.Input.OnscreenKeyboardType;
-import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+/**
+ * NEW CLASS
+ * UsernameInputScreen that handles taking the users username once the game has finished.
+ * Is only displayed if the user wins, is not displayed if the user loses.
+ */
 public class UsernameInputScreen implements Screen {
 
     private final EscapeGame game;
-    private final BitmapFont font;
     private final Texture screen;
     private final Timer timer;
     private final ScoreManager scoreManager;
 
     public String nameText = "";
-    public String displayText = "";
 
     /**
-     * Constructs a new UsernameInputScreen.
-     * @param game  The main game instance.
+     * Initialises a UsernameInputScreen object.
+     * @param game the current EscapeGame object.
+     * @param timer the current Timer object.
+     * @param scoreManager the current ScoreManager object.
      */
     public UsernameInputScreen(final EscapeGame game, Timer timer, ScoreManager scoreManager) {
         this.game = game;
         this.timer = timer;
         this.scoreManager = scoreManager;
 
-        this.font = game.font;
         this.screen = new Texture("WinScreen.png");
     }
 
@@ -109,9 +108,10 @@ public class UsernameInputScreen implements Screen {
 
                 if (character == '\n') {
                     System.out.println("new game over screen YAAAAAY");
+                    // YAYYYYYY
                     dispose();
                     game.setScreen(new GameOverScreen(game, true, timer, scoreManager, nameText));
-                    
+
                     return true;
                 }
 
@@ -120,7 +120,7 @@ public class UsernameInputScreen implements Screen {
                 }
 
             } catch (Exception e) {
-                System.err.println("Couldn't interpet username input!");
+                System.err.println("Couldn't interpret username input!");
                 return false;
             }
 
@@ -128,5 +128,4 @@ public class UsernameInputScreen implements Screen {
         }
         });
     }
-    
 }

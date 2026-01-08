@@ -1,6 +1,7 @@
 package io.github.team10.escapefromuni;
 
 /**
+ * NEW ENUM
  * AchievementType enum that represents all possible achievement types.
  * Includes information like the achievement name, description, and complete status.
  */
@@ -9,6 +10,8 @@ public enum AchievementType {
     /*
         WARNING: achievements are stored to and read from file with a '|' separating their type and complete status
         to not break it, don't include that in the enum type name pretty please :)
+
+        done this way because libgdx doesn't like converting json into custom classes, grahhh
      */
 
     POSITIVE_EVENTS("Living the life", "Interact with all positive events in one game."),
@@ -18,7 +21,7 @@ public enum AchievementType {
     ZERO_TIMER("Are you still alive?", "Let the timer reach 0."),
     PASS("Library camper", "Pass the THE3 exam."),
     FAIL("Who's surprised?", "Fail the THE3 exam."),
-    TEN_SECONDS("Please, touch grass", "Find the exit in under 10 seconds.");
+    TWENTY_FIVE_SECONDS("Please, touch grass", "Find the exit in under 25 seconds.");
 
     private final String name;
     private final String description;

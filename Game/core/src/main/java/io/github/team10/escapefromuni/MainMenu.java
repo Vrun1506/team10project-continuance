@@ -9,11 +9,13 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Timer;
 
 /**
+ * OLD CLASS
  * Main menu screen displayed on game launch with menu options:
- * Start Game, Tutorial,Exit.
+ *      Start Game, Tutorial, Settings, Achievements, Leaderboard, Exit.
+ * NEW CHANGES:
+ *      added new buttons for the achievements and leaderboard screens.
  */
 public class MainMenu implements Screen {
 
@@ -28,6 +30,8 @@ public class MainMenu implements Screen {
     private Rectangle tutorialButton;
     private Rectangle settingsButton;
     private Rectangle exitButton;
+
+    // NEW BUTTONS
     private Rectangle achievementButton;
     private Rectangle leaderboardButton;
 
@@ -36,9 +40,15 @@ public class MainMenu implements Screen {
     private boolean tutorialHovered;
     private boolean settingsHovered;
     private boolean exitHovered;
+
+    // NEW HOVER STATES
     private boolean achievementHovered;
     private boolean leaderboardHovered;
 
+    /**
+     * Initialises a new MainMenu object.
+     * @param game the current EscapeGame object.
+     */
     public MainMenu(EscapeGame game) {
         this.game = game;
     }
@@ -66,6 +76,8 @@ public class MainMenu implements Screen {
         tutorialButton = new Rectangle(centerX - buttonWidth / 2f, screenHeight / 2f + 50f, buttonWidth, buttonHeight);
         settingsButton = new Rectangle(centerX - buttonWidth / 2f, screenHeight / 2f - 50f, buttonWidth, buttonHeight);
         exitButton = new Rectangle(centerX - buttonWidth / 2f, screenHeight / 2f - 450f, buttonWidth, buttonHeight);
+
+        // NEW BUTTON LOCATIONS
         achievementButton = new Rectangle(centerX - buttonWidth / 2f, screenHeight / 2f - 150f, buttonWidth, buttonHeight);
         leaderboardButton = new Rectangle(centerX - buttonWidth / 2f, screenHeight / 2f - 250f, buttonWidth, buttonHeight);
 
@@ -90,13 +102,20 @@ public class MainMenu implements Screen {
         drawButton(tutorialButton, "Tutorial", tutorialHovered);
         drawButton(settingsButton, "Settings", settingsHovered);
         drawButton(exitButton, "Exit", exitHovered);
+
+        // NEW BUTTON RENDERING
         drawButton(achievementButton, "Achievements", achievementHovered);
         drawButton(leaderboardButton, "Leaderboard", leaderboardHovered);
 
         game.batch.end();
     }
 
-    //the achievement_texts
+    /**
+     * Draws the given button to the screen.
+     * @param button the button to draw to the screen.
+     * @param text the text the button should have.
+     * @param hovered whether the button is currently hovered or not.
+     */
     private void drawButton(Rectangle button, String text, boolean hovered) {
 
         if (hovered) {
@@ -117,6 +136,11 @@ public class MainMenu implements Screen {
         font.draw(game.batch, layout, textX, textY);
     }
 
+    /**
+     * Checks if the button being currently hovered over is clicked.
+     * @param button the current button
+     * @return true if clicked, false otherwise.
+     */
     private boolean isButtonClicked(Rectangle button) {
         // click detector
         if (Gdx.input.justTouched()) {
@@ -130,6 +154,11 @@ public class MainMenu implements Screen {
         return false;
     }
 
+    /**
+     * Checks if the current button is being hovered over.
+     * @param button the current button.
+     * @return true if hovered over, false otherwise.
+     */
     private boolean isButtonHovered(Rectangle button) {
         // detect mouse hover in UI coordinates
         Vector2 mousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
@@ -137,45 +166,59 @@ public class MainMenu implements Screen {
         return button.contains(mousePos.x, mousePos.y);
     }
 
+    /**
+     * Navigates the user to the main game screen.
+     */
     public void onStartGame() {
-        // switch to main gameplay
         System.out.println("Starting game...");
         game.setScreen(new GameScreen(game));
 
-        // load achievements
+        // NEW LOAD ACHIEVEMENTS
         game.achievementManager.loadAchievements();
         dispose();
     }
 
+    /**
+     * Navigates the user to the tutorial screen.
+     */
     public void onTutorial() {
-        // open tutorial page
         System.out.println("Opening tutorial...");
         game.setScreen(new TutorialPage(game));
         dispose();
     }
 
+    /**
+     * Navigates the user to the settings screen.
+     */
     public void onSettings() {
-        // open settings page
         System.out.println("Opening settings...");
         game.setScreen(new SettingsPage(game, this));
         dispose();
     }
 
+    /**
+     * Quits the game.
+     */
     public void onExit() {
-        // quit game
         System.out.println("Exiting game...");
         Gdx.app.exit();
     }
 
+    // NEW
+    /**
+     * Navigates the user to the achievements screen.
+     */
     public void onAchievements() {
-        // take user to achievements page
         System.out.println("Going to achievement menu...");
         game.setScreen(new AchievementScreen(game));
         dispose();
     }
 
+    // NEW
+    /**
+     * Navigates the user to the leaderboard screen.
+     */
     public void onLeaderBoard() {
-        // open the leaderboard screen
         System.out.println("Opening leaderboard...");
         game.setScreen(new LeaderboardPage(game,this));
         dispose();
@@ -191,6 +234,8 @@ public class MainMenu implements Screen {
         tutorialHovered = isButtonHovered(tutorialButton);
         settingsHovered = isButtonHovered(settingsButton);
         exitHovered = isButtonHovered(exitButton);
+
+        // NEW BUTTONS
         achievementHovered = isButtonHovered(achievementButton);
         leaderboardHovered = isButtonHovered(leaderboardButton);
 
@@ -203,6 +248,8 @@ public class MainMenu implements Screen {
             onSettings();
         } else if (isButtonClicked(exitButton)) {
             onExit();
+
+            // NEW BUTTON CHECKS
         } else if (isButtonClicked(achievementButton)) {
             onAchievements();
         } else if (isButtonClicked(leaderboardButton)) {
@@ -230,7 +277,6 @@ public class MainMenu implements Screen {
 
     @Override
     public void dispose() {
-
         backgroundImage.dispose();
         buttonTexture.dispose();
     }
