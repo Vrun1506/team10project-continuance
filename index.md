@@ -20,6 +20,15 @@ Your campus breakout begins here. Play Escape From Uni.
 
 Alternatively, you can download the game from our official GitHub release: [Our official GitHub release](https://github.com/Vrun1506/team10project-continuance/releases/tag/1.0.0)
 
+## GitHub repositories 
+
+**Old Team 10 GitHub Repository due in November 2025**
+https://github.com/alistudentgit/team10project
+
+**New Team 7 GitHub Repository due in January 2026**
+https://github.com/Vrun1506/team10project-continuance
+
+
 ## Old Team 7 Documentation for the November submission window (PDF)
 
 - [Requirements (Req1.pdf)](Website/docs/Req1.pdf)
@@ -38,6 +47,12 @@ Alternatively, you can download the game from our official GitHub release: [Our 
 ## New Documentation (Google Drive) for Submission 2 due in January from Team 7
 
 ## Testing reports
+
+### JUnit in headless mode testing report
+
+**Test Report:**
+
+<iframe src="Website/docs/reports/tests/index.html" width="100%" height="600" style="border: 1px solid #000;"></iframe>
 
 ### Checkstyle Code Reports
 
@@ -59,17 +74,7 @@ Alternatively, you can download the game from our official GitHub release: [Our 
 <iframe src="Website/docs/reports/jacoco/index.html" width="100%" height="600" style="border: 1px solid #000;"></iframe>
 
 
-### JUnit in headless mode testing report
-
-**Test Report:**
-
-<iframe src="Website/docs/reports/tests/index.html" width="100%" height="600" style="border: 1px solid #000;"></iframe>
 
 
 
-## Old Team 10 GitHub Repository due in November 2025
-https://github.com/alistudentgit/team10project
-
-## New Team 7 GitHub Repository due in January 2026
-https://github.com/Vrun1506/team10project-continuance
 
