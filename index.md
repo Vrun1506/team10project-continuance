@@ -12,7 +12,7 @@ Your campus breakout begins here.
 
 ## Downloads
 
-- **Game JAR:** [Escape_From_Uni.jar](Website/docs/JAR-file/Escape_From_Uni.jar)
+- **Game JAR:** [Download the game](Website/docs/JAR-file/Escape_From_Uni.jar)
 
 > Tip: On some systems you may need to allow running unsigned apps. Run with: `java -jar Escape_From_Uni.jar`
 
