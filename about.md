@@ -12,3 +12,5 @@ Can you complete the game and top our leaderboard?
 Can you get all of the achievements? 
 
 Play the game and find out for yourself!
+
+[Back to Homepage](https://vrun1506.github.io/team10project-continuance/)
