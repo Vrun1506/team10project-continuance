@@ -1,87 +1,113 @@
-name: CI for Escape to Uni
+name: CI for Escape From Uni
 
+# Triggered on every push to main. We can also manually trigger the pipeline (there's a button for it)
+# Need to manually trigger pipeline at the end so we know that everything works OK.
 on:
   push:
-    branches: [ "main" ]
+    branches : [ "main" ]
   pull_request:
-    branches: [ "main" ]
+    branches : [ "main" ]
   workflow_dispatch:
 
+# GitHub Actions Agent permissions for committing to the repo. 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   pipeline:
-    name: CI pipeline for testing, reporting test coverage, code consistency and creating the JAR file.
+    # Boilerplate for setting up the run environment to make the reports and the JAR file. 
+    name: Test + JAR build
+
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: Game
-
+    
     steps:
-      - name: Get the Java code from GitHub and move it into our currently blank directory
+      - name: Get latest Java code from repo
         uses: actions/checkout@v4
-        
-      - name: Make sure Java 17 is used and set up
+      
+      - name : Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: "17"
           distribution: "temurin"
-          
-      - name: Make our code to be executeable
+      
+      - name: Making gradlew executable
         run: chmod +x gradlew
-        
-      - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@v2
+      
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
 
-      - name: Run our automated tests
-        run: ./gradlew clean test --no-daemon --stacktrace
-        continue-on-error: true
+      # Operations that are responsible for creating the reports and the JAR file. 
+      - name: Run automated tests and write reports
+        run: ./gradlew clean test jacocoTestReport checkstyleMain checkstyleTest --stacktrace
 
-      - name: Upload whether each test was a success or a failure to a HTML report
+      - name: Create JUnit report from headless testing # Artifact 1
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-results
-          path: |
-            Game/**/build/reports/tests/**
-            Game/**/build/test-results/**
+          path: Game/core/build/reports/tests/test/
 
-      - name: Generate reports for the test coverage (how much code has been covered by automated tests) and code consistency (styling etc.)
-        run: ./gradlew jacocoTestReport checkstyleMain checkstyleTest --no-daemon
-
-      - name: Upload the test coverage report (JaCoCo)
+      - name : Upload the test coverage report # Artifact 2
         uses: actions/upload-artifact@v4
         with:
-          name: jacoco-coverage-report
-          path: Game/**/build/reports/jacoco/test/html/
-
-      - name: Upload code consistency report (checkstyle)
+          name: test-coverage
+          path: Game/core/build/reports/jacoco/test/html/
+      
+      - name: Upload CheckStyle # Artifact 3
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: checkstyle-report
-          path: Game/**/build/reports/checkstyle/
+          path: Game/core/build/reports/checkstyle/
 
-      - name: Build the JAR file
-        run: ./gradlew lwjgl3:jar --no-daemon -x test
-        
-      - name: Upload Desktop JAR
+      - name: Create the JAR file
+        run: ./gradlew lwjgl3:jar -x test
+      
+      - name: Upload JAR to GitHub # Artifact 4
         uses: actions/upload-artifact@v4
         with:
           name: Escape_From_Uni
           path: Game/lwjgl3/build/libs/*.jar
 
-      - name: Summary of the entire pipeline showing the results of the tests, coverage report and the consistency report and producing the JAR file.
+      - name: Copy to Website folder # Copy reports to Website/docs so it can be viewed on the website as well. Makes our lives easier.
+            # Determines the validity of the links in our testing doc. Additional layer of security in case I can't get a constant link to the resource.
+        run: |
+          mkdir -p ../Website/docs/reports/jacoco
+          mkdir -p ../Website/docs/reports/checkstyle/core
+          mkdir -p ../Website/docs/reports/tests
+          mkdir -p ../Website/docs/JAR-file
+
+          cp -r ../Game/core/build/reports/jacoco/test/html/* ../Website/docs/reports/jacoco/
+          cp -r ../Game/core/build/reports/checkstyle/* ../Website/docs/reports/checkstyle/core/
+          cp -r ../Game/core/build/reports/tests/test/* ../Website/docs/reports/tests/
+          cp ../Game/lwjgl3/build/libs/*.jar ../Website/docs/JAR-file/Escape_From_Uni.jar
+
+      - name: Push the 3 reports and the JAR file to the repo
+      # Commits the three reports and the JAR file to the Website folder
+        run: |
+          cd ..
+          git config user.name "github-actions[bot]""
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Website/docs/reports/* Website/docs/JAR-file/* || true
+          git commit -m "Update reports and JAR from CI pipeline [skip ci]"
+          git push
+
+
+      - name: Result of all operations in pipeline
+      # What gets printed below pipeline in node view after jobs have reached completion. 
         if: always()
         run: |
-          echo "# Test Summary" >> $GITHUB_STEP_SUMMARY
-          echo "All of the automated tests have been finished. You can view which tests passed or failed by opening the test-results folder in the Artifacts section in GitHub (you might have to refresh the page after running the workflow dispatch or when you push/pull). The path to access the the index.html containing the JUnit test report is build/reports/tests/test/index.html" >> $GITHUB_STEP_SUMMARY
-          echo "## Cohort 2 Group 7 Test Coverage Report using JaCoCo" >> $GITHUB_STEP_SUMMARY
-          echo "The test coverage report created using JaCoCo has been created. Access it as an artifact below (sometimes you might have to refresh the page once the pipeline has been executed). The path to access the index.html file is build/reports/jacoco/test/html/index.html. The report covers the coverage of the automated tests and generally covers the logical aspects. We will have to add manual testing for the predominantly visual components as it's not the easiest to test." >> $GITHUB_STEP_SUMMARY
+          echo "You might have to refresh the page before viewing the artifacts."
+          echo "JAR file has been created"
+          echo "# Automated Tests Summary" >> $GITHUB_STEP_SUMMARY
+          echo "All of the automated tests have been finished. Open index.html after downloading the test-results/ folder" >> $GITHUB_STEP_SUMMARY
+          echo "## Test Coverage Report using JaCoCo" >> $GITHUB_STEP_SUMMARY
+          echo "The test coverage report can be accessed as an artifact below. Download the test-coverage/ folder and open index.html to view how much of our codebase our tests cover." >> $GITHUB_STEP_SUMMARY
+          echo "The ones where there are no coverage are the cases where we felt that it would be more valuable to implement a manual testing schema."
           echo "## Code consistency report" >> $GITHUB_STEP_SUMMARY
-          echo "The code consistency report has been created. This will compare the code to the standards set out in the version that we've imported. We might get some errors from this because we've used different styles for our code." >> $GITHUB_STEP_SUMMARY
-          echo "The report has been submitted as an artifact and you should be able to download it below. Refresh the page once the workflow has completed (because it won't be visible from push/pull and when you run a manual dispatch and run the pipeline manually)" >> $GITHUB_STEP_SUMMARY
-
-
-
+          echo "Checkstyle report has been made. To view the report, download checkstyle-report/ folder." >> $GITHUB_STEP_SUMMARY
+          echo "To view the styling report for the game code itself, open main.html"
+          echo "To view the styling report for our test code, open test.html"
