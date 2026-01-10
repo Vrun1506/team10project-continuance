@@ -113,3 +113,27 @@ jobs:
           echo "Checkstyle report has been made. To view the report, download checkstyle-report/ folder." >> $GITHUB_STEP_SUMMARY
           echo "To view the styling report for the game code itself, open main.html"
           echo "To view the styling report for our test code, open test.html"
+  
+  # Deploys website with all of the changes with every commit
+  deploy-website:
+    needs: pipeline
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get all of the code from GitHub
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure GitHub Pages to deploy our website
+        uses: actions/configure-pages@v4
+      
+      - name: Upload all of the website code to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+      
+      - name: Deploy website
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+

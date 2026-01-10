@@ -57,6 +57,9 @@ Alternatively, you can download the game from our official GitHub release: [Our 
 **Test Report:**
 
 <iframe src="Website/docs/reports/tests/index.html" width="100%" height="600" style="border: 1px solid #000;"></iframe>
+<br>
+<br>
+
 
 ### Checkstyle Code Reports
 
@@ -64,11 +67,14 @@ Alternatively, you can download the game from our official GitHub release: [Our 
 
 <iframe src="Website/docs/reports/checkstyle/core/main.html" width="100%" height="600" style="border: 1px solid #000;"></iframe>
 
+<br>
 
 **Test Code Consistency Report:**
 
-<iframe src="Website/docs/reports/checkstyle/core/main.html" width="100%" height="600" style="border: 1px solid #000;"></iframe>
+<iframe src="Website/docs/reports/checkstyle/core/test.html" width="100%" height="600" style="border: 1px solid #000;"></iframe>
 
+<br>
+<br>
 
 
 ### JaCoCo Test Coverage report
