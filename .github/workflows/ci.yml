@@ -12,6 +12,7 @@ on:
 # GitHub Actions Agent permissions for committing to the repo. 
 permissions:
   contents: write
+  pages: write
 
 jobs:
   pipeline:
