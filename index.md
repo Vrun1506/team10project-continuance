@@ -1,5 +1,3 @@
-# Welcome to Escape From Uni
-
 Your campus breakout begins here.
 
 # Team Members
@@ -42,9 +40,16 @@ https://github.com/Vrun1506/team10project-continuance
 - [Implementation (Impl2.pdf)]()
 - [Testing (Test2.pdf)]()
 - [Evaluation (Eval2.pdf)]()
-- [Continuous Integration (CI) (CI2.pdf)]()
+- [Continuous Integration(CI) (CI2.pdf)]()
 
-## New Documentation (Google Drive) for Submission 2 due in January from Team 7
+## New Documentation (Google Drive) for Submission 2 due in January from Team 7 (WITH FULL EDITOR PERMISSIONS)
+
+- [Change Report](https://docs.google.com/document/d/1vClVzyRyB1Jl8XOTSKQOmo-ncYLR12J5jfrWSiqIPK4/edit?usp=sharing)
+- [Implementation](https://docs.google.com/document/d/1lBK4A56g47P9UbvHHruwrrzSc-XqoZqnNrQV8FCQE5I/edit?usp=sharing)
+- [Testing](https://docs.google.com/document/d/14iI3FgdnEt2vqVst6WNV1Zwqqa02Si_jDdksdJCayFU/edit?usp=sharing)
+- [User Evaluation](https://docs.google.com/document/d/1hODIOdoXncceYOCO8xjJm8qRctQoHV9sn9L-3KAYyP8/edit?usp=sharing)
+- [Continuous Integration(CI)](https://docs.google.com/document/d/1RcTtQWnfwZG9uEBkW1WW5IOyxctZFoSl/edit?usp=sharing&ouid=109791857374760522522&rtpof=true&sd=true)
+
 
 ## Testing reports
 
