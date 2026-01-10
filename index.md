@@ -59,7 +59,11 @@ Alternatively, you can download the game from our official GitHub release: [Our 
 <iframe src="Website/docs/reports/jacoco/index.html" width="100%" height="600" style="border: 1px solid #000;"></iframe>
 
 
+### JUnit in headless mode testing report
 
+**Test Report:**
+
+<iframe src="Website/docs/reports/tests/index.html" width="100%" height="600" style="border: 1px solid #000;"></iframe>
 
 
 
