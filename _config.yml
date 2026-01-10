@@ -3,3 +3,7 @@ description: Project docs & download
 theme: minima
 markdown: kramdown
 permalink: pretty
+
+header_pages:
+  - index.md
+  - About.md
