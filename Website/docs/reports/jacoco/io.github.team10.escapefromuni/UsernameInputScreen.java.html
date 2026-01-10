@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UsernameInputScreen.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">io.github.team10.escapefromuni</a> &gt; <span class="el_source">UsernameInputScreen.java</span></div><h1>UsernameInputScreen.java</h1><pre class="source lang-java linenums">package io.github.team10.escapefromuni;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.utils.ScreenUtils;
+
+/**
+ * NEW CLASS
+ * UsernameInputScreen that handles taking the users username once the game has finished.
+ * Is only displayed if the user wins, is not displayed if the user loses.
+ */
+public class UsernameInputScreen implements Screen {
+
+    private final EscapeGame game;
+    private final Texture screen;
+    private final Timer timer;
+    private final ScoreManager scoreManager;
+
+<span class="nc" id="L23">    public String nameText = &quot;&quot;;</span>
+
+    /**
+     * Initialises a UsernameInputScreen object.
+     * @param game the current EscapeGame object.
+     * @param timer the current Timer object.
+     * @param scoreManager the current ScoreManager object.
+     */
+<span class="nc" id="L31">    public UsernameInputScreen(final EscapeGame game, Timer timer, ScoreManager scoreManager) {</span>
+<span class="nc" id="L32">        this.game = game;</span>
+<span class="nc" id="L33">        this.timer = timer;</span>
+<span class="nc" id="L34">        this.scoreManager = scoreManager;</span>
+
+<span class="nc" id="L36">        this.screen = new Texture(&quot;WinScreen.png&quot;);</span>
+<span class="nc" id="L37">    }</span>
+
+    @Override
+    public void render(float delta) {
+
+<span class="nc" id="L42">        ScreenUtils.clear(Color.BLACK);</span>
+<span class="nc" id="L43">        game.uiViewport.apply();</span>
+<span class="nc" id="L44">        game.batch.setProjectionMatrix(game.uiCamera.combined);</span>
+<span class="nc" id="L45">        game.batch.begin();</span>
+
+<span class="nc" id="L47">        game.batch.draw(screen, 0, 0, game.uiViewport.getWorldWidth(), game.uiViewport.getWorldHeight());</span>
+<span class="nc" id="L48">        String text = &quot;Enter your username below.&quot;;</span>
+<span class="nc" id="L49">        String displayText = nameText;</span>
+
+<span class="nc" id="L51">        game.font.setColor(Color.BLACK);</span>
+<span class="nc" id="L52">        GlyphLayout layout = new GlyphLayout();</span>
+
+<span class="nc" id="L54">        float uiWidth = game.uiViewport.getWorldWidth();</span>
+<span class="nc" id="L55">        float uiHeight = game.uiViewport.getWorldHeight();</span>
+
+        // Draw text
+<span class="nc" id="L58">        layout.setText(game.font, text);</span>
+<span class="nc" id="L59">        float timeX = (uiWidth - layout.width) / 2f;</span>
+<span class="nc" id="L60">        float timeY = uiHeight * 0.35f;</span>
+<span class="nc" id="L61">        game.font.draw(game.batch, layout, timeX, timeY);</span>
+
+        // Draw username display text
+<span class="nc" id="L64">        layout.setText(game.font, displayText);</span>
+<span class="nc" id="L65">        timeX = (uiWidth - layout.width) / 2f;</span>
+<span class="nc" id="L66">        timeY = uiHeight * 0.30f;</span>
+<span class="nc" id="L67">        game.font.draw(game.batch, layout, timeX, timeY);</span>
+
+<span class="nc" id="L69">        game.batch.end();</span>
+<span class="nc" id="L70">    }</span>
+
+    @Override
+    public void resize(int width, int height) {
+<span class="nc" id="L74">    }</span>
+
+    @Override
+    public void pause() {
+<span class="nc" id="L78">    }</span>
+
+    @Override
+    public void resume() {
+<span class="nc" id="L82">    }</span>
+
+    @Override
+    public void hide() {
+<span class="nc" id="L86">    }</span>
+
+    @Override
+    public void dispose() {
+<span class="nc" id="L90">        System.out.println(&quot;no more input PROCESSSSOR&quot;);</span>
+<span class="nc" id="L91">        Gdx.input.setInputProcessor(null);</span>
+<span class="nc" id="L92">        screen.dispose();</span>
+<span class="nc" id="L93">    }</span>
+
+    @Override
+    public void show() {
+
+        //Capture key inputs and append to the name text accordingly
+<span class="nc" id="L99">        Gdx.input.setInputProcessor(new InputAdapter () {</span>
+        @Override
+        public boolean keyTyped(char character) {
+            try {
+
+<span class="nc bnc" id="L104" title="All 2 branches missed.">                if (character == '\b') {</span>
+<span class="nc" id="L105">                    nameText = &quot;&quot;;</span>
+<span class="nc" id="L106">                    return true;</span>
+                }
+
+<span class="nc bnc" id="L109" title="All 2 branches missed.">                if (character == '\n') {</span>
+<span class="nc" id="L110">                    System.out.println(&quot;new game over screen YAAAAAY&quot;);</span>
+                    // YAYYYYYY
+<span class="nc" id="L112">                    dispose();</span>
+<span class="nc" id="L113">                    game.setScreen(new GameOverScreen(game, true, timer, scoreManager, nameText));</span>
+
+<span class="nc" id="L115">                    return true;</span>
+                }
+
+<span class="nc bnc" id="L118" title="All 2 branches missed.">                if (nameText.length() &lt; 3) {</span>
+<span class="nc" id="L119">                nameText = (nameText+character);</span>
+                }
+
+<span class="nc" id="L122">            } catch (Exception e) {</span>
+<span class="nc" id="L123">                System.err.println(&quot;Couldn't interpret username input!&quot;);</span>
+<span class="nc" id="L124">                return false;</span>
+<span class="nc" id="L125">            }</span>
+
+<span class="nc" id="L127">            return true;</span>
+        }
+        });
+<span class="nc" id="L130">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

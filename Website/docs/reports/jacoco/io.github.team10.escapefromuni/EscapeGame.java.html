@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EscapeGame.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">io.github.team10.escapefromuni</a> &gt; <span class="el_source">EscapeGame.java</span></div><h1>EscapeGame.java</h1><pre class="source lang-java linenums">package io.github.team10.escapefromuni;
+
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+
+/**
+ * OLD CLASS
+ * EscapeGame class to represent the game. Instantiated by the Launcher.
+ * Similar to the Drop class in &lt;a href=&quot;https://libgdx.com/wiki/start/simple-game-extended&quot;&gt;...&lt;/a&gt;.
+ * Loads the initial Screen. Has a SpriteBatch batch, to be used by each screen to render the game.
+ */
+<span class="fc" id="L20">public class EscapeGame extends Game {</span>
+    public SpriteBatch batch;
+    public BitmapFont font;
+
+    // World rendering
+    public FitViewport viewport;
+
+    // UI rendering
+    public OrthographicCamera uiCamera;
+    public FitViewport uiViewport;
+
+    // NEW ACHIEVEMENTMANAGER, PLACED HERE AS EASIER TO ACCESS FROM AREAS OF GAME
+<span class="fc" id="L32">    public AchievementManager achievementManager = new AchievementManager();</span>
+
+    @Override
+    public void create() {
+<span class="nc" id="L36">        batch = new SpriteBatch();</span>
+
+<span class="nc" id="L38">        viewport = new FitViewport(16, 9);</span>
+<span class="nc" id="L39">        uiCamera = new OrthographicCamera();</span>
+<span class="nc" id="L40">        uiViewport = new FitViewport(1920, 1080, uiCamera);</span>
+
+<span class="nc" id="L42">        generateFont();</span>
+
+<span class="nc" id="L44">        this.setScreen(new MainMenu(this));</span>
+<span class="nc" id="L45">    }</span>
+
+    /**
+     * Will initialise the game's font.
+     */
+    private void generateFont()
+    {
+<span class="nc" id="L52">        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(&quot;Kenney Mini.ttf&quot;));</span>
+<span class="nc" id="L53">        FreeTypeFontParameter parameter = new FreeTypeFontParameter();</span>
+
+<span class="nc" id="L55">        parameter.size = 48;</span>
+<span class="nc" id="L56">        parameter.color = Color.WHITE;</span>
+
+<span class="nc" id="L58">        parameter.magFilter = Texture.TextureFilter.Nearest;</span>
+<span class="nc" id="L59">        parameter.minFilter = Texture.TextureFilter.Nearest;</span>
+
+<span class="nc" id="L61">        font = generator.generateFont(parameter);</span>
+<span class="nc" id="L62">        generator.dispose();</span>
+<span class="nc" id="L63">    }</span>
+
+    @Override
+    public void resize(int width, int height) {
+<span class="fc" id="L67">        viewport.update(width, height, true);</span>
+<span class="fc" id="L68">        uiViewport.update(width, height, true);</span>
+<span class="fc" id="L69">    }</span>
+
+    @Override
+    public void render() {
+<span class="nc" id="L73">		super.render();</span>
+<span class="nc" id="L74">	}</span>
+
+    @Override
+	public void dispose() {
+<span class="nc" id="L78">		batch.dispose();</span>
+<span class="nc" id="L79">		font.dispose();</span>
+<span class="nc" id="L80">        AudioManager.getInstance().dispose();</span>
+<span class="nc" id="L81">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

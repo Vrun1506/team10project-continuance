@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameOverScreen.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">io.github.team10.escapefromuni</a> &gt; <span class="el_source">GameOverScreen.java</span></div><h1>GameOverScreen.java</h1><pre class="source lang-java linenums">package io.github.team10.escapefromuni;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.utils.ScreenUtils;
+/**
+ * OLD CLASS
+ * Represents the Game Over screen, shown when the player either wins or loses.
+ * Displays the appropriate background, score, and time information.
+ * The player can return to the main menu by pressing the ESC key.
+ */
+public class GameOverScreen implements Screen {
+
+    private final EscapeGame game;
+    private final boolean isWon;
+    private final Timer timer;
+    private final ScoreManager scoreManager;
+
+    private final BitmapFont font;
+    private final Texture winScreen;
+    private final Texture loseScreen;
+
+    // NEW
+    private final String name;
+
+    private int finalScore;
+
+    /**
+     * Constructs a new GameOverScreen.
+     * @param game  The main game instance.
+     * @param isWon Whether the player has won or lost.
+     * @param timer The timer used to track playtime.
+     * @param scoreManager  The score manager which calculates the final score.
+     */
+<span class="fc" id="L48">    public GameOverScreen(final EscapeGame game, boolean isWon, Timer timer, ScoreManager scoreManager, String nameString) {</span>
+<span class="fc" id="L49">        this.game = game;</span>
+<span class="fc" id="L50">        this.isWon = isWon;</span>
+<span class="fc" id="L51">        this.timer = timer;</span>
+<span class="fc" id="L52">        this.scoreManager = scoreManager;</span>
+<span class="fc" id="L53">        this.name = nameString;</span>
+
+<span class="fc" id="L55">        this.font = game.font;</span>
+<span class="fc" id="L56">        this.winScreen = new Texture(&quot;WinScreen.png&quot;);</span>
+<span class="fc" id="L57">        this.loseScreen = new Texture(&quot;LoseScreen.png&quot;);</span>
+
+        // NEW SAVES ACHIEVEMENTS
+<span class="fc" id="L60">        game.achievementManager.saveAchievements();</span>
+<span class="fc" id="L61">    }</span>
+
+    @Override
+    public void render(float delta) {
+        // Return to main menu if ESC pressed.
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {</span>
+<span class="nc" id="L67">            game.setScreen(new MainMenu(game));</span>
+<span class="nc" id="L68">            dispose();</span>
+<span class="nc" id="L69">            return;</span>
+        }
+
+<span class="nc" id="L72">        ScreenUtils.clear(Color.BLACK);</span>
+<span class="nc" id="L73">        game.uiViewport.apply();</span>
+<span class="nc" id="L74">        game.batch.setProjectionMatrix(game.uiCamera.combined);</span>
+<span class="nc" id="L75">        game.batch.begin();</span>
+
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        if (isWon){ renderWinScreen(); }</span>
+<span class="nc" id="L78">        else { renderLoseScreen(); }</span>
+
+<span class="nc" id="L80">        game.batch.end();</span>
+<span class="nc" id="L81">    }</span>
+
+    /**
+     * Renders the winning screen, showing the win background, final score and time elapsed.
+     */
+    private void renderWinScreen(){
+<span class="nc" id="L87">        game.batch.draw(winScreen, 0, 0, game.uiViewport.getWorldWidth(), game.uiViewport.getWorldHeight());</span>
+<span class="nc" id="L88">        String timeText = &quot;Time Elapsed: &quot; + timer.getTimeSeconds();</span>
+<span class="nc" id="L89">        int finalScore = scoreManager.CalculateFinalScore(timer.getTimeLeftSeconds());</span>
+<span class="nc" id="L90">        String scoreText = &quot;Score: &quot; + finalScore;</span>
+
+<span class="nc" id="L92">        game.font.setColor(Color.BLACK);</span>
+<span class="nc" id="L93">        GlyphLayout layout = new GlyphLayout();</span>
+
+<span class="nc" id="L95">        float uiWidth = game.uiViewport.getWorldWidth();</span>
+<span class="nc" id="L96">        float uiHeight = game.uiViewport.getWorldHeight();</span>
+
+        // Draw time elapsed text
+<span class="nc" id="L99">        layout.setText(game.font, timeText);</span>
+<span class="nc" id="L100">        float timeX = (uiWidth - layout.width) / 2f;</span>
+<span class="nc" id="L101">        float timeY = uiHeight * 0.35f;</span>
+<span class="nc" id="L102">        game.font.draw(game.batch, layout, timeX, timeY);</span>
+
+        // Draw score text
+<span class="nc" id="L105">        layout.setText(game.font, scoreText);</span>
+<span class="nc" id="L106">        float scoreX = (uiWidth - layout.width) / 2f;</span>
+<span class="nc" id="L107">        float scoreY = uiHeight * 0.3f;</span>
+<span class="nc" id="L108">        font.draw(game.batch, scoreText, scoreX, scoreY);</span>
+<span class="nc" id="L109">    }</span>
+
+    /**
+     * Renders the losing screen, showing the loss background.
+     * Doesn't display the score or time.
+     */
+    private void renderLoseScreen(){
+<span class="nc" id="L116">        game.batch.draw(loseScreen, 0, 0, game.uiViewport.getWorldWidth(), game.uiViewport.getWorldHeight());</span>
+<span class="nc" id="L117">    }</span>
+
+    // NEW FOR SCORE SAVING
+    @Override
+    public void show() {
+<span class="fc" id="L122">        finalScore = scoreManager.CalculateFinalScore(timer.getTimeLeftSeconds());</span>
+<span class="fc" id="L123">        writeScores(finalScore);</span>
+<span class="fc" id="L124">        game.achievementManager.saveAchievements();</span>
+<span class="fc" id="L125">    }</span>
+
+<span class="fc" id="L127">    @Override public void resize(int width, int height) {}</span>
+<span class="fc" id="L128">    @Override public void pause() {}</span>
+<span class="fc" id="L129">    @Override public void resume() {}</span>
+<span class="fc" id="L130">    @Override public void hide() {}</span>
+
+    /**
+     * Dispose of textures used by the screen.
+     */
+    @Override public void dispose() {
+<span class="fc" id="L136">        winScreen.dispose();</span>
+<span class="fc" id="L137">        loseScreen.dispose();</span>
+<span class="fc" id="L138">    }</span>
+
+    /**
+     * Writes the player score to file - 'leaderboard.txt'.
+     * @param newScore the new score to write.
+     */
+    public void writeScores(int newScore) {
+
+        // System.out.println((&quot;SCORE:&quot;+newScore));
+
+        // String name = inputListener.name;
+
+        try {
+
+<span class="fc" id="L152">            File scoreFile = new File(&quot;leaderboard.txt&quot;);</span>
+<span class="fc" id="L153">            scoreFile.createNewFile(); //only creates the file if it had not existed beforehand</span>
+<span class="fc" id="L154">            BufferedReader reader = new BufferedReader(new FileReader(scoreFile));</span>
+
+            // contains data from old scoreboard to be used in comparison
+<span class="fc" id="L157">            ArrayList&lt;String&gt; oldRecords = new ArrayList&lt;String&gt;();</span>
+<span class="fc" id="L158">            ArrayList&lt;Integer&gt; oldScores = new ArrayList&lt;Integer&gt;();</span>
+
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">            for (int i=0; i&lt;5; i++) {</span>
+                //entire record keeping CSV format
+<span class="fc" id="L162">                String temp = reader.readLine();</span>
+
+<span class="fc bfc" id="L164" title="All 2 branches covered.">                if (temp == null){</span>
+<span class="fc" id="L165">                    break;</span>
+                }
+<span class="fc" id="L167">                oldRecords.add(temp);</span>
+
+                //grabs just the score
+                try {
+<span class="fc" id="L171">                    Integer tempInt = Integer.parseInt(temp.split(&quot;,&quot;)[1]);</span>
+<span class="fc" id="L172">                    oldScores.add(tempInt);</span>
+
+<span class="nc" id="L174">                } catch (Exception e) {</span>
+<span class="nc" id="L175">                    System.err.println(&quot;Couldn't interpret scores file for writing!&quot;);</span>
+<span class="nc" id="L176">                    e.printStackTrace();</span>
+<span class="fc" id="L177">                }</span>
+            }
+
+<span class="fc" id="L180">            reader.close();</span>
+
+<span class="fc" id="L182">            BufferedWriter writer = new BufferedWriter(new FileWriter(scoreFile));</span>
+
+            // check if there are any records in the leaderboard file, and perform the necessary countermeasure
+<span class="fc bfc" id="L185" title="All 2 branches covered.">            if (oldScores.isEmpty()) {</span>
+<span class="fc" id="L186">                writer.write((name+&quot;,&quot;+newScore+&quot;\n&quot;));</span>
+            } else {
+
+<span class="fc" id="L189">            boolean placed = false;</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">            for (int i=0; i&lt;oldScores.size(); i++) {</span>
+<span class="pc bpc" id="L191" title="1 of 4 branches missed.">                if (oldScores.get(i) &lt;= newScore &amp;&amp; !placed) {</span>
+<span class="fc" id="L192">                    writer.write((name+&quot;,&quot;+newScore+&quot;\n&quot;));</span>
+<span class="fc" id="L193">                    writer.write((oldRecords.get(i)+&quot;\n&quot;));</span>
+<span class="fc" id="L194">                    placed = true;</span>
+                } else {
+<span class="fc" id="L196">                    writer.write((oldRecords.get(i)+&quot;\n&quot;));</span>
+                }
+            }
+
+            // if the score never beats existing ones, check if there is space for it anyway.
+<span class="pc bpc" id="L201" title="3 of 4 branches missed.">            if (!placed &amp;&amp; oldScores.size() &lt; 5) {</span>
+<span class="nc" id="L202">                writer.write((name+&quot;,&quot;+newScore+&quot;\n&quot;));</span>
+            }
+
+            }
+
+<span class="fc" id="L207">            System.out.println(oldScores);</span>
+<span class="fc" id="L208">            System.out.println(oldRecords);</span>
+
+<span class="fc" id="L210">            writer.close();</span>
+
+<span class="nc" id="L212">        } catch (IOException e) {</span>
+<span class="nc" id="L213">            System.err.println(&quot;Failed to overwrite scores!&quot;);</span>
+<span class="nc" id="L214">            e.printStackTrace();</span>
+<span class="fc" id="L215">        }</span>
+<span class="fc" id="L216">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

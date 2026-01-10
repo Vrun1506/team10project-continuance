@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AudioManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">io.github.team10.escapefromuni</a> &gt; <span class="el_source">AudioManager.java</span></div><h1>AudioManager.java</h1><pre class="source lang-java linenums">package io.github.team10.escapefromuni;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+
+/**
+ * OLD CLASS
+ * AudioManager for handling all game audio.
+ * Manages background music for menus and gameplay, and sound effects for different events and button clicks.
+ * NEW CHANGES:
+ *      added a new click sound
+ *      changed comments into javadoc where appropriate
+ */
+public class AudioManager {
+    private static AudioManager instance;
+
+    // Music tracks (looping background music)
+    private Music menuMusic;
+    private Music gameMusic;
+
+    // Sound effects (played once when the even is triggered or button click)
+    private Sound npcEventSound;
+    private Sound clickSound;
+    private Sound negativeEventSound;
+    private Sound positiveEventSound;
+    private Sound hiddenEventSound;
+
+
+    private Music currentMusic;
+<span class="fc" id="L31">    private float currentVolume = 0.5f;</span>
+
+
+<span class="fc" id="L34">    private AudioManager() {</span>
+<span class="fc" id="L35">        loadAudio();</span>
+<span class="fc" id="L36">    }</span>
+
+    /**
+     * Gets AudioManager instance.
+     * @return an AudioManager instance.
+     */
+    public static AudioManager getInstance() {
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (instance == null) {</span>
+<span class="fc" id="L44">            instance = new AudioManager();</span>
+        }
+<span class="fc" id="L46">        return instance;</span>
+    }
+
+    /**
+     * Loads all audio files.
+     */
+    private void loadAudio() {
+        try {
+            // Load music tracks
+<span class="fc" id="L55">            menuMusic = Gdx.audio.newMusic(Gdx.files.internal(&quot;MenuMusic.mp3&quot;));</span>
+<span class="fc" id="L56">            gameMusic = Gdx.audio.newMusic(Gdx.files.internal(&quot;GameMusic.mp3&quot;));</span>
+
+            // for the gameplay and menu music to loop
+<span class="fc" id="L59">            menuMusic.setLooping(true);</span>
+<span class="fc" id="L60">            gameMusic.setLooping(true);</span>
+
+            // Set initial volume
+<span class="fc" id="L63">            menuMusic.setVolume(currentVolume);</span>
+<span class="fc" id="L64">            gameMusic.setVolume(currentVolume);</span>
+
+            // Load sound effects
+<span class="fc" id="L67">            negativeEventSound = Gdx.audio.newSound(Gdx.files.internal(&quot;NegMus.mp3&quot;));</span>
+<span class="fc" id="L68">            positiveEventSound = Gdx.audio.newSound(Gdx.files.internal(&quot;PosMus.mp3&quot;));</span>
+<span class="fc" id="L69">            hiddenEventSound = Gdx.audio.newSound(Gdx.files.internal(&quot;HidMus.mp3&quot;));</span>
+<span class="fc" id="L70">            npcEventSound = Gdx.audio.newSound(Gdx.files.internal(&quot;PosMus.mp3&quot;));</span>
+
+            // NEW CLICK SOUND
+<span class="fc" id="L73">            clickSound = Gdx.audio.newSound(Gdx.files.internal(&quot;click.mp3&quot;));</span>
+
+<span class="nc" id="L75">        } catch (Exception e) {</span>
+<span class="nc" id="L76">            Gdx.app.error(&quot;AudioManager&quot;, &quot;Error loading audio files: &quot; + e.getMessage());</span>
+<span class="fc" id="L77">        }</span>
+<span class="fc" id="L78">    }</span>
+
+    /**
+     * Plays menu music.
+     */
+    public void playMenuMusic() {
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        if (currentMusic != menuMusic) {</span>
+<span class="nc" id="L85">            stopCurrentMusic();</span>
+<span class="nc" id="L86">            currentMusic = menuMusic;</span>
+<span class="nc" id="L87">            menuMusic.play();</span>
+        }
+<span class="nc" id="L89">    }</span>
+
+    /**
+     * Plays game music.
+     */
+    public void playGameMusic() {
+<span class="nc bnc" id="L95" title="All 2 branches missed.">        if (currentMusic != gameMusic) {</span>
+<span class="nc" id="L96">            stopCurrentMusic();</span>
+<span class="nc" id="L97">            currentMusic = gameMusic;</span>
+<span class="nc" id="L98">            gameMusic.play();</span>
+        }
+<span class="nc" id="L100">    }</span>
+
+    /**
+     * Plays event sound effect based on event type.
+     * @param eventType The type of event (NEGATIVE, POSITIVE, or HIDDEN)
+     */
+    public void playEventSound(EventType eventType) {
+<span class="fc" id="L107">        Sound eventSound = null;</span>
+
+<span class="pc bpc" id="L109" title="1 of 5 branches missed.">        switch (eventType) {</span>
+            case NEGATIVE:
+<span class="fc" id="L111">                eventSound = negativeEventSound;</span>
+<span class="fc" id="L112">                break;</span>
+            case POSITIVE:
+<span class="fc" id="L114">                eventSound = positiveEventSound;</span>
+<span class="fc" id="L115">                break;</span>
+            case HIDDEN:
+<span class="fc" id="L117">                eventSound = hiddenEventSound;</span>
+<span class="fc" id="L118">                break;</span>
+            case NPC:
+<span class="fc" id="L120">                eventSound = npcEventSound;</span>
+<span class="fc" id="L121">                break;</span>
+            default:
+                break;
+        }
+
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">        if (eventSound != null) {</span>
+<span class="fc" id="L127">            eventSound.play(currentVolume);</span>
+        }
+<span class="fc" id="L129">    }</span>
+
+    /**
+     * Plays click sound effect.
+     */
+    public void playClickSound() {
+<span class="nc bnc" id="L135" title="All 2 branches missed.">        if (clickSound != null) {</span>
+<span class="nc" id="L136">            clickSound.play(currentVolume);</span>
+        }
+<span class="nc" id="L138">    }</span>
+
+    /**
+     * Stops the currently playing music.
+     */
+    private void stopCurrentMusic() {
+<span class="nc bnc" id="L144" title="All 4 branches missed.">        if (currentMusic != null &amp;&amp; currentMusic.isPlaying()) {</span>
+<span class="nc" id="L145">            currentMusic.stop();</span>
+        }
+<span class="nc" id="L147">    }</span>
+
+    /**
+     * Pauses the currently playing music.
+     */
+    public void pauseMusic() {
+<span class="nc bnc" id="L153" title="All 4 branches missed.">        if (currentMusic != null &amp;&amp; currentMusic.isPlaying()) {</span>
+<span class="nc" id="L154">            currentMusic.pause();</span>
+        }
+<span class="nc" id="L156">    }</span>
+
+    /**
+     * Resumes the currently playing music.
+     */
+    public void resumeMusic() {
+<span class="nc bnc" id="L162" title="All 4 branches missed.">        if (currentMusic != null &amp;&amp; !currentMusic.isPlaying()) {</span>
+<span class="nc" id="L163">            currentMusic.play();</span>
+        }
+<span class="nc" id="L165">    }</span>
+
+    /**
+     * Sets the master volume for all audio from 0.1f to 1.0f
+     */
+    public void setVolume(float volume) {
+<span class="nc" id="L171">        this.currentVolume = Math.max(0f, Math.min(1f, volume));</span>
+
+<span class="nc bnc" id="L173" title="All 2 branches missed.">        if (menuMusic != null) menuMusic.setVolume(currentVolume);</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">        if (gameMusic != null) gameMusic.setVolume(currentVolume);</span>
+<span class="nc" id="L175">    }</span>
+
+    public float getVolume() {
+<span class="nc" id="L178">        return currentVolume;</span>
+    }
+
+    /**
+     * Sets the volume for every audio
+     */
+    public void setMusicVolume(float volume) {
+<span class="nc bnc" id="L185" title="All 2 branches missed.">        if (menuMusic != null) menuMusic.setVolume(volume);</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">        if (gameMusic != null) gameMusic.setVolume(volume);</span>
+<span class="nc" id="L187">    }</span>
+
+    /**
+     * Disposes of all the audio.
+     */
+    public void dispose() {
+
+<span class="nc bnc" id="L194" title="All 2 branches missed.">        if (menuMusic != null) menuMusic.dispose();</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">        if (gameMusic != null) gameMusic.dispose();</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">        if (negativeEventSound != null) negativeEventSound.dispose();</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">        if (positiveEventSound != null) positiveEventSound.dispose();</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">        if (npcEventSound != null) npcEventSound.dispose();</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">        if (hiddenEventSound != null) hiddenEventSound.dispose();</span>
+<span class="nc" id="L200">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

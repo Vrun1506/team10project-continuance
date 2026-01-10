@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameScreen.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">io.github.team10.escapefromuni</a> &gt; <span class="el_source">GameScreen.java</span></div><h1>GameScreen.java</h1><pre class="source lang-java linenums">package io.github.team10.escapefromuni;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.utils.ScreenUtils;
+
+
+/**
+ * OLD CLASS
+ * This class will deal with the 'main' game logic.
+ *      For example, creating the player, calling initialiseMap() on the RoomManager.
+ * Will handle rendering of game textures using the SpriteBatch stored in EscapeGame.
+ */
+public class GameScreen extends ScreenAdapter {
+    final EscapeGame game;
+    Player player;
+    RoomManager roomManager;
+    ScoreManager scoreManager;
+    Timer timer;
+
+    private final BitmapFont font;
+
+    public boolean isPaused;
+
+    /**
+     * Initialises a new GameScreen object.
+     * @param game an EscapeGame object.
+     */
+<span class="nc" id="L32">    public GameScreen(final EscapeGame game) {</span>
+<span class="nc" id="L33">        this.game = game;</span>
+<span class="nc" id="L34">        timer = new Timer();</span>
+<span class="nc" id="L35">        scoreManager = new ScoreManager();</span>
+
+<span class="nc" id="L37">        player = new Player(3f, 1f, 1f, game);</span>
+<span class="nc" id="L38">        roomManager = new RoomManager(game, player, scoreManager, timer);</span>
+<span class="nc" id="L39">        roomManager.initialiseMap();</span>
+
+<span class="nc" id="L41">        font = game.font;</span>
+<span class="nc" id="L42">        isPaused = false;</span>
+<span class="nc" id="L43">    }</span>
+
+    @Override
+    public void render(float delta) {
+    // Check for ESC key to pause
+<span class="nc bnc" id="L48" title="All 2 branches missed.">    if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {</span>
+<span class="nc" id="L49">        isPaused = true;</span>
+<span class="nc" id="L50">        int currentTime = timer.getTimeSeconds();</span>
+<span class="nc" id="L51">        game.setScreen(new PauseMenu(game, this, currentTime));</span>
+<span class="nc" id="L52">        return;</span>
+    }
+
+<span class="nc bnc" id="L55" title="All 2 branches missed.">    if (!isPaused) {</span>
+<span class="nc" id="L56">        update(delta);</span>
+<span class="nc" id="L57">        CheckLose();</span>
+    }
+
+<span class="nc" id="L60">    draw();</span>
+<span class="nc" id="L61">    }</span>
+
+    /**
+     * Checks if the timer has reached 5 minutes, indicating the player has run out of time.
+     */
+    public void CheckLose() {
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        if (timer.hasReached(300)) { // 300 seconds = 5 minutes</span>
+<span class="nc" id="L68">            game.achievementManager.check_ZERO_TIMER();</span>
+<span class="nc" id="L69">            game.setScreen(new GameOverScreen(game, false, timer, scoreManager, &quot;N/A&quot;));</span>
+        }
+<span class="nc" id="L71">    }</span>
+
+    /**
+     * Resumes the timer.
+     */
+    public void resumeGame() {
+<span class="nc" id="L77">        isPaused = false;</span>
+<span class="nc" id="L78">    }</span>
+
+    /**
+     * Performs game logic each frame.
+     *      Always called before drawing textures.
+     * @param delta float representing the time since the last frame.
+     */
+    private void update(float delta)
+    {
+<span class="nc" id="L87">        player.update(delta);</span>
+<span class="nc" id="L88">        roomManager.update(delta);</span>
+<span class="nc" id="L89">        timer.update(delta);</span>
+<span class="nc" id="L90">    }</span>
+
+    /**
+     * Draw textures to the screen each frame using the {@link EscapeGame}'s SpriteBatch.
+     */
+    private void draw()
+    {
+<span class="nc" id="L97">        ScreenUtils.clear(Color.BLACK);</span>
+<span class="nc" id="L98">        game.viewport.apply();</span>
+<span class="nc" id="L99">        game.batch.setProjectionMatrix(game.viewport.getCamera().combined);</span>
+<span class="nc" id="L100">        game.batch.begin();</span>
+
+        // World Rendering
+<span class="nc" id="L103">        roomManager.drawMap();</span>
+<span class="nc" id="L104">        player.draw();</span>
+<span class="nc" id="L105">        game.batch.end();</span>
+
+        // UI Rendering
+<span class="nc" id="L108">        game.uiViewport.apply();</span>
+<span class="nc" id="L109">        game.batch.setProjectionMatrix(game.uiCamera.combined);</span>
+<span class="nc" id="L110">        game.batch.begin();</span>
+<span class="nc" id="L111">        roomManager.drawEventUI();</span>
+
+<span class="nc" id="L113">        font.setColor(Color.BLACK);</span>
+<span class="nc" id="L114">        font.draw(game.batch, &quot;Time: &quot; + timer.getTimeLeftSeconds() + &quot;s&quot;, 75f, 1000f);</span>
+
+        // NEW RENDERING FOR EVENT COUNTERS
+<span class="nc" id="L117">        String positive_text = &quot;Positive Events: &quot; + (int) player.positive_events.x + &quot;/&quot; + (int) player.positive_events.y;</span>
+<span class="nc" id="L118">        String negative_text = &quot;Negative Events: &quot; +  (int) player.negative_events.x + &quot;/&quot; + (int) player.negative_events.y;</span>
+<span class="nc" id="L119">        String hidden_text =  &quot;Hidden Events: &quot; + (int) player.hidden_events.x + &quot;/&quot; + (int) player.hidden_events.y;</span>
+
+<span class="nc" id="L121">        font.draw(game.batch, positive_text, 1300f, 1000f);</span>
+<span class="nc" id="L122">        font.draw(game.batch, negative_text, 1300f, 950f);</span>
+<span class="nc" id="L123">        font.draw(game.batch, hidden_text, 1300f, 900f);</span>
+
+<span class="nc" id="L125">        game.batch.end();</span>
+<span class="nc" id="L126">    }</span>
+
+    @Override
+    public void dispose() {
+<span class="nc" id="L130">        roomManager.dispose();</span>
+<span class="nc" id="L131">        player.dispose();</span>
+<span class="nc" id="L132">    }</span>
+
+    @Override public void show() {
+<span class="nc" id="L135">        AudioManager.getInstance().playGameMusic();</span>
+<span class="nc" id="L136">        isPaused = false;</span>
+<span class="nc" id="L137">    }</span>
+<span class="nc" id="L138">    @Override public void resize(int width, int height) {}</span>
+<span class="nc" id="L139">    @Override public void pause() {}</span>
+<span class="nc" id="L140">    @Override public void resume() {}</span>
+<span class="nc" id="L141">    @Override public void hide() {}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Door.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">io.github.team10.escapefromuni</a> &gt; <span class="el_source">Door.java</span></div><h1>Door.java</h1><pre class="source lang-java linenums">package io.github.team10.escapefromuni;
+
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
+/**
+ * OLD CLASS
+ * Represents a door used to connect rooms.
+ * Each {@code Door}  has a direction and is managed by the {@link RoomManager}.
+ * The door can be active or inactive indicating whether it is visible and can be used.
+ */
+public class Door {
+    public RoomManager roomManager;
+    public DoorDirection direction;
+    public boolean isActive;
+    public Texture doorTexture;
+    public Sprite doorSprite;
+
+    /**
+     * Creates a new Door instance.
+     * The door is always active initially (but this may be changed by the roomManager).
+     * @param roomManager Manages the door.
+     * @param direction Direction of the door in relation to the center of the room.
+     * @param x The x-coord of the bottom left corner of the door.
+     * @param y The y-coord of the bottom left corner of the door.
+     */
+<span class="fc" id="L28">    public Door(RoomManager roomManager, DoorDirection direction, float x, float y) {</span>
+<span class="fc" id="L29">        this.roomManager = roomManager;</span>
+<span class="fc" id="L30">        this.direction = direction;</span>
+<span class="fc" id="L31">        doorTexture = new Texture(&quot;DoorNew.png&quot;);</span>
+<span class="fc" id="L32">        doorSprite = new Sprite(doorTexture);</span>
+<span class="fc" id="L33">        doorSprite.setSize(1f, 1f);</span>
+<span class="fc" id="L34">        doorSprite.setPosition(x, y);</span>
+<span class="fc" id="L35">        isActive = true;</span>
+<span class="fc" id="L36">    }</span>
+
+    /**
+     * Draws the door if it is active.
+     */
+    public void draw() {
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        if (isActive) {</span>
+<span class="nc" id="L43">            doorSprite.draw(roomManager.game.batch);</span>
+        }
+<span class="nc" id="L45">    }</span>
+
+    /**
+     * Sets the active state of the door.
+     * @param isActive true if the door should be active (visible and usable), false otherwise.
+     */
+    public void setActive(boolean isActive) {
+<span class="fc" id="L52">        this.isActive = isActive;</span>
+<span class="fc" id="L53">    }</span>
+
+    /**
+     * Returns whether the door is active.
+     * @return true if the door is active, false otherwise.
+     */
+    public boolean getActive() {
+<span class="fc" id="L60">        return isActive;</span>
+    }
+
+    /**
+     * Disposes of the door texture to free GPU memory.
+     * Should be called when the RoomManager is disposed.
+     */
+    public void dispose() {
+<span class="fc" id="L68">        doorTexture.dispose();</span>
+<span class="fc" id="L69">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

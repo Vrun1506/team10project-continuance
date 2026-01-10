@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NegativeEventType.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">io.github.team10.escapefromuni</a> &gt; <span class="el_source">NegativeEventType.java</span></div><h1>NegativeEventType.java</h1><pre class="source lang-java linenums">package io.github.team10.escapefromuni;
+
+/**
+ * NEW ENUM
+ * Used for controlling the question text, left answer text, right answer text and correct answer of the NegativeEvent class.
+ */
+<span class="fc" id="L7">public enum NegativeEventType {</span>
+
+    // true means the left answer is correct, false means the right answer is correct.
+<span class="fc" id="L10">    THE3(&quot;THE3 EXAM&quot;,</span>
+        &quot;True or False:\nThe self-accepting problem SA \nis semi-decidable.&quot;,
+        &quot;True&quot;,
+        &quot;False&quot;,
+        true),
+<span class="fc" id="L15">    SYS2(&quot;SYS2 EXAM&quot;,</span>
+        &quot;Which of the following is a valid\nIPv4 address?&quot;,
+        &quot;125.20.0.99&quot;,
+        &quot;101.256.6.70&quot;,
+        true),
+<span class="fc" id="L20">    ENG1(&quot;ENG1 COURSEWORK&quot;,</span>
+        &quot;Which is an appropriate risk\nto mention in a risk assessment?&quot;,
+        &quot;I stubbed my toe&quot;,
+        &quot;A team member\nbecomes unavailable&quot;,
+        false),
+<span class="fc" id="L25">    JOB(&quot;JOB INTERVIEW&quot;,</span>
+        &quot;You're interviewing for an intern\nposition. How many years of experience\nwould you need?&quot;,
+        &quot;3&quot;,
+        &quot;10&quot;,
+        false);
+
+    private final String title;
+    private final String question_text;
+    private final String left_text;
+    private final String right_text;
+    private final boolean correct_answer;
+
+<span class="fc" id="L37">    NegativeEventType(String title, String question_text, String left_text, String right_text, boolean correct_answer) {</span>
+<span class="fc" id="L38">        this.title = title;</span>
+<span class="fc" id="L39">        this.question_text =  question_text;</span>
+<span class="fc" id="L40">        this.left_text = left_text;</span>
+<span class="fc" id="L41">        this.right_text = right_text;</span>
+<span class="fc" id="L42">        this.correct_answer = correct_answer;</span>
+<span class="fc" id="L43">    }</span>
+
+    // getters and setters
+<span class="nc" id="L46">    public String getTitle() { return title; }</span>
+<span class="fc" id="L47">    public String getQuestionText() { return question_text; }</span>
+<span class="nc" id="L48">    public String getLeftText() { return left_text; }</span>
+<span class="nc" id="L49">    public String getRightText() { return right_text; }</span>
+<span class="nc" id="L50">    public boolean getCorrectAnswer() { return correct_answer; }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

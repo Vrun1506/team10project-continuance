@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Player.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">io.github.team10.escapefromuni</a> &gt; <span class="el_source">Player.java</span></div><h1>Player.java</h1><pre class="source lang-java linenums">package io.github.team10.escapefromuni;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
+
+/**
+ * OLD CLASS
+ * Represents the player character.
+ * Handles player rendering, movement and collision detection.
+ * NEW CHANGES:
+ *      added event counters
+ *      added some getters and setters
+ */
+public class Player {
+    public Texture playerTexture;
+    public Sprite playerSprite;
+    public float speed;
+    public EscapeGame game;
+    private boolean movementEnabled;
+    public boolean controlsInverted;
+
+<span class="fc" id="L25">    private final float EDGE_LIMIT = 1f;</span>
+
+    // NEW EVENT TOTALS
+    // types of events stored as vector2, (interacted_count, total_count)
+    // spawning an event of that type: .y++
+    // interacting with an event of that type: .x++
+<span class="fc" id="L31">    public Vector2 positive_events = new Vector2(0, 0);</span>
+<span class="fc" id="L32">    public Vector2 negative_events = new Vector2(0, 0);</span>
+<span class="fc" id="L33">    public Vector2 hidden_events =  new Vector2(0, 0);</span>
+<span class="fc" id="L34">    public Vector2 total_events = new Vector2(0, 0);</span>
+
+    /**
+     * Creates a new player instance.
+     * @param speed The player's movement speed (world units per second).
+     * @param playerWidth The width of the player in world units.
+     * @param playerHeight The height of the player in world units.
+     * @param game Reference to the main {@link EscapeGame} instance.
+     */
+<span class="fc" id="L43">    public Player(float speed, float playerWidth, float playerHeight, EscapeGame game) {</span>
+<span class="fc" id="L44">        this.speed = speed;</span>
+<span class="fc" id="L45">        this.game = game;</span>
+<span class="fc" id="L46">        playerTexture = new Texture(&quot;MalePlayer.png&quot;);</span>
+<span class="fc" id="L47">        playerSprite = new Sprite(playerTexture);</span>
+<span class="fc" id="L48">        playerSprite.setSize(playerWidth, playerHeight);</span>
+
+<span class="fc" id="L50">        float centerX = game.viewport.getWorldWidth() / 2f;</span>
+<span class="fc" id="L51">        float centerY = game.viewport.getWorldHeight() / 2f;</span>
+<span class="fc" id="L52">        playerSprite.setCenter(centerX, centerY);</span>
+<span class="fc" id="L53">        this.movementEnabled = true;</span>
+<span class="fc" id="L54">        this.controlsInverted = false;</span>
+<span class="fc" id="L55">    }</span>
+
+    /**
+     * Called every frame to perform player logic.
+     * @param delta The time in seconds since the last frame.
+     */
+    public void update(float delta) {
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (movementEnabled) {</span>
+<span class="nc" id="L63">            move(delta);</span>
+        }
+<span class="nc" id="L65">    }</span>
+
+    /**
+     * Handles player movement and constrains movement to within screen edge boundaries.
+     * Uses arrow key input. Center of player remains at least {@link #EDGE_LIMIT} units from the world edges.
+     * @param delta The time in seconds since the last frame.
+     */
+    private void move(float delta) {
+<span class="nc" id="L73">        float worldWidth = game.viewport.getWorldWidth();</span>
+<span class="nc" id="L74">        float worldHeight = game.viewport.getWorldHeight();</span>
+<span class="nc" id="L75">        float halfWidth = playerSprite.getWidth() / 2f;</span>
+<span class="nc" id="L76">        float halfHeight = playerSprite.getHeight() / 2f;</span>
+<span class="nc" id="L77">        float playerCenterX = playerSprite.getX() + halfWidth;</span>
+<span class="nc" id="L78">        float playerCenterY = playerSprite.getY() + halfHeight;</span>
+
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (!controlsInverted) {</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">            if (playerCenterX &lt; worldWidth - EDGE_LIMIT) {</span>
+<span class="nc" id="L83">                playerSprite.translateX(speed * delta);</span>
+            }
+        }
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">            if (playerCenterX &gt; EDGE_LIMIT) {</span>
+<span class="nc" id="L88">                playerSprite.translateX(-speed * delta);</span>
+            }
+        }
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">            if (playerCenterY &lt; worldHeight - EDGE_LIMIT) {</span>
+<span class="nc" id="L93">                playerSprite.translateY(speed * delta);</span>
+            }
+        }
+<span class="nc bnc" id="L96" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">            if (playerCenterY &gt; EDGE_LIMIT) {</span>
+<span class="nc" id="L98">                playerSprite.translateY(-speed * delta);</span>
+            }
+        }
+        } else { //if the controls are inverted, swap the collision stuff
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">            if (playerCenterX &lt; worldWidth - EDGE_LIMIT) {</span>
+<span class="nc" id="L104">                playerSprite.translateX(-speed * delta);</span>
+            }
+        }
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">            if (playerCenterX &gt; EDGE_LIMIT) {</span>
+<span class="nc" id="L109">                playerSprite.translateX(speed * delta);</span>
+            }
+        }
+<span class="nc bnc" id="L112" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">            if (playerCenterY &lt; worldHeight - EDGE_LIMIT) {</span>
+<span class="nc" id="L114">                playerSprite.translateY(-speed * delta);</span>
+            }
+        }
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">            if (playerCenterY &gt; EDGE_LIMIT) {</span>
+<span class="nc" id="L119">                playerSprite.translateY(speed * delta);</span>
+            }
+        }
+        }
+<span class="nc" id="L123">    }</span>
+
+    /**
+     * Allows enabling or disabling movement for the player.
+     * @param enabled boolean representing whether the player will be able to move.
+     */
+    public void enableMovement(boolean enabled)
+    {
+<span class="nc" id="L131">        this.movementEnabled = enabled;</span>
+<span class="nc" id="L132">    }</span>
+
+    public void setControlsInverted(boolean newValue)
+    {
+<span class="nc" id="L136">        this.controlsInverted = newValue;</span>
+<span class="nc" id="L137">    }</span>
+
+    /**
+     * Draws the player sprite.
+     */
+    public void draw() {
+<span class="nc" id="L143">        playerSprite.draw(game.batch);</span>
+<span class="nc" id="L144">    }</span>
+
+    /**
+     * Checks whether the player has collided (overlaps) with another sprite.
+     * @param objectSprite The other object's sprite.
+     * @return boolean representing whether collision has occurred.
+     */
+    public boolean checkCollision(Sprite objectSprite) {
+<span class="fc" id="L152">        return playerSprite.getBoundingRectangle().overlaps(objectSprite.getBoundingRectangle());</span>
+    }
+
+    /**
+     * Dispose of player texture to free GPU memory.
+     * Should be called when the GameScreen is disposed.
+     */
+    public void dispose() {
+<span class="fc" id="L160">        playerTexture.dispose();</span>
+<span class="fc" id="L161">    }</span>
+
+    // getters and setters
+
+    /**
+     * Sets the center position of the player sprite.
+     * @param x The x-coord of the new position.
+     * @param y The y-coord of the new position.
+     */
+    public void setCenter(float x, float y) {
+<span class="fc" id="L171">        playerSprite.setCenter(x, y);</span>
+<span class="fc" id="L172">    }</span>
+
+    /**
+     * Return the center position of the player sprite, as a Vector2.
+     */
+    public Vector2 getCenter() {
+<span class="nc" id="L178">        float centerX = playerSprite.getX() + playerSprite.getWidth() / 2f;</span>
+<span class="nc" id="L179">        float centerY = playerSprite.getY() + playerSprite.getHeight() / 2f;</span>
+<span class="nc" id="L180">        return new Vector2(centerX, centerY);</span>
+    }
+
+    /**
+     * Increase the player's speed by a fixed amount.
+     * @param speedIncrease the amount by which the speed will increase.
+     */
+    public void increaseSpeed(float speedIncrease) {
+<span class="nc" id="L188">        speed += speedIncrease;</span>
+<span class="nc" id="L189">    }</span>
+
+    /**
+     * Returns the speed of the player.
+     * @return the speed of the player.
+     */
+<span class="nc" id="L195">    public float getSpeed() { return speed; }</span>
+
+    /**
+     * Set the player speed to a designated amount.
+     * @param speed the value that player speed will be updated to.
+     */
+<span class="nc" id="L201">    public void setSpeed(float speed) { this.speed = speed;}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

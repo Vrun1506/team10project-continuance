@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PositiveEventType.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">io.github.team10.escapefromuni</a> &gt; <span class="el_source">PositiveEventType.java</span></div><h1>PositiveEventType.java</h1><pre class="source lang-java linenums">package io.github.team10.escapefromuni;
+
+/**
+ * NEW ENUM
+ * Used for controlling the texture and effect of the PositiveEvent class.
+ */
+<span class="fc" id="L7">public enum PositiveEventType {</span>
+
+    // yeah i know some of the effects are pretty similar but at least they do something positive
+    // IT IS NOT LAZY
+
+<span class="fc" id="L12">    GREGGS(&quot;GreggsSausageRoll.png&quot;) {</span>
+        @Override
+        void doThing(Player player, EscapeGame game, ScoreManager scoreManager) {
+            // increases player speed by 2
+<span class="fc" id="L16">            System.out.println(&quot;GREGGS EVENT&quot;);</span>
+<span class="fc" id="L17">            player.increaseSpeed(2f);</span>
+<span class="fc" id="L18">        }</span>
+    },
+<span class="fc" id="L20">    MONSTER(&quot;Monster.png&quot;) {</span>
+        @Override
+        void doThing(Player player, EscapeGame game, ScoreManager scoreManager) {
+            // increases player speed by 50%
+<span class="nc" id="L24">            System.out.println(&quot;MONSTER EVENT&quot;);</span>
+<span class="nc" id="L25">            player.setSpeed(player.getSpeed() * 1.5f);</span>
+<span class="nc" id="L26">        }</span>
+    },
+<span class="fc" id="L28">    CUP_NOODLES(&quot;Cupnoodles.png&quot;) {</span>
+        @Override
+        void doThing(Player player, EscapeGame game, ScoreManager scoreManager) {
+            // gives the player +1000 score
+<span class="nc" id="L32">            System.out.println(&quot;CUP_NOODLES EVENT&quot;);</span>
+<span class="nc" id="L33">            scoreManager.increaseScore(1000);</span>
+<span class="nc" id="L34">        }</span>
+    },
+<span class="fc" id="L36">    NETWORKING(&quot;Networking.png&quot;) {</span>
+        @Override
+        void doThing(Player player, EscapeGame game, ScoreManager scoreManager) {
+            // increases player speed by 1 and +500 score
+<span class="nc" id="L40">            System.out.println(&quot;NETWORKING EVENT&quot;);</span>
+<span class="nc" id="L41">            player.increaseSpeed(1f);</span>
+<span class="nc" id="L42">            scoreManager.increaseScore(500);</span>
+<span class="nc" id="L43">        }</span>
+    },
+<span class="fc" id="L45">    PIZZA(&quot;Pizza.png&quot;) {</span>
+        @Override
+        void doThing(Player player, EscapeGame game, ScoreManager scoreManager) {
+            // gives the player +1000 score
+<span class="nc" id="L49">            System.out.println(&quot;PIZZA EVENT&quot;);</span>
+<span class="nc" id="L50">            scoreManager.increaseScore(1000);</span>
+<span class="nc" id="L51">        }</span>
+    };
+
+    private final String texture_path;
+
+<span class="fc" id="L56">    PositiveEventType(String texture_path) {</span>
+<span class="fc" id="L57">        this.texture_path = texture_path;</span>
+<span class="fc" id="L58">    }</span>
+
+    /**
+     * Abstract method to be overridden in each enum value.
+     * @param player the current Player object.
+     * @param game the current EscapeGame object.
+     * @param scoreManager the current ScoreManager object.
+     */
+    abstract void doThing(Player player, EscapeGame game, ScoreManager scoreManager);
+
+    // getters and setters
+<span class="fc" id="L69">    public String getTexturePath() { return texture_path; }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

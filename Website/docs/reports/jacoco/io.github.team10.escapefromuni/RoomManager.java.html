@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RoomManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">io.github.team10.escapefromuni</a> &gt; <span class="el_source">RoomManager.java</span></div><h1>RoomManager.java</h1><pre class="source lang-java linenums">package io.github.team10.escapefromuni;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.ObjectMap;
+
+/**
+ * OLD CLASS
+ * Manages all {@link Room} and {@link Door} instances in the game.
+ * Responsible for initialising the pre-defined game map, handling transitions between rooms, drawing room and door
+ * textures, and disposing of those textures when no longer needed.
+ * NEW CHANGES:
+ *      added code for creating all the new rooms
+ *      added code for initialising all the new door connections
+ *      added code for adding events to specific rooms
+ *      added achievement checking
+ */
+public class RoomManager {
+    public EscapeGame game;
+
+    public final Player player;
+    public final ScoreManager scoreManager;
+    public final Timer timer;
+    public Room currentRoom;
+<span class="fc" id="L24">    public Door[] doors = new Door[4];</span>
+<span class="fc" id="L25">    public final ObjectMap&lt;String, Texture&gt; roomTextures = new ObjectMap&lt;&gt;();</span>
+<span class="fc" id="L26">    public Texture[] indicatorTextures = new Texture[4];</span>
+    public Texture positiveIndicator;
+    public Texture negativeIndicator;
+
+    /**
+     * Initialises a RoomManager object.
+     * @param game the current EscapeGame object.
+     * @param player the current Player object.
+     * @param scoreManager the current ScoreManager object.
+     * @param timer the current Timer object.
+     */
+<span class="fc" id="L37">    public RoomManager(EscapeGame game, Player player, ScoreManager scoreManager, Timer timer) {</span>
+<span class="fc" id="L38">        this.game = game;</span>
+<span class="fc" id="L39">        this.player = player;</span>
+<span class="fc" id="L40">        this.scoreManager = scoreManager;</span>
+<span class="fc" id="L41">        this.timer = timer;</span>
+<span class="fc" id="L42">    }</span>
+
+    /**
+     * Initialise the game map, which will be the same every time.
+     * Initialises 4 doors, create rooms and create room connections. Room textures are stored in a list for easy
+     * access and disposal. Also loads the first room.
+     */
+    public void initialiseMap() {
+<span class="fc" id="L50">        initialiseDoors();</span>
+
+        // Store room textures in list for easy access and disposal.
+<span class="fc" id="L53">        roomTextures.put(&quot;room1&quot;, new Texture(&quot;Room1.png&quot;));</span>
+<span class="fc" id="L54">        roomTextures.put(&quot;room2&quot;, new Texture(&quot;Room3.png&quot;));</span>
+<span class="fc" id="L55">        roomTextures.put(&quot;room3&quot;, new Texture(&quot;Room4.png&quot;));</span>
+<span class="fc" id="L56">        roomTextures.put(&quot;room4&quot;, new Texture(&quot;Room7.png&quot;));</span>
+<span class="fc" id="L57">        roomTextures.put(&quot;room5&quot;, new Texture(&quot;Room6.png&quot;));</span>
+<span class="fc" id="L58">        roomTextures.put(&quot;room6&quot;, new Texture(&quot;Room8.png&quot;));</span>
+<span class="fc" id="L59">        roomTextures.put(&quot;room7&quot;, new Texture(&quot;Room5.png&quot;));</span>
+<span class="fc" id="L60">        roomTextures.put(&quot;room8&quot;, new Texture(&quot;Room9.png&quot;));</span>
+<span class="fc" id="L61">        roomTextures.put(&quot;room9&quot;, new Texture(&quot;Room10.png&quot;));</span>
+<span class="fc" id="L62">        roomTextures.put(&quot;room10&quot;, new Texture(&quot;Room11.png&quot;));</span>
+
+        // Initialise all the rooms
+<span class="fc" id="L65">        Room room1 = new Room(roomTextures.get(&quot;room1&quot;)); // Start</span>
+<span class="fc" id="L66">        Room room2 = new Room(roomTextures.get(&quot;room2&quot;));</span>
+<span class="fc" id="L67">        Room room3 = new Room(roomTextures.get(&quot;room3&quot;)); // Greggs</span>
+<span class="fc" id="L68">        Room room4 = new Room(roomTextures.get(&quot;room4&quot;));</span>
+<span class="fc" id="L69">        Room room5 = new Room(roomTextures.get(&quot;room5&quot;)); // THE3</span>
+<span class="fc" id="L70">        Room room6 = new Room(roomTextures.get(&quot;room6&quot;));</span>
+<span class="fc" id="L71">        Room room7 = new Room(roomTextures.get(&quot;room7&quot;)); // Longboi</span>
+<span class="fc" id="L72">        Room room8 = new Room(roomTextures.get(&quot;room8&quot;));</span>
+<span class="fc" id="L73">        Room room9 = new Room(roomTextures.get(&quot;room9&quot;)); // Contains Exit</span>
+
+        // NEW initialising rooms
+        // yes there are rooms missing (24, 26, 30, 31) but i cba to go through and change all the room numbers
+        // this works fine
+<span class="fc" id="L78">        Room room10 = new Room(roomTextures.get(&quot;room6&quot;)); // SYS2</span>
+<span class="fc" id="L79">        Room room11 = new Room(roomTextures.get(&quot;room8&quot;));</span>
+<span class="fc" id="L80">        Room room12 = new Room(roomTextures.get(&quot;room7&quot;)); // Bob</span>
+<span class="fc" id="L81">        Room room13 = new Room(roomTextures.get(&quot;room3&quot;));</span>
+<span class="fc" id="L82">        Room room14 = new Room(roomTextures.get(&quot;room9&quot;));</span>
+<span class="fc" id="L83">        Room room15 = new Room(roomTextures.get(&quot;room7&quot;)); // Monster</span>
+<span class="fc" id="L84">        Room room16 = new Room(roomTextures.get(&quot;room5&quot;));</span>
+<span class="fc" id="L85">        Room room17 = new Room(roomTextures.get(&quot;room8&quot;)); // CupNoodles</span>
+<span class="fc" id="L86">        Room room18 = new Room(roomTextures.get(&quot;room9&quot;)); // Inverse</span>
+<span class="fc" id="L87">        Room room19 = new Room(roomTextures.get(&quot;room6&quot;)); // Placement</span>
+<span class="fc" id="L88">        Room room20 = new Room(roomTextures.get(&quot;room10&quot;)); // Long boi</span>
+<span class="fc" id="L89">        Room room21 = new Room(roomTextures.get(&quot;room5&quot;));</span>
+<span class="fc" id="L90">        Room room22 = new Room(roomTextures.get(&quot;room3&quot;));</span>
+<span class="fc" id="L91">        Room room23 = new Room(roomTextures.get(&quot;room1&quot;)); // Networking</span>
+<span class="fc" id="L92">        Room room25 = new Room(roomTextures.get(&quot;room7&quot;));</span>
+<span class="fc" id="L93">        Room room27 = new Room(roomTextures.get(&quot;room8&quot;)); // Dominoes</span>
+<span class="fc" id="L94">        Room room28 = new Room(roomTextures.get(&quot;room3&quot;));</span>
+<span class="fc" id="L95">        Room room29 = new Room(roomTextures.get(&quot;room6&quot;)); // ENG1</span>
+
+        // Exit room is not actually displayed - game ends as soon as player steps inside.
+<span class="fc" id="L98">        Room exit = new Room(roomTextures.get(&quot;room1&quot;), true);</span>
+
+        // Initialise connections - remember both ways
+        // 90% OF THESE ARE NEW... there is also no better way to do it with what we were given
+<span class="fc" id="L102">        room1.addAdjacent(room22, DoorDirection.NORTH);</span>
+<span class="fc" id="L103">        room1.addAdjacent(room2, DoorDirection.EAST);</span>
+<span class="fc" id="L104">        room1.addAdjacent(room13, DoorDirection.SOUTH);</span>
+<span class="fc" id="L105">        room1.addAdjacent(room21, DoorDirection.WEST);</span>
+
+<span class="fc" id="L107">        room2.addAdjacent(room3, DoorDirection.NORTH);</span>
+<span class="fc" id="L108">        room2.addAdjacent(room4, DoorDirection.EAST);</span>
+<span class="fc" id="L109">        room2.addAdjacent(room6, DoorDirection.SOUTH);</span>
+<span class="fc" id="L110">        room2.addAdjacent(room1, DoorDirection.WEST);</span>
+
+<span class="fc" id="L112">        room3.addAdjacent(room2, DoorDirection.SOUTH);</span>
+<span class="fc" id="L113">        room3.addAdjacent(room22, DoorDirection.WEST);</span>
+
+<span class="fc" id="L115">        room4.addAdjacent(room5, DoorDirection.SOUTH);</span>
+<span class="fc" id="L116">        room4.addAdjacent(room2, DoorDirection.WEST);</span>
+
+<span class="fc" id="L118">        room5.addAdjacent(room4, DoorDirection.NORTH);</span>
+<span class="fc" id="L119">        room5.addAdjacent(room8, DoorDirection.EAST);</span>
+<span class="fc" id="L120">        room5.addAdjacent(room7, DoorDirection.SOUTH);</span>
+<span class="fc" id="L121">        room5.addAdjacent(room6, DoorDirection.WEST);</span>
+
+<span class="fc" id="L123">        room6.addAdjacent(room2, DoorDirection.NORTH);</span>
+<span class="fc" id="L124">        room6.addAdjacent(room5, DoorDirection.EAST);</span>
+<span class="fc" id="L125">        room6.addAdjacent(room13,  DoorDirection.WEST);</span>
+
+<span class="fc" id="L127">        room7.addAdjacent(room5, DoorDirection.NORTH);</span>
+
+<span class="fc" id="L129">        room8.addAdjacent(room9, DoorDirection.EAST);</span>
+<span class="fc" id="L130">        room8.addAdjacent(room5, DoorDirection.WEST);</span>
+
+<span class="fc" id="L132">        room9.addAdjacent(room10, DoorDirection.NORTH);</span>
+<span class="fc" id="L133">        room9.addAdjacent(exit, DoorDirection.EAST);</span>
+<span class="fc" id="L134">        room9.addAdjacent(room11, DoorDirection.SOUTH);</span>
+<span class="fc" id="L135">        room9.addAdjacent(room8, DoorDirection.WEST);</span>
+
+<span class="fc" id="L137">        room10.addAdjacent(room9, DoorDirection.SOUTH);</span>
+
+<span class="fc" id="L139">        room11.addAdjacent(room9, DoorDirection.NORTH);</span>
+<span class="fc" id="L140">        room11.addAdjacent(room12, DoorDirection.SOUTH);</span>
+
+<span class="fc" id="L142">        room12.addAdjacent(room11, DoorDirection.NORTH);</span>
+
+<span class="fc" id="L144">        room13.addAdjacent(room1,  DoorDirection.NORTH);</span>
+<span class="fc" id="L145">        room13.addAdjacent(room6,  DoorDirection.EAST);</span>
+<span class="fc" id="L146">        room13.addAdjacent(room14,  DoorDirection.SOUTH);</span>
+<span class="fc" id="L147">        room13.addAdjacent(room20,  DoorDirection.WEST);</span>
+
+<span class="fc" id="L149">        room14.addAdjacent(room13,  DoorDirection.NORTH);</span>
+<span class="fc" id="L150">        room14.addAdjacent(room15,  DoorDirection.SOUTH);</span>
+<span class="fc" id="L151">        room14.addAdjacent(room19,  DoorDirection.WEST);</span>
+
+<span class="fc" id="L153">        room15.addAdjacent(room14,  DoorDirection.NORTH);</span>
+<span class="fc" id="L154">        room15.addAdjacent(room16,  DoorDirection.SOUTH);</span>
+
+<span class="fc" id="L156">        room16.addAdjacent(room15,  DoorDirection.NORTH);</span>
+<span class="fc" id="L157">        room16.addAdjacent(room17,  DoorDirection.EAST);</span>
+<span class="fc" id="L158">        room16.addAdjacent(room18,  DoorDirection.WEST);</span>
+
+<span class="fc" id="L160">        room17.addAdjacent(room16,  DoorDirection.WEST);</span>
+
+<span class="fc" id="L162">        room18.addAdjacent(room16,  DoorDirection.EAST);</span>
+
+<span class="fc" id="L164">        room19.addAdjacent(room20,  DoorDirection.NORTH);</span>
+<span class="fc" id="L165">        room19.addAdjacent(room14,  DoorDirection.EAST);</span>
+
+<span class="fc" id="L167">        room20.addAdjacent(room21,  DoorDirection.NORTH);</span>
+<span class="fc" id="L168">        room20.addAdjacent(room13,  DoorDirection.EAST);</span>
+<span class="fc" id="L169">        room20.addAdjacent(room19,  DoorDirection.SOUTH);</span>
+
+<span class="fc" id="L171">        room21.addAdjacent(room23,  DoorDirection.NORTH);</span>
+<span class="fc" id="L172">        room21.addAdjacent(room1,  DoorDirection.EAST);</span>
+<span class="fc" id="L173">        room21.addAdjacent(room20,  DoorDirection.SOUTH);</span>
+<span class="fc" id="L174">        room21.addAdjacent(room29,  DoorDirection.WEST);</span>
+
+<span class="fc" id="L176">        room22.addAdjacent(room3,  DoorDirection.EAST);</span>
+<span class="fc" id="L177">        room22.addAdjacent(room1,  DoorDirection.SOUTH);</span>
+<span class="fc" id="L178">        room22.addAdjacent(room23,  DoorDirection.WEST);</span>
+
+<span class="fc" id="L180">        room23.addAdjacent(room25,  DoorDirection.NORTH);</span>
+<span class="fc" id="L181">        room23.addAdjacent(room22,  DoorDirection.EAST);</span>
+<span class="fc" id="L182">        room23.addAdjacent(room21,  DoorDirection.SOUTH);</span>
+<span class="fc" id="L183">        room23.addAdjacent(room28,  DoorDirection.WEST);</span>
+
+<span class="fc" id="L185">        room25.addAdjacent(room23,  DoorDirection.SOUTH);</span>
+<span class="fc" id="L186">        room25.addAdjacent(room27,  DoorDirection.WEST);</span>
+
+<span class="fc" id="L188">        room27.addAdjacent(room25,  DoorDirection.EAST);</span>
+<span class="fc" id="L189">        room27.addAdjacent(room28,  DoorDirection.SOUTH);</span>
+
+<span class="fc" id="L191">        room28.addAdjacent(room27,  DoorDirection.NORTH);</span>
+<span class="fc" id="L192">        room28.addAdjacent(room23,  DoorDirection.EAST);</span>
+<span class="fc" id="L193">        room28.addAdjacent(room29,  DoorDirection.SOUTH);</span>
+
+<span class="fc" id="L195">        room29.addAdjacent(room28,  DoorDirection.NORTH);</span>
+<span class="fc" id="L196">        room29.addAdjacent(room21,  DoorDirection.EAST);</span>
+
+        // NEW EVENT INITIALISATION
+<span class="fc" id="L199">        room3.setEvent(new PositiveEvent(PositiveEventType.GREGGS, player, game, scoreManager));</span>
+<span class="fc" id="L200">        room5.setEvent(new NegativeEvent(NegativeEventType.THE3, player, game, scoreManager));</span>
+<span class="fc" id="L201">        room7.setEvent(new HiddenEvent(HiddenEventType.LONGBOI, player, game));</span>
+<span class="fc" id="L202">        room10.setEvent(new NegativeEvent(NegativeEventType.SYS2, player, game, scoreManager));</span>
+<span class="fc" id="L203">        room12.setEvent(new HiddenEvent(HiddenEventType.BOB, player, game));</span>
+<span class="fc" id="L204">        room15.setEvent(new PositiveEvent(PositiveEventType.MONSTER, player, game, scoreManager));</span>
+<span class="fc" id="L205">        room17.setEvent(new PositiveEvent(PositiveEventType.CUP_NOODLES, player, game, scoreManager));</span>
+<span class="fc" id="L206">        room18.setEvent(new HiddenEvent(HiddenEventType.INVERSE_CONTROLS, player, game));</span>
+<span class="fc" id="L207">        room19.setEvent(new NegativeEvent(NegativeEventType.JOB, player, game, scoreManager));</span>
+<span class="fc" id="L208">        room23.setEvent(new PositiveEvent(PositiveEventType.NETWORKING, player, game, scoreManager));</span>
+<span class="fc" id="L209">        room27.setEvent(new PositiveEvent(PositiveEventType.PIZZA, player, game, scoreManager));</span>
+<span class="fc" id="L210">        room29.setEvent(new NegativeEvent(NegativeEventType.ENG1, player, game, scoreManager));</span>
+<span class="fc" id="L211">        room20.setEvent(new NPCEvent(NPCEventType.LONGBOI, player, game, scoreManager));</span>
+
+<span class="fc" id="L213">        currentRoom = room1;</span>
+<span class="fc" id="L214">        updateDoors(currentRoom);</span>
+
+<span class="fc" id="L216">        positiveIndicator = new Texture(&quot;PositiveIndicator.png&quot;);</span>
+<span class="fc" id="L217">        negativeIndicator = new Texture(&quot;NegativeIndicator.png&quot;);</span>
+
+<span class="fc" id="L219">        updateEventIndicators();</span>
+<span class="fc" id="L220">    }</span>
+
+    /**
+     * Will change the current room, given the direction of the new room in relation to the current room.
+     * Updates the active doors, and repositions the player to the appropriate entrance location in the new room.
+     * @param direction The direction of the new room.
+     */
+    public void changeRoom(DoorDirection direction) {
+<span class="nc bnc" id="L228" title="All 2 branches missed.">        if (currentRoom.getEventType() != EventType.NONE) {</span>
+<span class="nc" id="L229">            currentRoom.getEvent().endEvent();</span>
+        }
+
+<span class="nc" id="L232">        Room newRoom = currentRoom.getAdjacent(direction);</span>
+<span class="nc" id="L233">        updateDoors(newRoom);</span>
+
+<span class="nc" id="L235">        currentRoom = newRoom;</span>
+<span class="nc" id="L236">        updatePlayerPosition(direction);</span>
+<span class="nc" id="L237">        updateEventIndicators();</span>
+
+<span class="nc bnc" id="L239" title="All 2 branches missed.">        if (newRoom.getEventType() != EventType.NONE) {</span>
+<span class="nc" id="L240">            newRoom.getEvent().startEvent();</span>
+        }
+
+<span class="nc bnc" id="L243" title="All 2 branches missed.">        if (newRoom.getExit()) {</span>
+            // Check for 25 second achievement
+<span class="nc bnc" id="L245" title="All 2 branches missed.">            if (timer.getTimeSeconds() &lt;= 25) { </span>
+<span class="nc" id="L246">                game.achievementManager.check_TWENTY_FIVE_SECONDS(); </span>
+            }
+            
+<span class="nc" id="L249">            game.achievementManager.saveAchievements();</span>
+            
+            // Transition to username input screen
+<span class="nc" id="L252">            game.setScreen(new UsernameInputScreen(game, timer, scoreManager));</span>
+        }
+<span class="nc" id="L254">    }</span>
+
+    /**
+     * Updates the player's position when changing rooms, to prevent the player colliding with the door the next frame.
+     */
+    private void updatePlayerPosition(DoorDirection direction) {
+<span class="nc" id="L260">        float worldWidth = game.viewport.getWorldWidth();</span>
+<span class="nc" id="L261">        float worldHeight = game.viewport.getWorldHeight();</span>
+<span class="nc bnc" id="L262" title="All 2 branches missed.">        if(direction == DoorDirection.NORTH) player.setCenter(worldWidth / 2, 2);</span>
+<span class="nc bnc" id="L263" title="All 2 branches missed.">        if(direction == DoorDirection.EAST) player.setCenter(2f, worldHeight / 2);</span>
+<span class="nc bnc" id="L264" title="All 2 branches missed.">        if(direction == DoorDirection.SOUTH) player.setCenter(worldWidth / 2, worldHeight - 2);</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">        if(direction == DoorDirection.WEST) player.setCenter(worldWidth - 2, worldHeight / 2);</span>
+<span class="nc" id="L266">    }</span>
+
+    /**
+     * Calls all the necessary draw methods.
+     */
+    public void drawMap() {
+<span class="nc" id="L272">        drawCurrentRoom();</span>
+<span class="nc" id="L273">        drawCurrentRoomEvent();</span>
+<span class="nc" id="L274">        drawDoors();</span>
+<span class="nc" id="L275">        drawIndicators();</span>
+<span class="nc" id="L276">    }</span>
+
+    /**
+     * Draws the current room.
+     */
+    private void drawCurrentRoom() {
+<span class="nc" id="L282">        Texture roomTexture = currentRoom.getRoomTexture();</span>
+<span class="nc" id="L283">        float worldWidth = game.viewport.getWorldWidth();</span>
+<span class="nc" id="L284">        float worldHeight = game.viewport.getWorldHeight();</span>
+<span class="nc" id="L285">        game.batch.draw(roomTexture, 0, 0, worldWidth, worldHeight);</span>
+<span class="nc" id="L286">    }</span>
+
+    /**
+     * Draws the current room event.
+     */
+    private void drawCurrentRoomEvent() {
+<span class="nc bnc" id="L292" title="All 2 branches missed.">        if (currentRoom.getEventType() != EventType.NONE) {</span>
+<span class="nc" id="L293">            currentRoom.getEvent().draw();</span>
+        }
+<span class="nc" id="L295">    }</span>
+
+    /**
+     * Draws each door for the current room.
+     */
+    private void drawDoors() {
+<span class="nc bnc" id="L301" title="All 2 branches missed.">        for (Door door : doors) {</span>
+<span class="nc" id="L302">            door.draw();</span>
+        }
+<span class="nc" id="L304">    }</span>
+
+    /**
+     * Will draw event indicator textures, if required, by each door.
+     */
+    private void drawIndicators() {
+<span class="nc bnc" id="L310" title="All 2 branches missed.">        if (indicatorTextures[0] != null) {</span>
+<span class="nc" id="L311">            game.batch.draw(indicatorTextures[0], 7.5f, 8f, 1f, 1f);</span>
+        }
+<span class="nc bnc" id="L313" title="All 2 branches missed.">        if (indicatorTextures[1] != null) {</span>
+<span class="nc" id="L314">            game.batch.draw(indicatorTextures[1], 15f, 4f, 1f, 1f);</span>
+        }
+<span class="nc bnc" id="L316" title="All 2 branches missed.">        if (indicatorTextures[2] != null) {</span>
+<span class="nc" id="L317">            game.batch.draw(indicatorTextures[2], 7.5f, 0f, 1f, 1f);</span>
+        }
+<span class="nc bnc" id="L319" title="All 2 branches missed.">        if (indicatorTextures[3] != null) {</span>
+<span class="nc" id="L320">            game.batch.draw(indicatorTextures[3], 0f, 4f, 1f, 1f);</span>
+        }
+<span class="nc" id="L322">    }</span>
+
+    /**
+     * Draw the UI associated with any active events.
+     */
+    public void drawEventUI() {
+<span class="nc bnc" id="L328" title="All 2 branches missed.">        if (currentRoom.getEventType() != EventType.NONE) {</span>
+<span class="nc" id="L329">            currentRoom.getEvent().drawUI();</span>
+        }
+<span class="nc" id="L331">    }</span>
+
+    /**
+     * Creates four doors at the start of the game.
+     * Assumes a viewport size of width 16 and height 9.
+     */
+    private void initialiseDoors() {
+<span class="fc" id="L338">        Door northDoor = new Door(this, DoorDirection.NORTH, 7.5f, 8f);</span>
+<span class="fc" id="L339">        Door eastDoor = new Door(this, DoorDirection.EAST, 15f, 4f);</span>
+<span class="fc" id="L340">        Door southDoor = new Door(this, DoorDirection.SOUTH, 7.5f, 0f);</span>
+<span class="fc" id="L341">        Door westDoor = new Door(this, DoorDirection.WEST, 0f, 4f);</span>
+
+<span class="fc" id="L343">        doors = new Door[]{northDoor, eastDoor, southDoor, westDoor};</span>
+<span class="fc" id="L344">    }</span>
+
+    /**
+     * Will update which doors are visible based on the new room
+     */
+    private void updateDoors(Room newRoom) {
+<span class="fc" id="L350">        Room[] allAdjacent = newRoom.getAllAdjacent();</span>
+<span class="fc bfc" id="L351" title="All 2 branches covered.">        for (int i = 0; i &lt; 4; i++) {</span>
+<span class="pc bpc" id="L352" title="1 of 2 branches missed.">            doors[i].setActive(allAdjacent[i] != null);</span>
+        }
+<span class="fc" id="L354">    }</span>
+
+    /**
+     * Update the event type indicators by the doors.
+     */
+    private void updateEventIndicators() {
+<span class="fc" id="L360">        Room[] rooms = currentRoom.getAllAdjacent();</span>
+<span class="fc bfc" id="L361" title="All 2 branches covered.">        for (int i = 0; i &lt; 4; i++) {</span>
+<span class="fc" id="L362">            indicatorTextures[i] = null;</span>
+
+            // Check Room actually exists before trying to access event type.
+<span class="pc bpc" id="L365" title="1 of 2 branches missed.">            if (rooms[i] == null) continue;</span>
+
+<span class="pc bpc" id="L367" title="1 of 2 branches missed.">            if (rooms[i].getEventType() == EventType.POSITIVE) {</span>
+<span class="nc" id="L368">                indicatorTextures[i] = positiveIndicator;</span>
+            }
+<span class="pc bpc" id="L370" title="1 of 2 branches missed.">            else if (rooms[i].getEventType() == EventType.NEGATIVE) {</span>
+<span class="nc" id="L371">                indicatorTextures[i] = negativeIndicator;</span>
+            }
+        }
+<span class="fc" id="L374">    }</span>
+
+    /**
+     * Called each frame.
+     * Checks if the player is colliding with doors and calls the update method of the room's event if it exists.
+     * @param delta the time elapsed since the last rendering.
+     */
+    public void update(float delta) {
+<span class="fc" id="L382">        checkDoorCollision();</span>
+<span class="pc bpc" id="L383" title="1 of 2 branches missed.">        if (currentRoom.getEventType() != EventType.NONE) {</span>
+<span class="nc" id="L384">            currentRoom.getEvent().update(delta);</span>
+        }
+<span class="fc" id="L386">    }</span>
+
+    /**
+     * Check whether the player is colliding with any of the doors.
+     */
+    public void checkDoorCollision() {
+<span class="fc bfc" id="L392" title="All 2 branches covered.">        for (Door door : doors) {</span>
+<span class="pc bpc" id="L393" title="2 of 4 branches missed.">            if (door.isActive &amp;&amp; player.checkCollision(door.doorSprite)) {</span>
+<span class="nc" id="L394">                changeRoom(door.direction);</span>
+<span class="nc" id="L395">                return;</span>
+            }
+        }
+<span class="fc" id="L398">    }</span>
+
+    /**
+     * Dispose of all room and door textures.
+     */
+    public void dispose() {
+<span class="fc bfc" id="L404" title="All 2 branches covered.">        for (Texture t : roomTextures.values()) {</span>
+<span class="fc" id="L405">            t.dispose();</span>
+<span class="fc" id="L406">        }</span>
+
+<span class="fc bfc" id="L408" title="All 2 branches covered.">        for (Door door : doors) {</span>
+<span class="fc" id="L409">            door.dispose();</span>
+        }
+
+<span class="fc" id="L412">        positiveIndicator.dispose();</span>
+<span class="fc" id="L413">        negativeIndicator.dispose();</span>
+<span class="fc" id="L414">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

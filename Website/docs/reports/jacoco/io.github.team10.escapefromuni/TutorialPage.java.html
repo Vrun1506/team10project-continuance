@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TutorialPage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">io.github.team10.escapefromuni</a> &gt; <span class="el_source">TutorialPage.java</span></div><h1>TutorialPage.java</h1><pre class="source lang-java linenums">package io.github.team10.escapefromuni;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+
+/**
+ * OLD CLASS
+ * Tutorial page displaying game instructions.
+ * Shows tutorial image. ESC key returns to main menu.
+ */
+public class TutorialPage implements Screen {
+
+    private final EscapeGame game;
+
+    public Texture tutorialImage;
+
+    /**
+     * Initialises a new TutorialPage instance.
+     * @param game Reference to the main {@link EscapeGame} instance.
+     */
+<span class="nc" id="L24">    public TutorialPage(EscapeGame game) {</span>
+<span class="nc" id="L25">        this.game = game;</span>
+<span class="nc" id="L26">    }</span>
+
+    @Override
+    public void show() {
+        // Load tutorial image
+<span class="nc" id="L31">        tutorialImage = new Texture(Gdx.files.internal(&quot;tutorial1.png&quot;));</span>
+<span class="nc" id="L32">    }</span>
+
+    /**
+     * Displays the tutorial image.
+     */
+    public void display() {
+<span class="nc" id="L38">        game.viewport.apply();</span>
+<span class="nc" id="L39">        game.batch.setProjectionMatrix(game.viewport.getCamera().combined);</span>
+<span class="nc" id="L40">        game.batch.begin();</span>
+<span class="nc" id="L41">        game.batch.draw(tutorialImage, 0, 0, game.viewport.getWorldWidth(), game.viewport.getWorldHeight());</span>
+<span class="nc" id="L42">        game.batch.end();</span>
+<span class="nc" id="L43">    }</span>
+
+    /**
+     * Handles ESC key press.
+     * Returns to main menu.
+     */
+    public void onEscPress() {
+<span class="nc" id="L50">        game.setScreen(new MainMenu(game));</span>
+<span class="nc" id="L51">        dispose();</span>
+<span class="nc" id="L52">    }</span>
+
+    @Override
+    public void render(float delta) {
+        // Check for ESC key press
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {</span>
+<span class="nc" id="L58">            onEscPress();</span>
+        }
+
+<span class="nc" id="L61">        Gdx.gl.glClearColor(0, 0, 0, 1);</span>
+<span class="nc" id="L62">        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</span>
+
+<span class="nc" id="L64">        display();</span>
+<span class="nc" id="L65">    }</span>
+
+    @Override
+    public void resize(int width, int height) {
+<span class="nc" id="L69">        game.viewport.update(width, height, true);</span>
+<span class="nc" id="L70">    }</span>
+
+    @Override
+<span class="nc" id="L73">    public void pause() {}</span>
+
+    @Override
+<span class="nc" id="L76">    public void resume() {}</span>
+
+    @Override
+<span class="nc" id="L79">    public void hide() {}</span>
+
+    @Override
+    public void dispose() {
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        if (tutorialImage != null) tutorialImage.dispose();</span>
+<span class="nc" id="L84">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

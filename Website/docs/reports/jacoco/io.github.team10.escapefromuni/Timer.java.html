@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Timer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">io.github.team10.escapefromuni</a> &gt; <span class="el_source">Timer.java</span></div><h1>Timer.java</h1><pre class="source lang-java linenums">package io.github.team10.escapefromuni;
+
+/**
+ * OLD CLASS
+ * Timer class that handles the in-game timer.
+ */
+public class Timer {
+
+    private float time;
+    private float timeLeft;
+
+    /**
+     * Initialises a Timer object with a current time of 0 and a timeLeft of 300 seconds.
+     */
+<span class="fc" id="L15">    public Timer() {</span>
+<span class="fc" id="L16">        this.time = 0;</span>
+<span class="fc" id="L17">        this.timeLeft = 300; // start at 300 seconds</span>
+<span class="fc" id="L18">    }</span>
+
+    /**
+     * Updates the timer.
+     * @param delta the time that has elapsed since the last rendering.
+     */
+    public void update(float delta) {
+<span class="fc" id="L25">        time += delta;</span>
+<span class="fc" id="L26">        timeLeft -= delta;</span>
+<span class="fc bfc" id="L27" title="All 2 branches covered.">        if (timeLeft &lt; 0) {</span>
+<span class="fc" id="L28">            timeLeft = 0;</span>
+        }
+<span class="fc" id="L30">    }</span>
+
+    public float getTime() {
+<span class="nc" id="L33">        return time;</span>
+    }
+
+    public int getTimeSeconds() {
+<span class="fc" id="L37">        return (int) time;</span>
+    }
+
+    public int getTimeLeftSeconds() {
+<span class="fc" id="L41">        return (int) timeLeft;</span>
+    }
+
+    public boolean hasReached(float seconds) {
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        return time &gt;= seconds;</span>
+    }
+
+    public boolean isFinished() {
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        return timeLeft &lt;= 0;</span>
+    }
+
+    public void reset() {
+<span class="fc" id="L53">        time = 0;</span>
+<span class="fc" id="L54">        timeLeft = 300;</span>
+<span class="fc" id="L55">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NPCEvent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">io.github.team10.escapefromuni</a> &gt; <span class="el_source">NPCEvent.java</span></div><h1>NPCEvent.java</h1><pre class="source lang-java linenums">package io.github.team10.escapefromuni;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
+
+/**
+ * NEW CLASS
+ * NPCEvent class that is used to create an NPC in a given room.
+ * Will talk to the player, and provide an answer based on what option the user chooses.
+ */
+public class NPCEvent extends Event {
+
+    private final NPCEventType type;
+    private final ScoreManager scoreManager;
+
+    private final Texture titlePanelTexture;
+    private final Texture questionPanelTexture;
+    private final Texture leftButtonTexture;
+    private final Texture rightButtonTexture;
+
+    private final Sprite titlePanelSprite;
+    private final Sprite questionPanelSprite;
+    private final Sprite leftButtonSprite;
+    private final Sprite rightButtonSprite;
+
+<span class="fc" id="L31">    private boolean questionAnswered = false;</span>
+<span class="fc" id="L32">    private float answerDisplayTimer = 0f;</span>
+
+    private final String questionText;
+<span class="fc" id="L35">    private String feedbackText = &quot;&quot;;</span>
+
+    private Rectangle leftButtonBounds;
+    private Rectangle rightButtonBounds;
+
+    /**
+     * Initialises an NPC event.
+     * @param type an NPCEventType enum value.
+     * @param player the current Player object.
+     * @param game the current EscapeGame object.
+     * @param scoreManager the current ScoreManager object.
+     */
+    public NPCEvent(NPCEventType type, Player player, EscapeGame game, ScoreManager scoreManager) {
+<span class="fc" id="L48">        super(EventType.NPC, player, game);</span>
+<span class="fc" id="L49">        this.type = type;</span>
+<span class="fc" id="L50">        questionText = type.getQuestionText();</span>
+<span class="fc" id="L51">        titlePanelTexture = new Texture(&quot;UI/Blue4x1Panel.png&quot;);</span>
+<span class="fc" id="L52">        questionPanelTexture = new Texture(&quot;UI/BlueBorder10x3Panel.png&quot;);</span>
+<span class="fc" id="L53">        leftButtonTexture = new Texture(&quot;UI/GreenBorder5x2Panel.png&quot;);</span>
+<span class="fc" id="L54">        rightButtonTexture = new Texture(&quot;UI/GreenBorder5x2Panel.png&quot;);</span>
+
+<span class="fc" id="L56">        titlePanelSprite = new Sprite(titlePanelTexture);</span>
+<span class="fc" id="L57">        questionPanelSprite = new Sprite(questionPanelTexture);</span>
+<span class="fc" id="L58">        leftButtonSprite = new Sprite(leftButtonTexture);</span>
+<span class="fc" id="L59">        rightButtonSprite = new Sprite(rightButtonTexture);</span>
+
+<span class="fc" id="L61">        this.scoreManager = scoreManager;</span>
+<span class="fc" id="L62">    }</span>
+
+    @Override
+    public void startEvent() {
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">        if (eventFinished) return;</span>
+<span class="fc" id="L67">        super.startEvent();</span>
+
+<span class="fc" id="L69">        player.enableMovement(false);</span>
+<span class="fc" id="L70">        AudioManager.getInstance().playEventSound(EventType.NPC);</span>
+<span class="fc" id="L71">        questionAnswered = false;</span>
+<span class="fc" id="L72">        initialiseQuizUI();</span>
+<span class="fc" id="L73">    }</span>
+
+    /**
+     * Initialises and positions all UI components for the quiz screen.
+     * This includes a title, question display and two achievement_texts (true or false).
+     */
+    private void initialiseQuizUI() {
+<span class="fc" id="L80">        float uiWidth = game.uiViewport.getWorldWidth();</span>
+<span class="fc" id="L81">        float uiHeight = game.uiViewport.getWorldHeight();</span>
+
+<span class="fc" id="L83">        titlePanelSprite.setSize(480f, 120f);</span>
+<span class="fc" id="L84">        titlePanelSprite.setCenter(uiWidth / 2f, uiHeight * 0.75f);</span>
+
+<span class="fc" id="L86">        questionPanelSprite.setSize(1200f, 360f);</span>
+<span class="fc" id="L87">        questionPanelSprite.setCenter(uiWidth / 2f, uiHeight * 0.5f);</span>
+
+<span class="fc" id="L89">        leftButtonSprite.setSize(600f, 240f);</span>
+<span class="fc" id="L90">        rightButtonSprite.setSize(600f, 240f);</span>
+<span class="fc" id="L91">        leftButtonSprite.setCenter(uiWidth / 2f - 320f, uiHeight * 0.20f);</span>
+<span class="fc" id="L92">        rightButtonSprite.setCenter(uiWidth / 2f + 320f, uiHeight * 0.20f);</span>
+
+<span class="fc" id="L94">        leftButtonBounds = new Rectangle(</span>
+<span class="fc" id="L95">            leftButtonSprite.getX(), leftButtonSprite.getY(),</span>
+<span class="fc" id="L96">            leftButtonSprite.getWidth(), leftButtonSprite.getHeight()</span>
+        );
+
+<span class="fc" id="L99">        rightButtonBounds = new Rectangle(</span>
+<span class="fc" id="L100">            rightButtonSprite.getX(), rightButtonSprite.getY(),</span>
+<span class="fc" id="L101">            rightButtonSprite.getWidth(), rightButtonSprite.getHeight()</span>
+        );
+<span class="fc" id="L103">    }</span>
+
+    @Override
+    public void endEvent() {
+<span class="fc" id="L107">        eventFinished = true;</span>
+<span class="fc" id="L108">        player.enableMovement(true);</span>
+
+<span class="fc" id="L110">        titlePanelTexture.dispose();</span>
+<span class="fc" id="L111">        questionPanelTexture.dispose();</span>
+<span class="fc" id="L112">        leftButtonTexture.dispose();</span>
+<span class="fc" id="L113">        rightButtonTexture.dispose();</span>
+<span class="fc" id="L114">    }</span>
+
+    @Override
+    public void update(float delta) {
+<span class="nc bnc" id="L118" title="All 2 branches missed.">        if (eventFinished) return;</span>
+
+        // End event 1 second after answering the question.
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        if (questionAnswered)</span>
+        {
+<span class="nc" id="L123">            answerDisplayTimer += delta;</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">            if (answerDisplayTimer &gt; 6f)</span>
+            {
+<span class="nc" id="L126">                endEvent();</span>
+            }
+<span class="nc" id="L128">            return;</span>
+        }
+
+<span class="nc bnc" id="L131" title="All 2 branches missed.">        if (Gdx.input.justTouched()) {</span>
+<span class="nc" id="L132">            Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);</span>
+<span class="nc" id="L133">            game.uiCamera.unproject(touchPos);</span>
+
+<span class="nc bnc" id="L135" title="All 2 branches missed.">            if (leftButtonBounds.contains(touchPos.x, touchPos.y)) {</span>
+                // TRUE selected.
+<span class="nc" id="L137">                handleAnswer(true);</span>
+            }
+<span class="nc bnc" id="L139" title="All 2 branches missed.">            else if (rightButtonBounds.contains(touchPos.x, touchPos.y)) {</span>
+                // FALSE selected.
+<span class="nc" id="L141">                handleAnswer(false);</span>
+            }
+        }
+<span class="nc" id="L144">    }</span>
+
+    /**
+     * Respond based on the players answer.
+     * @param answer {@code true} if the right button was pressed, {@code false} if the left was pressed.
+     */
+    private void handleAnswer(boolean answer) {
+<span class="nc" id="L151">        questionAnswered = true;</span>
+<span class="nc" id="L152">        answerDisplayTimer = 0f;</span>
+
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        if (answer) {</span>
+<span class="nc" id="L155">            feedbackText = &quot;If speed is desired\nSeek the holiest of meals\nThe one they call 'Greggs'&quot;;</span>
+        }
+        else {
+<span class="nc" id="L158">            feedbackText = &quot;Victory is near\nOne thing is decidable\nBut just partially&quot;;</span>
+            // what does this even mean? actual gobbledygook
+<span class="nc" id="L160">            scoreManager.increaseScore(-200);</span>
+        }
+<span class="nc" id="L162">    }</span>
+
+    @Override
+<span class="nc" id="L165">    public void draw() {}</span>
+
+    @Override
+    public void drawUI() {
+<span class="nc bnc" id="L169" title="All 2 branches missed.">        if (eventFinished) return;</span>
+
+<span class="nc" id="L171">        game.font.setColor(Color.BLACK);</span>
+<span class="nc" id="L172">        GlyphLayout layout = new GlyphLayout();</span>
+
+<span class="nc" id="L174">        titlePanelSprite.draw(game.batch);</span>
+<span class="nc" id="L175">        questionPanelSprite.draw(game.batch);</span>
+<span class="nc" id="L176">        leftButtonSprite.draw(game.batch);</span>
+<span class="nc" id="L177">        rightButtonSprite.draw(game.batch);</span>
+
+<span class="nc" id="L179">        float uiWidth = game.uiViewport.getWorldWidth();</span>
+
+<span class="nc" id="L181">        String titleText = type.getTitle();</span>
+<span class="nc" id="L182">        layout.setText(game.font, titleText);</span>
+<span class="nc" id="L183">        float titleX = (uiWidth - layout.width) / 2f;</span>
+<span class="nc" id="L184">        float titleY = titlePanelSprite.getY() + titlePanelSprite.getHeight() / 2f + layout.height / 2f;</span>
+<span class="nc" id="L185">        game.font.draw(game.batch, layout, titleX, titleY);</span>
+
+        // Draw question or feedback test, depending on whether the question has been answered.
+<span class="nc bnc" id="L188" title="All 2 branches missed.">        String displayText = questionAnswered ? feedbackText : questionText;</span>
+<span class="nc" id="L189">        layout.setText(game.font, displayText);</span>
+<span class="nc" id="L190">        float questionX = (uiWidth - layout.width) / 2f;</span>
+<span class="nc" id="L191">        float questionY = questionPanelSprite.getY() + questionPanelSprite.getHeight() / 2f + layout.height / 2f;</span>
+<span class="nc" id="L192">        game.font.draw(game.batch, layout, questionX, questionY);</span>
+
+<span class="nc" id="L194">        layout.setText(game.font, type.getLeftText());</span>
+<span class="nc" id="L195">        float trueTextX = leftButtonSprite.getX() + (leftButtonSprite.getWidth() - layout.width) / 2f;</span>
+<span class="nc" id="L196">        float trueTextY = leftButtonSprite.getY() + (leftButtonSprite.getHeight() + layout.height) / 2f;</span>
+<span class="nc" id="L197">        game.font.draw(game.batch, layout, trueTextX, trueTextY);</span>
+
+<span class="nc" id="L199">        layout.setText(game.font, type.getRightText());</span>
+<span class="nc" id="L200">        float falseTextX = rightButtonSprite.getX() + (rightButtonSprite.getWidth() - layout.width) / 2f;</span>
+<span class="nc" id="L201">        float falseTextY = rightButtonSprite.getY() + (rightButtonSprite.getHeight() + layout.height) / 2f;</span>
+<span class="nc" id="L202">        game.font.draw(game.batch, layout, falseTextX, falseTextY);</span>
+<span class="nc" id="L203">    }</span>
+
+    // getters and setters
+
+    /**
+     * Used for testing purposes.
+     * @return event type.
+     */
+    public NPCEventType getType() {
+<span class="nc" id="L212">        return type;</span>
+    }
+
+    /**
+     * Used for testing purposes.
+     * @return questionAnswered value.
+     */
+    public boolean getAnswered() {
+<span class="fc" id="L220">        return questionAnswered;</span>
+    }
+
+    /**
+     * Used for testing purposes.
+     * @return a list contains all sprites.
+     */
+    public Sprite[] getSprites() {
+<span class="fc" id="L228">        return new Sprite[]{titlePanelSprite, questionPanelSprite, leftButtonSprite, rightButtonSprite};</span>
+    }
+
+    /**
+     * Used for testing purposes.
+     * @return feedbackText value.
+     */
+    public String getFeedbackText() {
+<span class="fc" id="L236">        return feedbackText;</span>
+    }
+
+    /**
+     * Used for testing purposes.
+     * @return questionText value.
+     */
+    public String getQuestionText() {
+<span class="fc" id="L244">        return questionText;</span>
+    }
+
+    /**
+     * Used for testing purposes.
+     * @return scoreManager object.
+     */
+    public ScoreManager getScoreManager() {
+<span class="fc" id="L252">        return scoreManager;</span>
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Event.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">io.github.team10.escapefromuni</a> &gt; <span class="el_source">Event.java</span></div><h1>Event.java</h1><pre class="source lang-java linenums">package io.github.team10.escapefromuni;
+
+/**
+ * OLD CLASS
+ * Abstract base event class.
+ * Events are contained within a {@link Room}, where there can be up to 1 event per room.
+ * NEW CHANGES:
+ *      switch case in the init method that updates player achievement counters.
+ *      changed startEvent() so no longer abstract, has functionality for updating achievement progress.
+ */
+public abstract class Event {
+    public final EventType type;
+    protected boolean eventFinished;
+    protected Player player;
+    protected EscapeGame game;
+
+    /**
+     * Initialises a new Event object.
+     * @param type an EventType enum value.
+     * @param player the current Player object.
+     * @param game the current EscapeGame object.
+     */
+<span class="fc" id="L23">    public Event(EventType type, Player player, EscapeGame game) {</span>
+<span class="fc" id="L24">        this.type = type;</span>
+<span class="fc" id="L25">        this.player = player;</span>
+<span class="fc" id="L26">        this.game = game;</span>
+
+        // NEW SWITCH CASE FOR UPDATING COUNTS OF EACH EVENT
+        // USED FOR ACHIEVEMENTS
+<span class="pc bpc" id="L30" title="1 of 5 branches missed.">        switch (this.type) {</span>
+            case POSITIVE:
+<span class="fc" id="L32">                player.positive_events.y++;</span>
+<span class="fc" id="L33">                break;</span>
+            case NEGATIVE:
+<span class="fc" id="L35">                player.negative_events.y++;</span>
+<span class="fc" id="L36">                break;</span>
+            case HIDDEN:
+<span class="fc" id="L38">                player.hidden_events.y++;</span>
+<span class="fc" id="L39">                break;</span>
+            case NPC:
+                // Not an event but coded like one. Doesn't increment counters.
+<span class="fc" id="L42">                break;</span>
+            case NONE:
+                //nothing lol
+        }
+<span class="fc" id="L46">        player.total_events.y++;</span>
+<span class="fc" id="L47">    }</span>
+
+    /**
+     * Called when the event starts (e.g. the player enters the room).
+     * NEW - no longer an abstract method. Still overridden by events, but has functionality for achievements.
+     */
+    public void startEvent() {
+<span class="pc bpc" id="L54" title="1 of 5 branches missed.">        switch (this.type) {</span>
+            case POSITIVE:
+<span class="fc" id="L56">                player.positive_events.x++;</span>
+<span class="fc" id="L57">                game.achievementManager.check_POSITIVE_EVENTS(player.positive_events.x, player.positive_events.y);</span>
+<span class="fc" id="L58">                break;</span>
+            case NEGATIVE:
+<span class="fc" id="L60">                player.negative_events.x++;</span>
+<span class="fc" id="L61">                game.achievementManager.check_NEGATIVE_EVENTS(player.negative_events.x, player.negative_events.y);</span>
+<span class="fc" id="L62">                break;</span>
+            case HIDDEN:
+<span class="fc" id="L64">                player.hidden_events.x++;</span>
+<span class="fc" id="L65">                game.achievementManager.check_HIDDEN_EVENTS(player.hidden_events.x, player.hidden_events.y);</span>
+<span class="fc" id="L66">                break;</span>
+            case NPC:
+                // Not an event but coded like one. Doesn't increment counters.
+<span class="fc" id="L69">                break;</span>
+            case NONE:
+                //nothing lol
+        }
+<span class="fc" id="L73">        player.total_events.x++;</span>
+<span class="fc" id="L74">        game.achievementManager.check_ALL_EVENTS(player.total_events.x, player.total_events.y);</span>
+<span class="fc" id="L75">    }</span>
+
+    /**
+     * Called when the event should end.
+     * Disposes of resources and restores normal gameplay.
+     */
+    public abstract void endEvent();
+
+    /**
+     * Called every frame to update the event's logic.
+     * @param delta The time elapsed since the last frame in seconds.
+     */
+    public abstract void update(float delta);
+
+    /**
+     * Draws world-space graphics related to the event.
+     */
+    public abstract void draw();
+
+    /**
+     * Draws UI-space graphics for the event.
+     */
+    public abstract void drawUI();
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

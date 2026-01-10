@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LeaderboardPage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">io.github.team10.escapefromuni</a> &gt; <span class="el_source">LeaderboardPage.java</span></div><h1>LeaderboardPage.java</h1><pre class="source lang-java linenums">package io.github.team10.escapefromuni;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+
+/**
+ * NEW CLASS
+ * LeaderboardPage class that displays the top 5 usernames and scores.
+ */
+public class LeaderboardPage implements Screen {
+
+    private final EscapeGame game;
+    private final Screen previousScreen;
+    private Texture backgroundImage;
+    private Texture buttonTexture;
+    private BitmapFont font;
+    private GlyphLayout layout;
+
+    // UI elements
+    private Rectangle backButton;
+    private Rectangle score1Label;
+    private Rectangle score2Label;
+    private Rectangle score3Label;
+    private Rectangle score4Label;
+    private Rectangle score5Label;
+
+    // States
+    private boolean backHovered;
+
+    /**
+     * Initialises a new LeaderboardPage object.
+     * @param game the current EscapeGame object.
+     * @param previousScreen the previous screen, either GameScreen or MainMenu
+     */
+<span class="nc" id="L48">    public LeaderboardPage(EscapeGame game, Screen previousScreen) {</span>
+<span class="nc" id="L49">        this.game = game;</span>
+<span class="nc" id="L50">        this.previousScreen = previousScreen;</span>
+<span class="nc" id="L51">    }</span>
+
+    @Override
+    public void show() {
+        // Load textures
+<span class="nc" id="L56">        backgroundImage = new Texture(Gdx.files.internal(&quot;Settings_Background.png&quot;));</span>
+<span class="nc" id="L57">        buttonTexture = new Texture(Gdx.files.internal(&quot;ButtonBG.png&quot;));</span>
+
+<span class="nc" id="L59">        font = game.font;</span>
+<span class="nc" id="L60">        layout = new GlyphLayout();</span>
+
+        // Initialize UI
+<span class="nc" id="L63">        float screenWidth = game.uiViewport.getWorldWidth();</span>
+<span class="nc" id="L64">        float screenHeight = game.uiViewport.getWorldHeight();</span>
+<span class="nc" id="L65">        float centerX = screenWidth / 2f;</span>
+
+        // Back button
+<span class="nc" id="L68">        float buttonWidth = 400f;</span>
+<span class="nc" id="L69">        float buttonHeight = 80f;</span>
+<span class="nc" id="L70">        backButton = new Rectangle(centerX - buttonWidth / 2f, 200f, buttonWidth, buttonHeight);</span>
+
+        // Score tiles
+<span class="nc" id="L73">        score1Label = new Rectangle(centerX - buttonWidth / 2f, 700f, buttonWidth, buttonHeight);</span>
+<span class="nc" id="L74">        score2Label = new Rectangle(centerX - buttonWidth / 2f, 625f, buttonWidth, buttonHeight);</span>
+<span class="nc" id="L75">        score3Label = new Rectangle(centerX - buttonWidth / 2f, 550f, buttonWidth, buttonHeight);</span>
+<span class="nc" id="L76">        score4Label = new Rectangle(centerX - buttonWidth / 2f, 475f, buttonWidth, buttonHeight);</span>
+<span class="nc" id="L77">        score5Label = new Rectangle(centerX - buttonWidth / 2f, 400f, buttonWidth, buttonHeight);</span>
+
+<span class="nc" id="L79">        AudioManager.getInstance().playMenuMusic();</span>
+<span class="nc" id="L80">    }</span>
+
+    @Override
+    public void render(float delta) {
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {</span>
+<span class="nc" id="L85">            onBack();</span>
+        }
+
+<span class="nc" id="L88">        Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);</span>
+<span class="nc" id="L89">        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</span>
+
+<span class="nc" id="L91">        backHovered = isButtonHovered(backButton);</span>
+
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        if (isButtonClicked(backButton)) {</span>
+<span class="nc" id="L94">            onBack();</span>
+        }
+
+<span class="nc" id="L97">        display();</span>
+<span class="nc" id="L98">    }</span>
+
+    @Override
+    public void resize(int width, int height) {
+<span class="nc" id="L102">        game.uiViewport.update(width, height, true);</span>
+<span class="nc" id="L103">    }</span>
+
+    @Override
+<span class="nc" id="L106">    public void pause() {}</span>
+
+    @Override
+<span class="nc" id="L109">    public void resume() {}</span>
+
+    @Override
+<span class="nc" id="L112">    public void hide() {}</span>
+
+    @Override
+    public void dispose() {
+<span class="nc" id="L116">        backgroundImage.dispose();</span>
+<span class="nc" id="L117">        buttonTexture.dispose();</span>
+<span class="nc" id="L118">    }</span>
+
+    /**
+     * Checks if the button being currently hovered over is clicked.
+     * @param button the current button
+     * @return true if clicked, false otherwise.
+     */
+    private boolean isButtonClicked(Rectangle button) {
+        // click detector
+<span class="nc bnc" id="L127" title="All 2 branches missed.">        if (Gdx.input.justTouched()) {</span>
+<span class="nc" id="L128">            Vector2 touchPos = new Vector2(Gdx.input.getX(), Gdx.input.getY());</span>
+<span class="nc" id="L129">            game.uiViewport.unproject(touchPos);</span>
+
+<span class="nc bnc" id="L131" title="All 2 branches missed.">            if (button.contains(touchPos.x, touchPos.y)) {</span>
+<span class="nc" id="L132">                return true;</span>
+            }
+        }
+<span class="nc" id="L135">        return false;</span>
+    }
+
+    /**
+     * Checks if the current button is being hovered over.
+     * @param button the current button.
+     * @return true if hovered over, false otherwise.
+     */
+    private boolean isButtonHovered(Rectangle button) {
+        // detect mouse hover in UI coordinates
+<span class="nc" id="L145">        Vector2 mousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());</span>
+<span class="nc" id="L146">        game.uiViewport.unproject(mousePos);</span>
+<span class="nc" id="L147">        return button.contains(mousePos.x, mousePos.y);</span>
+    }
+
+    /**
+     * Navigates the user to the previous screen.
+     */
+    public void onBack() {
+<span class="nc" id="L154">        game.setScreen(previousScreen);</span>
+<span class="nc" id="L155">        dispose();</span>
+<span class="nc" id="L156">    }</span>
+
+    /**
+     * Displays UI elements to the screen.
+     */
+    public void display() {
+
+<span class="nc" id="L163">        game.viewport.apply();</span>
+<span class="nc" id="L164">        game.batch.setProjectionMatrix(game.viewport.getCamera().combined);</span>
+<span class="nc" id="L165">        game.batch.begin();</span>
+<span class="nc" id="L166">        game.batch.draw(backgroundImage, 0, 0, game.viewport.getWorldWidth(), game.viewport.getWorldHeight());</span>
+<span class="nc" id="L167">        game.batch.end();</span>
+
+<span class="nc" id="L169">        game.uiViewport.apply();</span>
+<span class="nc" id="L170">        game.batch.setProjectionMatrix(game.uiCamera.combined);</span>
+<span class="nc" id="L171">        game.batch.begin();</span>
+
+        // Screen title
+<span class="nc" id="L174">        String title = &quot;LEADERBOARD&quot;;</span>
+<span class="nc" id="L175">        layout.setText(font, title);</span>
+<span class="nc" id="L176">        float titleX = (game.uiViewport.getWorldWidth() - layout.width) / 2f;</span>
+<span class="nc" id="L177">        float titleY = game.uiViewport.getWorldHeight() - 150f;</span>
+<span class="nc" id="L178">        font.setColor(Color.WHITE);</span>
+<span class="nc" id="L179">        font.draw(game.batch, layout, titleX, titleY);</span>
+
+        // Draw back button
+<span class="nc" id="L182">        drawButton(backButton, &quot;Go Back&quot;, backHovered);</span>
+
+        // Read scores from save file and set text on score labels
+        try {
+<span class="nc" id="L186">            File scoreFile = new File(&quot;leaderboard.txt&quot;);</span>
+<span class="nc" id="L187">            scoreFile.createNewFile(); //only creates the file if it had not existed beforehand</span>
+<span class="nc" id="L188">            BufferedReader reader = new BufferedReader(new FileReader(scoreFile));</span>
+
+<span class="nc bnc" id="L190" title="All 2 branches missed.">            for (int i=1; i&lt;=5; i++) {</span>
+
+                // formats the record
+<span class="nc" id="L193">                String temp = &quot;N/A&quot;;</span>
+
+                try {
+<span class="nc" id="L196">                    temp = reader.readLine().replace(&quot;,&quot;, &quot;:   &quot;);</span>
+<span class="nc" id="L197">                } catch (Exception e) {</span>
+<span class="nc" id="L198">                    System.err.println(&quot;Couldn't interpret the score files! This could be because no high-scores were set yet.&quot;);</span>
+<span class="nc" id="L199">                    e.printStackTrace();</span>
+<span class="nc" id="L200">                }</span>
+
+                // gets the scorelabel corresponding to i
+<span class="nc" id="L203">                Field f = this.getClass().getDeclaredField((&quot;score&quot;+i+&quot;Label&quot;));</span>
+<span class="nc" id="L204">                f.setAccessible(true);</span>
+
+<span class="nc" id="L206">                drawTile((Rectangle) f.get(this), temp);</span>
+            }
+
+
+<span class="nc" id="L210">            reader.close();</span>
+
+<span class="nc" id="L212">        } catch (FileNotFoundException errorNoFile) {</span>
+<span class="nc" id="L213">            System.err.println(&quot;Failed to locate scores!&quot;);</span>
+<span class="nc" id="L214">            errorNoFile.printStackTrace();</span>
+
+<span class="nc" id="L216">        } catch (IOException errorIO) {</span>
+<span class="nc" id="L217">            System.err.println(&quot;Failed to read scores!&quot;);</span>
+<span class="nc" id="L218">            errorIO.printStackTrace();</span>
+
+<span class="nc" id="L220">        } catch (NoSuchFieldException errorNoField) {</span>
+<span class="nc" id="L221">            System.err.println(&quot;Failed to locate the score label fields in LeaderboardPage.&quot;);</span>
+<span class="nc" id="L222">            errorNoField.printStackTrace();</span>
+
+<span class="nc" id="L224">        } catch (IllegalAccessException errorNoAccess) {</span>
+<span class="nc" id="L225">            System.err.println(&quot;Couldn't access the score labels!&quot;);</span>
+<span class="nc" id="L226">            errorNoAccess.printStackTrace();</span>
+<span class="nc" id="L227">        }</span>
+
+<span class="nc" id="L229">        game.batch.end();</span>
+<span class="nc" id="L230">    }</span>
+
+    /**
+     * Draws the button to the screen.
+     * @param button the button to be drawn.
+     * @param text the text that the button should have.
+     * @param hovered whether the button is currently being hovered over or not.
+     */
+    private void drawButton(Rectangle button, String text, boolean hovered) {
+        // Draw button background texture
+<span class="nc bnc" id="L240" title="All 2 branches missed.">        if (hovered) {</span>
+<span class="nc" id="L241">            game.batch.setColor(1f, 1f, 0.5f, 1f);</span>
+        } else {
+<span class="nc" id="L243">            game.batch.setColor(Color.WHITE);</span>
+        }
+<span class="nc" id="L245">        game.batch.draw(buttonTexture, button.x, button.y, button.width, button.height);</span>
+<span class="nc" id="L246">        game.batch.setColor(Color.WHITE);</span>
+
+        // Draw button text
+<span class="nc" id="L249">        layout.setText(font, text);</span>
+<span class="nc" id="L250">        float textX = button.x + (button.width - layout.width) / 2f;</span>
+<span class="nc" id="L251">        float textY = button.y + (button.height + layout.height) / 2f;</span>
+
+<span class="nc" id="L253">        font.setColor(Color.WHITE);</span>
+<span class="nc" id="L254">        font.draw(game.batch, layout, textX, textY);</span>
+<span class="nc" id="L255">    }</span>
+
+    /**
+     * Draws a tile to the screen.
+     * @param tile the current tile.
+     * @param text the text the tile should have.
+     */
+    private void drawTile(Rectangle tile, String text) {
+
+        // Draw button text
+<span class="nc" id="L265">        game.batch.setColor(Color.WHITE);</span>
+<span class="nc" id="L266">        layout.setText(font, text);</span>
+<span class="nc" id="L267">        float textX = tile.x + (tile.width - layout.width) / 2f;</span>
+<span class="nc" id="L268">        float textY = tile.y + (tile.height + layout.height) / 2f;</span>
+
+<span class="nc" id="L270">        font.setColor(Color.WHITE);</span>
+<span class="nc" id="L271">        font.draw(game.batch, layout, textX, textY);</span>
+<span class="nc" id="L272">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

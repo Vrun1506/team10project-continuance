@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SettingsPage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">io.github.team10.escapefromuni</a> &gt; <span class="el_source">SettingsPage.java</span></div><h1>SettingsPage.java</h1><pre class="source lang-java linenums">package io.github.team10.escapefromuni;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+
+/**
+ * OLD CLASS
+ * Settings page for adjusting game audio.
+ */
+public class SettingsPage implements Screen {
+
+    private final EscapeGame game;
+    private final Screen previousScreen;
+    private Texture backgroundImage;
+    private Texture buttonTexture;
+    private Texture sliderBarTexture;
+    private Texture sliderKnobTexture;
+    private BitmapFont font;
+    private GlyphLayout layout;
+
+    // UI elements
+    private Rectangle backButton;
+    private Rectangle sliderBar;
+    private Rectangle sliderKnob;
+
+    // States
+    private boolean backHovered;
+    private boolean isDraggingSlider;
+    private int audioLevel;
+
+    /**
+     * Initialises a SettingsPage object.
+     * @param game the current EscapeGame object.
+     * @param previousScreen the previous screen the user was on.
+     */
+<span class="nc" id="L45">    public SettingsPage(EscapeGame game, Screen previousScreen) {</span>
+<span class="nc" id="L46">        this.game = game;</span>
+<span class="nc" id="L47">        this.previousScreen = previousScreen;</span>
+<span class="nc" id="L48">        this.audioLevel = (int)(AudioManager.getInstance().getVolume() * 100);</span>
+<span class="nc" id="L49">    }</span>
+
+    @Override
+    public void show() {
+        // Load textures
+<span class="nc" id="L54">        backgroundImage = new Texture(Gdx.files.internal(&quot;Settings_Background.png&quot;));</span>
+<span class="nc" id="L55">        buttonTexture = new Texture(Gdx.files.internal(&quot;ButtonBG.png&quot;));</span>
+<span class="nc" id="L56">        sliderBarTexture = new Texture(Gdx.files.internal(&quot;SliderBar.png&quot;));</span>
+<span class="nc" id="L57">        sliderKnobTexture = new Texture(Gdx.files.internal(&quot;SliderKnob.png&quot;));</span>
+
+<span class="nc" id="L59">        font = game.font;</span>
+<span class="nc" id="L60">        layout = new GlyphLayout();</span>
+
+        // Initialize UI
+<span class="nc" id="L63">        float screenWidth = game.uiViewport.getWorldWidth();</span>
+<span class="nc" id="L64">        float screenHeight = game.uiViewport.getWorldHeight();</span>
+<span class="nc" id="L65">        float centerX = screenWidth / 2f;</span>
+
+        // Back button
+<span class="nc" id="L68">        float buttonWidth = 400f;</span>
+<span class="nc" id="L69">        float buttonHeight = 80f;</span>
+<span class="nc" id="L70">        backButton = new Rectangle(centerX - buttonWidth / 2f, 200f, buttonWidth, buttonHeight);</span>
+
+        // Slider bar and knob to change volume
+<span class="nc" id="L73">        float sliderWidth = 600f;</span>
+<span class="nc" id="L74">        float sliderHeight = 40f;</span>
+<span class="nc" id="L75">        sliderBar = new Rectangle(centerX - sliderWidth / 2f, screenHeight / 2f - 50f, sliderWidth, sliderHeight);</span>
+
+<span class="nc" id="L77">        float knobSize = 60f;</span>
+<span class="nc" id="L78">        float knobX = sliderBar.x + (sliderBar.width * audioLevel / 100f) - knobSize / 2f;</span>
+<span class="nc" id="L79">        sliderKnob = new Rectangle(knobX, sliderBar.y - 10f, knobSize, knobSize);</span>
+
+<span class="nc" id="L81">        isDraggingSlider = false;</span>
+
+<span class="nc" id="L83">        AudioManager.getInstance().playMenuMusic();</span>
+<span class="nc" id="L84">    }</span>
+
+    /**
+     * Rendering UI elements.
+     */
+    public void display() {
+<span class="nc" id="L90">        game.viewport.apply();</span>
+<span class="nc" id="L91">        game.batch.setProjectionMatrix(game.viewport.getCamera().combined);</span>
+<span class="nc" id="L92">        game.batch.begin();</span>
+<span class="nc" id="L93">        game.batch.draw(backgroundImage, 0, 0, game.viewport.getWorldWidth(), game.viewport.getWorldHeight());</span>
+<span class="nc" id="L94">        game.batch.end();</span>
+
+<span class="nc" id="L96">        game.uiViewport.apply();</span>
+<span class="nc" id="L97">        game.batch.setProjectionMatrix(game.uiCamera.combined);</span>
+<span class="nc" id="L98">        game.batch.begin();</span>
+
+        // Settings title
+<span class="nc" id="L101">        String title = &quot;SETTINGS&quot;;</span>
+<span class="nc" id="L102">        layout.setText(font, title);</span>
+<span class="nc" id="L103">        float titleX = (game.uiViewport.getWorldWidth() - layout.width) / 2f;</span>
+<span class="nc" id="L104">        float titleY = game.uiViewport.getWorldHeight() - 150f;</span>
+<span class="nc" id="L105">        font.setColor(Color.WHITE);</span>
+<span class="nc" id="L106">        font.draw(game.batch, layout, titleX, titleY);</span>
+
+        // Draw audio level label
+<span class="nc" id="L109">        String volumeText = &quot;Volume: &quot; + audioLevel + &quot;%&quot;;</span>
+<span class="nc" id="L110">        layout.setText(font, volumeText);</span>
+<span class="nc" id="L111">        float volumeX = (game.uiViewport.getWorldWidth() - layout.width) / 2f;</span>
+<span class="nc" id="L112">        float volumeY = sliderBar.y + 120f;</span>
+<span class="nc" id="L113">        font.setColor(Color.WHITE);</span>
+<span class="nc" id="L114">        font.draw(game.batch, layout, volumeX, volumeY);</span>
+
+        // Draw slider bar
+<span class="nc" id="L117">        game.batch.setColor(Color.WHITE);</span>
+<span class="nc" id="L118">        game.batch.draw(sliderBarTexture, sliderBar.x, sliderBar.y, sliderBar.width, sliderBar.height);</span>
+
+        // Draw slider knob
+<span class="nc" id="L121">        game.batch.draw(sliderKnobTexture, sliderKnob.x, sliderKnob.y, sliderKnob.width, sliderKnob.height);</span>
+
+        // Draw back button
+<span class="nc" id="L124">        drawButton(backButton, &quot;Go Back&quot;, backHovered);</span>
+
+<span class="nc" id="L126">        game.batch.end();</span>
+<span class="nc" id="L127">    }</span>
+
+    /**
+     * Draws the given button to the screen.
+     * @param button the button to draw to the screen.
+     * @param text the text the button should have.
+     * @param hovered whether the button is currently hovered or not.
+     */
+    private void drawButton(Rectangle button, String text, boolean hovered) {
+<span class="nc bnc" id="L136" title="All 2 branches missed.">        if (hovered) {</span>
+<span class="nc" id="L137">            game.batch.setColor(1f, 1f, 0.5f, 1f);</span>
+        } else {
+<span class="nc" id="L139">            game.batch.setColor(Color.WHITE);</span>
+        }
+<span class="nc" id="L141">        game.batch.draw(buttonTexture, button.x, button.y, button.width, button.height);</span>
+<span class="nc" id="L142">        game.batch.setColor(Color.WHITE);</span>
+
+        // Draw button text
+<span class="nc" id="L145">        layout.setText(font, text);</span>
+<span class="nc" id="L146">        float textX = button.x + (button.width - layout.width) / 2f;</span>
+<span class="nc" id="L147">        float textY = button.y + (button.height + layout.height) / 2f;</span>
+
+<span class="nc" id="L149">        font.setColor(Color.WHITE);</span>
+<span class="nc" id="L150">        font.draw(game.batch, layout, textX, textY);</span>
+<span class="nc" id="L151">    }</span>
+
+    /**
+     * Updates the sound volume slider.
+     */
+    private void updateSlider() {
+<span class="nc" id="L157">        Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);</span>
+<span class="nc" id="L158">        game.uiCamera.unproject(mousePos);</span>
+
+<span class="nc bnc" id="L160" title="All 2 branches missed.">        if (Gdx.input.isTouched()) {</span>
+<span class="nc bnc" id="L161" title="All 4 branches missed.">            if (sliderBar.contains(mousePos.x, mousePos.y) || isDraggingSlider) {</span>
+<span class="nc" id="L162">                isDraggingSlider = true;</span>
+
+<span class="nc" id="L164">                float relativeX = mousePos.x - sliderBar.x;</span>
+<span class="nc" id="L165">                relativeX = Math.max(0, Math.min(relativeX, sliderBar.width));</span>
+
+<span class="nc" id="L167">                audioLevel = (int)((relativeX / sliderBar.width) * 100);</span>
+<span class="nc" id="L168">                adjustAudioLevel(audioLevel);</span>
+
+<span class="nc" id="L170">                sliderKnob.x = sliderBar.x + (sliderBar.width * audioLevel / 100f) - sliderKnob.width / 2f;</span>
+<span class="nc" id="L171">            }</span>
+        } else {
+<span class="nc" id="L173">            isDraggingSlider = false;</span>
+        }
+<span class="nc" id="L175">    }</span>
+
+    /**
+     * Changes the audio level.
+     * @param level the new level the audio should be.
+     */
+    public void adjustAudioLevel(int level) {
+<span class="nc bnc" id="L182" title="All 4 branches missed.">        if (level &gt;= 0 &amp;&amp; level &lt;= 100) {</span>
+<span class="nc" id="L183">            this.audioLevel = level;</span>
+<span class="nc" id="L184">            AudioManager.getInstance().setVolume(level / 100f);</span>
+        }
+<span class="nc" id="L186">    }</span>
+
+    /**
+     * Returns the current audio level.
+     * @return the current audio level.
+     */
+    public int getAudioLevel() {
+<span class="nc" id="L193">        return audioLevel;</span>
+    }
+
+    /**
+     * Checks if the button being currently hovered over is clicked.
+     * @param button the current button
+     * @return true if clicked, false otherwise.
+     */
+    private boolean isButtonClicked(Rectangle button) {
+<span class="nc bnc" id="L202" title="All 2 branches missed.">        if (Gdx.input.justTouched()) {</span>
+<span class="nc" id="L203">            Vector2 touchPos = new Vector2(Gdx.input.getX(), Gdx.input.getY());</span>
+<span class="nc" id="L204">            game.uiViewport.unproject(touchPos);</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">            if (button.contains(touchPos.x, touchPos.y)) {</span>
+<span class="nc" id="L206">                return true;</span>
+            }
+        }
+<span class="nc" id="L209">        return false;</span>
+    }
+
+    /**
+     * Checks if the current button is being hovered over.
+     * @param button the current button.
+     * @return true if hovered over, false otherwise.
+     */
+    private boolean isButtonHovered(Rectangle button) {
+        // detect mouse hover in UI coordinates
+<span class="nc" id="L219">        Vector2 mousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());</span>
+<span class="nc" id="L220">        game.uiViewport.unproject(mousePos);</span>
+<span class="nc" id="L221">        return button.contains(mousePos.x, mousePos.y);</span>
+    }
+
+    /**
+     * Navigates the user to the previous screen.
+     */
+    public void onBack() {
+<span class="nc" id="L228">        game.setScreen(previousScreen);</span>
+<span class="nc" id="L229">        dispose();</span>
+<span class="nc" id="L230">    }</span>
+
+    @Override
+    public void render(float delta) {
+<span class="nc bnc" id="L234" title="All 2 branches missed.">        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {</span>
+<span class="nc" id="L235">            onBack();</span>
+        }
+
+<span class="nc" id="L238">        Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);</span>
+<span class="nc" id="L239">        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</span>
+
+<span class="nc" id="L241">        updateSlider();</span>
+
+<span class="nc" id="L243">        backHovered = isButtonHovered(backButton);</span>
+
+<span class="nc bnc" id="L245" title="All 2 branches missed.">        if (isButtonClicked(backButton)) {</span>
+<span class="nc" id="L246">            onBack();</span>
+        }
+
+<span class="nc" id="L249">        display();</span>
+<span class="nc" id="L250">    }</span>
+
+    @Override
+    public void resize(int width, int height) {
+<span class="nc" id="L254">        game.uiViewport.update(width, height, true);</span>
+<span class="nc" id="L255">    }</span>
+
+    @Override
+<span class="nc" id="L258">    public void pause() {}</span>
+
+    @Override
+<span class="nc" id="L261">    public void resume() {}</span>
+
+    @Override
+<span class="nc" id="L264">    public void hide() {}</span>
+
+    @Override
+    public void dispose() {
+<span class="nc" id="L268">        backgroundImage.dispose();</span>
+<span class="nc" id="L269">        buttonTexture.dispose();</span>
+<span class="nc" id="L270">        sliderBarTexture.dispose();</span>
+<span class="nc" id="L271">        sliderKnobTexture.dispose();</span>
+<span class="nc" id="L272">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
