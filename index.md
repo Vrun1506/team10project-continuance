@@ -18,7 +18,7 @@ Your campus breakout begins here. Play Escape From Uni.
 
 > Tip: On some systems you may need to allow running unsigned apps. Run with: `java -jar Escape_From_Uni.jar`
 
-Alternatively, you can download the game from our official GitHub release [Our official GitHub release](https://github.com/Vrun1506/team10project-continuance/releases/tag/1.0.0)
+Alternatively, you can download the game from our official GitHub release: [Our official GitHub release](https://github.com/Vrun1506/team10project-continuance/releases/tag/1.0.0)
 
 ## Old Team 7 Documentation for the November submission window (PDF)
 
@@ -35,18 +35,29 @@ Alternatively, you can download the game from our official GitHub release [Our o
 - [Evaluation (Eval2.pdf)]()
 - [Continuous Integration (CI) (CI2.pdf)]()
 
+## New Documentation (Google Drive) for Submission 2 due in January from Team 7
+
 ## Testing reports
 
 ### Checkstyle Code Reports
 
-** Game Code Consistency Report: **
+**Game Code Consistency Report:**
 
 <iframe src="Website/docs/reports/checkstyle/core/main.html" width="100%" height="600" style="border: 1px solid #000;"></iframe>
 
 
-** Test Code Consistency Report:
+**Test Code Consistency Report:**
 
 <iframe src="Website/docs/reports/checkstyle/core/main.html" width="100%" height="600" style="border: 1px solid #000;"></iframe>
+
+
+
+### JaCoCo Test Coverage report
+
+**Test Coverage Report:**
+
+<iframe src="Website/docs/reports/jacoco/index.html" width="100%" height="600" style="border: 1px solid #000;"></iframe>
+
 
 
 
