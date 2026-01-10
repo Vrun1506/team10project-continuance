@@ -1,6 +1,6 @@
-# Escape From Uni
+# Welcome to Escape From Uni
 
-Your campus breakout begins here. Play Escape From Uni.
+Your campus breakout begins here.
 
 # Team Members
 - [Varun Nayak](https://www.github.com/Vrun1506)
