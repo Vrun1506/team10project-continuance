@@ -21,10 +21,10 @@ Alternatively, you can download the game from our official GitHub release: [Our 
 ## GitHub repositories 
 
 **Old Team 10 GitHub Repository due in November 2025**
-https://github.com/alistudentgit/team10project
+[Old Team Repo for Nov submission prior to our takeover:](https://github.com/alistudentgit/team10project)
 
 **New Team 7 GitHub Repository due in January 2026**
-https://github.com/Vrun1506/team10project-continuance
+[Team Repo for Jan submission](https://github.com/Vrun1506/team10project-continuance)
 
 
 ## Old Team 7 Documentation for the November submission window (PDF)
@@ -44,11 +44,11 @@ https://github.com/Vrun1506/team10project-continuance
 
 ## New Documentation (Google Drive) for Submission 2 due in January from Team 7 (WITH FULL EDITOR PERMISSIONS)
 
-- <a href="https://docs.google.com/document/d/1vClVzyRyB1Jl8XOTSKQOmo-ncYLR12J5jfrWSiqIPK4/edit?usp=sharing" target="_blank">Change Report</a>
-- <a href="https://docs.google.com/document/d/1lBK4A56g47P9UbvHHruwrrzSc-XqoZqnNrQV8FCQE5I/edit?usp=sharing" target="_blank">Implementation</a>
-- <a href="https://docs.google.com/document/d/14iI3FgdnEt2vqVst6WNV1Zwqqa02Si_jDdksdJCayFU/edit?usp=sharing" target="_blank">Testing</a>
-- <a href="https://docs.google.com/document/d/1hODIOdoXncceYOCO8xjJm8qRctQoHV9sn9L-3KAYyP8/edit?usp=sharing" target="_blank">User Evaluation</a>
-- <a href="https://docs.google.com/document/d/1RcTtQWnfwZG9uEBkW1WW5IOyxctZFoSl/edit?usp=sharing" target="_blank">Continuous Integration (CI)</a>
+- <a href="https://docs.google.com/document/d/1vClVzyRyB1Jl8XOTSKQOmo-ncYLR12J5jfrWSiqIPK4/edit?usp=sharing">Change Report</a>
+- <a href="https://docs.google.com/document/d/1lBK4A56g47P9UbvHHruwrrzSc-XqoZqnNrQV8FCQE5I/edit?usp=sharing">Implementation</a>
+- <a href="https://docs.google.com/document/d/14iI3FgdnEt2vqVst6WNV1Zwqqa02Si_jDdksdJCayFU/edit?usp=sharing">Testing</a>
+- <a href="https://docs.google.com/document/d/1hODIOdoXncceYOCO8xjJm8qRctQoHV9sn9L-3KAYyP8/edit?usp=sharing">User Evaluation</a>
+- <a href="https://docs.google.com/document/d/1RcTtQWnfwZG9uEBkW1WW5IOyxctZFoSl/edit?usp=sharing">Continuous Integration (CI)</a>
 
 ## Testing reports
 

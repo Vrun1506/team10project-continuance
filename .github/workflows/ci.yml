@@ -100,6 +100,8 @@ jobs:
       # What gets printed below pipeline in node view after jobs have reached completion. 
         if: always()
         run: |
+          echo "NOTE TO DEVS: If you are going to continue working on the code after pushing, run git pull to fetch all of the reports." 
+          echo "It won't do it automatically and will require you to rebase if you start the next commit."
           echo "You might have to refresh the page before viewing the artifacts."
           echo "JAR file has been created"
           echo "# Automated Tests Summary" >> $GITHUB_STEP_SUMMARY
