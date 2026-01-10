@@ -120,6 +120,10 @@ jobs:
   deploy-website:
     needs: pipeline
     runs-on: ubuntu-latest
+    
+    environment:
+      name: github-pages
+
     steps:
       - name: Get all of the code from GitHub
         uses: actions/checkout@v4
