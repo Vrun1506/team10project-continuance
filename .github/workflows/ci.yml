@@ -41,7 +41,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      # Operations that are responsible for creating the reports and the JAR file. 
+      # Operations that are responsible for creating the reports and the JAR file.
       - name: Run automated tests and write reports
         run: ./gradlew clean test jacocoTestReport checkstyleMain checkstyleTest --stacktrace
 
@@ -75,7 +75,10 @@ jobs:
           path: Game/lwjgl3/build/libs/*.jar
 
       - name: Copy to Website folder # Copy reports to Website/docs so it can be viewed on the website as well. Makes our lives easier.
-            # Determines the validity of the links in our testing doc. Additional layer of security in case I can't get a constant link to the resource.
+            # Determines the validity of the links in our testing doc. Additional layer of security in case I can't get a constant link to the resource
+            # We had issues with deployment of our website last time so want to automate it so it at least works on demand.
+
+            # Creates new directories in the existing code
         run: |
           mkdir -p ../Website/docs/reports/jacoco
           mkdir -p ../Website/docs/reports/checkstyle/core
@@ -87,36 +90,58 @@ jobs:
           cp -r ../Game/core/build/reports/tests/test/* ../Website/docs/reports/tests/
           cp ../Game/lwjgl3/build/libs/*.jar ../Website/docs/JAR-file/Escape_From_Uni.jar
 
+      # The above 4 lines basically just copies all of the files of the reports from the artifacts after they have been created to the desired location for uploading to our team website.
+      # Just means that we don't have to manually upload our commits to our repository. 
+
       - name: Push the 3 reports and the JAR file to the repo
-      # Commits the three reports and the JAR file to the Website folder
+      # Name kinda just speaks for itself. We move the files to the repo after moving them into the desired path. 
+      # I found repos and forums for automating pushes once files have been created to push the code back to the repo.
+      # https://github.com/marketplace/actions/github-push
+
         run: |
           cd ..
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add Website/docs/reports/* Website/docs/JAR-file/* || true
+          git add Website/docs/reports/* Website/docs/JAR-file/*
           git commit -m "Update reports and JAR from CI pipeline [skip ci]"
           git push
 
+        # The above few lines of code literally just follows the same pipeline as we would have with just making a commit in our own directory. 
+        # We track all of the new files that have been created using git commands, and we are using the GitHub Actions Bot config to essentially push our files to the repository.
+        # After we commit our files, expect a commit from "github-actions[bot]" in the history as it will be adding our reports and everything else. 
+
 
       - name: Result of all operations in pipeline
-      # What gets printed below pipeline in node view after jobs have reached completion. 
+      # What gets printed below pipeline in node view after jobs have reached completion.
+      # When we commit our files, everything that's been tracked will be committed when we run "git add ."
+      # However, when we upload our new files to the repo using the GitHub Actions Bot, we will not have added the report files to the repository.
+      # As a result, we need to run git pull to get all of the changes (i.e. just the new report uploads and the JAR file)
+
         if: always()
         run: |
-          echo "NOTE TO DEVS: If you are going to continue working on the code after pushing, run git pull to fetch all of the reports." 
-          echo "It won't do it automatically and will require you to rebase if you start the next commit."
-          echo "You might have to refresh the page before viewing the artifacts."
-          echo "JAR file has been created"
+          echo "NOTE TO DEVS (Louis and George): If you are going to continue working on the code after pushing, run git pull to fetch all of the reports." 
+          echo "It won't do it automatically and will require you to rebase if you start the next commit before pulling the files on the repo."
+          echo "You might have to refresh the page before viewing the artifacts because they won't automatically appear on there."
+          echo "JAR file has been created."
           echo "# Automated Tests Summary" >> $GITHUB_STEP_SUMMARY
-          echo "All of the automated tests have been finished. Open index.html after downloading the test-results/ folder" >> $GITHUB_STEP_SUMMARY
-          echo "## Test Coverage Report using JaCoCo" >> $GITHUB_STEP_SUMMARY
+          echo "All of the automated tests have been finished. Open index.html after downloading the test-results/ folder." >> $GITHUB_STEP_SUMMARY
+          echo "Once the website build has finished, you can also view the test results at the following url: https://vrun1506.github.io/team10project-continuance/Website/docs/reports/tests/index.html">> $GITHUB_STEP_SUMMARY
+
+          echo "# Test Coverage Report using JaCoCo" >> $GITHUB_STEP_SUMMARY
           echo "The test coverage report can be accessed as an artifact below. Download the test-coverage/ folder and open index.html to view how much of our codebase our tests cover." >> $GITHUB_STEP_SUMMARY
-          echo "The ones where there are no coverage are the cases where we felt that it would be more valuable to implement a manual testing schema."
+          echo "Alternatively, you can view the report on our website once it has finished bulding at https://vrun1506.github.io/team10project-continuance/Website/docs/reports/jacoco/index.html" >>$GITHUB_STEP_SUMMARY
+          echo "Where there is a significant lack of coverage, we chose to implement a manual testing schema."
+
           echo "## Code consistency report" >> $GITHUB_STEP_SUMMARY
           echo "Checkstyle report has been made. To view the report, download checkstyle-report/ folder." >> $GITHUB_STEP_SUMMARY
-          echo "To view the styling report for the game code itself, open main.html"
+          echo "To view the styling report for the game code itself, open main.html."
+          echo "Alternatively, once the website has been built, you can also see this at https://vrun1506.github.io/team10project-continuance/Website/docs/reports/checkstyle/core/main.html"
           echo "To view the styling report for our test code, open test.html"
+          echo "Alternatively, once the website has been built, you can also see this at https://vrun1506.github.io/team10project-continuance/Website/docs/reports/checkstyle/core/test.html"
   
   # Deploys website with all of the changes with every commit
+  # Looked at the GitHub Docs for deployment to find the fixes for what I was missing (https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
+  # Stacktrace pointed out missing configs which I studied (refer to the issue that I closed: https://github.com/Vrun1506/team10project-continuance/issues/8)
   deploy-website:
     needs: pipeline
     runs-on: ubuntu-latest
@@ -128,7 +153,7 @@ jobs:
       - name: Get all of the code from GitHub
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0 # This basically makes sure that we get all of the code and stuff from rebase and the commit history. 
 
       - name: Configure GitHub Pages to deploy our website
         uses: actions/configure-pages@v4
@@ -136,7 +161,7 @@ jobs:
       - name: Upload all of the website code to GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "."
+          path: "." # The index.md file is on the root of the project and so this is just pointing to that path. 
       
       - name: Deploy website
         id: deployment
