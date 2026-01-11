@@ -157,13 +157,13 @@ public class NegativeEvent extends Event {
         if (answer == type.getCorrectAnswer()) {
             feedbackText = "Correct: Score +500";
             scoreManager.increaseScore(500);
-            game.achievementManager.check_PASS();
+            if (type == NegativeEventType.THE3) { game.achievementManager.check_PASS(); }
         }
         else {
             feedbackText = "Incorrect: Speed Decrease, Score -250";
             player.increaseSpeed(-2f);
             scoreManager.increaseScore(-250);
-            game.achievementManager.check_FAIL();
+            if (type == NegativeEventType.THE3) { game.achievementManager.check_FAIL(); }
         }
     }
 
