@@ -96,7 +96,7 @@ jobs:
       - name: Push the 3 reports and the JAR file to the repo
       # Name kinda just speaks for itself. We move the files to the repo after moving them into the desired path. 
       # I found repos and forums for automating pushes once files have been created to push the code back to the repo.
-      # https://github.com/marketplace/actions/github-push
+      # https://github.com/actions/checkout?tab=readme-ov-file
 
         run: |
           cd ..
