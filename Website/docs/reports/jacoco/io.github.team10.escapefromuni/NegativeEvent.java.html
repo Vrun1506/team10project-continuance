@@ -157,13 +157,13 @@ public class NegativeEvent extends Event {
 <span class="nc bnc" id="L157" title="All 2 branches missed.">        if (answer == type.getCorrectAnswer()) {</span>
 <span class="nc" id="L158">            feedbackText = &quot;Correct: Score +500&quot;;</span>
 <span class="nc" id="L159">            scoreManager.increaseScore(500);</span>
-<span class="nc" id="L160">            game.achievementManager.check_PASS();</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">            if (type == NegativeEventType.THE3) { game.achievementManager.check_PASS(); }</span>
         }
         else {
 <span class="nc" id="L163">            feedbackText = &quot;Incorrect: Speed Decrease, Score -250&quot;;</span>
 <span class="nc" id="L164">            player.increaseSpeed(-2f);</span>
 <span class="nc" id="L165">            scoreManager.increaseScore(-250);</span>
-<span class="nc" id="L166">            game.achievementManager.check_FAIL();</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">            if (type == NegativeEventType.THE3) { game.achievementManager.check_FAIL(); }</span>
         }
 <span class="nc" id="L168">    }</span>
 
