@@ -157,6 +157,7 @@ public class LeaderboardPage implements Screen {
 
     /**
      * Displays UI elements to the screen.
+     * Is also responsible for reading from the 'leaderboard.txt' file.
      */
     public void display() {
 

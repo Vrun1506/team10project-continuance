@@ -51,6 +51,8 @@ public class Player {
         float centerY = game.viewport.getWorldHeight() / 2f;
         playerSprite.setCenter(centerX, centerY);
         this.movementEnabled = true;
+
+        // NEW for fixing collision when controls become inverted
         this.controlsInverted = false;
     }
 
@@ -98,7 +100,7 @@ public class Player {
                 playerSprite.translateY(-speed * delta);
             }
         }
-        } else { //if the controls are inverted, swap the collision stuff
+        } else { // NEW if the controls are inverted, also invert collision requirements
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             if (playerCenterX < worldWidth - EDGE_LIMIT) {
                 playerSprite.translateX(-speed * delta);
@@ -131,6 +133,11 @@ public class Player {
         this.movementEnabled = enabled;
     }
 
+    // NEW SUBROUTINE
+    /** 
+     * Flips or un-flips the controls of the player.
+     * @param newValue boolean representing whether the player's controls will be set to inverted.
+     */
     public void setControlsInverted(boolean newValue)
     {
         this.controlsInverted = newValue;

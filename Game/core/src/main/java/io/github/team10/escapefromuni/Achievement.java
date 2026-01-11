@@ -19,6 +19,11 @@ public class Achievement {
         this.complete = complete;
     }
 
+    
+    /** 
+     * Used to write to the achivements.txt file
+     * @return String
+     */
     @Override
     public String toString() {
         return getType() + "|" + isComplete();

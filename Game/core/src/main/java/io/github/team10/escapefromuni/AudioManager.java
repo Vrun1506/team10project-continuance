@@ -20,7 +20,7 @@ public class AudioManager {
     private Music gameMusic;
 
     // Sound effects (played once when the even is triggered or button click)
-    private Sound npcEventSound;
+    private Sound npcEventSound; // NEW
     private Sound clickSound;
     private Sound negativeEventSound;
     private Sound positiveEventSound;
@@ -67,6 +67,8 @@ public class AudioManager {
             negativeEventSound = Gdx.audio.newSound(Gdx.files.internal("NegMus.mp3"));
             positiveEventSound = Gdx.audio.newSound(Gdx.files.internal("PosMus.mp3"));
             hiddenEventSound = Gdx.audio.newSound(Gdx.files.internal("HidMus.mp3"));
+
+            // NEW Sound resource for the NPC
             npcEventSound = Gdx.audio.newSound(Gdx.files.internal("PosMus.mp3"));
 
             // NEW CLICK SOUND
@@ -116,7 +118,7 @@ public class AudioManager {
             case HIDDEN:
                 eventSound = hiddenEventSound;
                 break;
-            case NPC:
+            case NPC: // NEW
                 eventSound = npcEventSound;
                 break;
             default:
@@ -195,7 +197,7 @@ public class AudioManager {
         if (gameMusic != null) gameMusic.dispose();
         if (negativeEventSound != null) negativeEventSound.dispose();
         if (positiveEventSound != null) positiveEventSound.dispose();
-        if (npcEventSound != null) npcEventSound.dispose();
+        if (npcEventSound != null) npcEventSound.dispose(); // NEW
         if (hiddenEventSound != null) hiddenEventSound.dispose();
     }
 }

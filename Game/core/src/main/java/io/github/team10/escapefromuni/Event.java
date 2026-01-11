@@ -37,11 +37,11 @@ public abstract class Event {
             case HIDDEN:
                 player.hidden_events.y++;
                 break;
-            case NPC:
-                // Not an event but coded like one. Doesn't increment counters.
+            case NPC: // NEW
+                // Not an event but coded like one, as it shares many functions. Doesn't increment counters.
                 break;
             case NONE:
-                //nothing lol
+                //nothing
         }
         player.total_events.y++;
     }
@@ -64,11 +64,11 @@ public abstract class Event {
                 player.hidden_events.x++;
                 game.achievementManager.check_HIDDEN_EVENTS(player.hidden_events.x, player.hidden_events.y);
                 break;
-            case NPC:
-                // Not an event but coded like one. Doesn't increment counters.
+            case NPC: // NEW
+                // Not an event but coded like one, as it shares many functions. Doesn't increment counters.
                 break;
             case NONE:
-                //nothing lol
+                //nothing
         }
         player.total_events.x++;
         game.achievementManager.check_ALL_EVENTS(player.total_events.x, player.total_events.y);

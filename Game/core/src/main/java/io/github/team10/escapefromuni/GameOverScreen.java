@@ -137,15 +137,13 @@ public class GameOverScreen implements Screen {
         loseScreen.dispose();
     }
 
+    // NEW function for leaderboard implementation
     /**
      * Writes the player score to file - 'leaderboard.txt'.
+     * Creates 'leaderboard.txt' if one isn't found. This ends up in the same directory as the jar file.
      * @param newScore the new score to write.
      */
     public void writeScores(int newScore) {
-
-        // System.out.println(("SCORE:"+newScore));
-
-        // String name = inputListener.name;
 
         try {
 
@@ -158,7 +156,7 @@ public class GameOverScreen implements Screen {
             ArrayList<Integer> oldScores = new ArrayList<Integer>();
 
             for (int i=0; i<5; i++) {
-                //entire record keeping CSV format
+                // entire record keeping CSV format
                 String temp = reader.readLine();
 
                 if (temp == null){
@@ -166,7 +164,7 @@ public class GameOverScreen implements Screen {
                 }
                 oldRecords.add(temp);
 
-                //grabs just the score
+                // grabs just the score
                 try {
                     Integer tempInt = Integer.parseInt(temp.split(",")[1]);
                     oldScores.add(tempInt);

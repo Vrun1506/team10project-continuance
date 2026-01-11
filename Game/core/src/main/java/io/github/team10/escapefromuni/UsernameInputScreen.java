@@ -87,7 +87,7 @@ public class UsernameInputScreen implements Screen {
 
     @Override
     public void dispose() {
-        System.out.println("no more input PROCESSSSOR");
+        System.out.println("The text-field input processor has been disabled.");
         Gdx.input.setInputProcessor(null);
         screen.dispose();
     }
@@ -106,9 +106,9 @@ public class UsernameInputScreen implements Screen {
                     return true;
                 }
 
+                // progress to next screen upon ENTER key press
                 if (character == '\n') {
-                    System.out.println("new game over screen YAAAAAY");
-                    // YAYYYYYY
+                    System.out.println("Screen changed from UsernameInput to GameOver.");
                     dispose();
                     game.setScreen(new GameOverScreen(game, true, timer, scoreManager, nameText));
 

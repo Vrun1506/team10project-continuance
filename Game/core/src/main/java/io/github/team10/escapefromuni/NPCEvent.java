@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector3;
  * NEW CLASS
  * NPCEvent class that is used to create an NPC in a given room.
  * Will talk to the player, and provide an answer based on what option the user chooses.
+ * Functionally similar to the NegativeEvent class as it shares many characteristics, namely the dialogue UI.
  */
 public class NPCEvent extends Event {
 

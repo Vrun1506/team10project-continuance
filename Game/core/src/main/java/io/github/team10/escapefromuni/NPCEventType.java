@@ -7,7 +7,7 @@ package io.github.team10.escapefromuni;
 public enum NPCEventType {
 
     LONGBOI("Chat with HIM",
-        "I am the long one\nI know many many truths\nWHAT IS IT YOU SEEK?",
+        "I am the long one\nI know very many truths\nWHAT IS IT YOU SEEK?",
         "I seek speed",
         "I seek victory",
         true);
