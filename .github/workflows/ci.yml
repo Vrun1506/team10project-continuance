@@ -43,7 +43,7 @@ jobs:
 
       # Operations that are responsible for creating the reports and the JAR file.
       - name: Run automated tests and write reports
-        run: ./gradlew clean test jacocoTestReport checkstyleMain checkstyleTest --stacktrace
+        run: ./gradlew clean test jacocoTestReport checkstyleMain checkstyleTest --stacktrace # Command that runs the tests and generates the reports.
 
       - name: Create JUnit report from headless testing # Artifact 1
         if: always()
@@ -78,7 +78,7 @@ jobs:
             # Determines the validity of the links in our testing doc. Additional layer of security in case I can't get a constant link to the resource
             # We had issues with deployment of our website last time so want to automate it so it at least works on demand.
 
-            # Creates new directories in the existing code
+            # Creates new directories in the existing code (if the folders already exist, which they will because we've run our code, it'll just use the same folder)
         run: |
           mkdir -p ../Website/docs/reports/jacoco
           mkdir -p ../Website/docs/reports/checkstyle/core
@@ -119,7 +119,7 @@ jobs:
 
         if: always()
         run: |
-          echo "NOTE TO DEVS (Louis and George): If you are going to continue working on the code after pushing, run git pull to fetch all of the reports." 
+          echo "NOTE TO DEVS: If you are going to continue working on the code after pushing, run git pull to fetch all of the reports." 
           echo "It won't do it automatically and will require you to rebase if you start the next commit before pulling the files on the repo."
           echo "You might have to refresh the page before viewing the artifacts because they won't automatically appear on there."
           echo "JAR file has been created."

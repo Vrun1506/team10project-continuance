@@ -50,6 +50,9 @@ Alternatively, you can download the game from our official GitHub release: [Our 
 - <a href="https://docs.google.com/document/d/1hODIOdoXncceYOCO8xjJm8qRctQoHV9sn9L-3KAYyP8/edit?usp=sharing">User Evaluation</a>
 - <a href="https://docs.google.com/document/d/1RcTtQWnfwZG9uEBkW1WW5IOyxctZFoSl/edit?usp=sharing">Continuous Integration (CI)</a>
 
+
+## Documents that were updated in the Change Report
+
 ## Testing reports
 
 ### JUnit in headless mode testing report
@@ -82,5 +85,67 @@ Alternatively, you can download the game from our official GitHub release: [Our 
 **Test Coverage Report:**
 
 <iframe src="Website/docs/reports/jacoco/index.html" width="100%" height="600" style="border: 1px solid #000;"></iframe>
+
+
+
+### Architecture
+These are the key diagrams in our project which have been adapted to the new implementation.
+
+
+![UML Class Diagram](Website/docs/Architecture/UML%20Class%20Diagram.png)
+
+![Component Diagram](Website/docs/Architecture/Component%20Diagram.png)
+
+![Sequence Diagram for game starting](Website/docs/Architecture/Game%20Starts%20Sequence%20Diagram.png)
+
+![Game Screens](Website/docs/Architecture/GameScreens.png)
+
+![Sequence Diagram for Main Menu](Website/docs/Architecture/MainMenuSequenceDiagram.png)
+
+![Player Movement](Website/docs/Architecture/PlayerMovement.png)
+
+![Sequence Diagram for Events](Website/docs/Architecture/EventsSequenceDiagram.png)
+
+![Sequence Diagram for Pause Menu](Website/docs/Architecture/Pause%20Menu%20Sequence%20Diagram.png)
+
+![Sequence Diagram for running out of time](Website/docs/Architecture/Running%20out%20of%20time%20Sequence%20Diagram.png)
+
+![Sequence Diagram for beating the maze](Website/docs/Architecture/Beating%20the%20Maze%20Sequence%20Diagram.png)
+
+
+
+
+### User Evaluation Charts
+
+
+![Overall Experience](Website/docs/Charts/OverallExperience.png)
+
+![Additional Features](Website/docs/Charts/AdditionalFeatures.png)
+
+We conducted our user evaluation on the version of our code which had implemented the Achievements and Leaderboard functionalities.
+We felt that this was the perfect time to do it as we could figure out any additional features that needed adding. 
+We had a few ideas ourselves like the NPC interaction and maybe adding some hints, which is why we continued implementing the features we had in mind, and the user evaluation also pointed to the same ideas, which we implemented. 
+Following our user evaluation, we fixed and implemented the following features:
+
+1) Fixed swapped controls bug - When the arrow keys swapped over, there was a bug that allowed you to leave the map on every screen.
+
+2) Decreased player speed - a lot of people mentioned the player going too fast after picking up powerups. 
+
+3) Hints - Following the implementation from the other team, we added several new rooms and events, and the map became very complicated. Some of the responses told us to add some hints to the game to make it slightly easier. 
+
+![Responses for beneficial events](Website/docs/Charts/GoodEvents.png)
+
+![Responses for hidden events](Website/docs/Charts/HiddenEvents.png)
+
+![Responses for working out how to get a better score](Website/docs/Charts/BetterScore.png)
+
+![Responses for Maze Navigation](Website/docs/Charts/MazeNavigation.png)
+
+![A/B Testing for Achievements](Website/docs/Charts/ABTestforAchievements.png)
+
+![Responses for Obstacles](Website/docs/Charts/Obstacles.png)
+
+![Responses for timer evaluation](Website/docs/Charts/Timer.png)
+
 
 
