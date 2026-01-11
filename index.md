@@ -55,7 +55,7 @@ Alternatively, you can download the game from our official GitHub release: [Our 
 
 ## Testing reports
 
-### JUnit in headless mode testing report
+# JUnit in headless mode testing report
 
 **Test Report:**
 

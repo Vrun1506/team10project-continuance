@@ -9,7 +9,7 @@ on:
     branches : [ "main" ]
   workflow_dispatch:
 
-# GitHub Actions Agent permissions for committing to the repo. 
+# GitHub Actions Agent permissions for committing to the repo and deployment. 
 permissions:
   contents: write
   pages: write
@@ -142,12 +142,14 @@ jobs:
   # Deploys website with all of the changes with every commit
   # Looked at the GitHub Docs for deployment to find the fixes for what I was missing (https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
   # Stacktrace pointed out missing configs which I studied (refer to the issue that I closed: https://github.com/Vrun1506/team10project-continuance/issues/8)
+  # https://github.com/actions/deploy-pages
   deploy-website:
     needs: pipeline
     runs-on: ubuntu-latest
     
     environment:
       name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Get all of the code from GitHub
