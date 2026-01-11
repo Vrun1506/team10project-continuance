@@ -137,82 +137,80 @@ public class GameOverScreen implements Screen {
 <span class="fc" id="L137">        loseScreen.dispose();</span>
 <span class="fc" id="L138">    }</span>
 
+    // NEW function for leaderboard implementation
     /**
      * Writes the player score to file - 'leaderboard.txt'.
+     * Creates 'leaderboard.txt' if one isn't found. This ends up in the same directory as the jar file.
      * @param newScore the new score to write.
      */
     public void writeScores(int newScore) {
 
-        // System.out.println((&quot;SCORE:&quot;+newScore));
-
-        // String name = inputListener.name;
-
         try {
 
-<span class="fc" id="L152">            File scoreFile = new File(&quot;leaderboard.txt&quot;);</span>
-<span class="fc" id="L153">            scoreFile.createNewFile(); //only creates the file if it had not existed beforehand</span>
-<span class="fc" id="L154">            BufferedReader reader = new BufferedReader(new FileReader(scoreFile));</span>
+<span class="fc" id="L150">            File scoreFile = new File(&quot;leaderboard.txt&quot;);</span>
+<span class="fc" id="L151">            scoreFile.createNewFile(); //only creates the file if it had not existed beforehand</span>
+<span class="fc" id="L152">            BufferedReader reader = new BufferedReader(new FileReader(scoreFile));</span>
 
             // contains data from old scoreboard to be used in comparison
-<span class="fc" id="L157">            ArrayList&lt;String&gt; oldRecords = new ArrayList&lt;String&gt;();</span>
-<span class="fc" id="L158">            ArrayList&lt;Integer&gt; oldScores = new ArrayList&lt;Integer&gt;();</span>
+<span class="fc" id="L155">            ArrayList&lt;String&gt; oldRecords = new ArrayList&lt;String&gt;();</span>
+<span class="fc" id="L156">            ArrayList&lt;Integer&gt; oldScores = new ArrayList&lt;Integer&gt;();</span>
 
-<span class="pc bpc" id="L160" title="1 of 2 branches missed.">            for (int i=0; i&lt;5; i++) {</span>
-                //entire record keeping CSV format
-<span class="fc" id="L162">                String temp = reader.readLine();</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">            for (int i=0; i&lt;5; i++) {</span>
+                // entire record keeping CSV format
+<span class="fc" id="L160">                String temp = reader.readLine();</span>
 
-<span class="fc bfc" id="L164" title="All 2 branches covered.">                if (temp == null){</span>
-<span class="fc" id="L165">                    break;</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">                if (temp == null){</span>
+<span class="fc" id="L163">                    break;</span>
                 }
-<span class="fc" id="L167">                oldRecords.add(temp);</span>
+<span class="fc" id="L165">                oldRecords.add(temp);</span>
 
-                //grabs just the score
+                // grabs just the score
                 try {
-<span class="fc" id="L171">                    Integer tempInt = Integer.parseInt(temp.split(&quot;,&quot;)[1]);</span>
-<span class="fc" id="L172">                    oldScores.add(tempInt);</span>
+<span class="fc" id="L169">                    Integer tempInt = Integer.parseInt(temp.split(&quot;,&quot;)[1]);</span>
+<span class="fc" id="L170">                    oldScores.add(tempInt);</span>
 
-<span class="nc" id="L174">                } catch (Exception e) {</span>
-<span class="nc" id="L175">                    System.err.println(&quot;Couldn't interpret scores file for writing!&quot;);</span>
-<span class="nc" id="L176">                    e.printStackTrace();</span>
-<span class="fc" id="L177">                }</span>
+<span class="nc" id="L172">                } catch (Exception e) {</span>
+<span class="nc" id="L173">                    System.err.println(&quot;Couldn't interpret scores file for writing!&quot;);</span>
+<span class="nc" id="L174">                    e.printStackTrace();</span>
+<span class="fc" id="L175">                }</span>
             }
 
-<span class="fc" id="L180">            reader.close();</span>
+<span class="fc" id="L178">            reader.close();</span>
 
-<span class="fc" id="L182">            BufferedWriter writer = new BufferedWriter(new FileWriter(scoreFile));</span>
+<span class="fc" id="L180">            BufferedWriter writer = new BufferedWriter(new FileWriter(scoreFile));</span>
 
             // check if there are any records in the leaderboard file, and perform the necessary countermeasure
-<span class="fc bfc" id="L185" title="All 2 branches covered.">            if (oldScores.isEmpty()) {</span>
-<span class="fc" id="L186">                writer.write((name+&quot;,&quot;+newScore+&quot;\n&quot;));</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">            if (oldScores.isEmpty()) {</span>
+<span class="fc" id="L184">                writer.write((name+&quot;,&quot;+newScore+&quot;\n&quot;));</span>
             } else {
 
-<span class="fc" id="L189">            boolean placed = false;</span>
-<span class="fc bfc" id="L190" title="All 2 branches covered.">            for (int i=0; i&lt;oldScores.size(); i++) {</span>
-<span class="pc bpc" id="L191" title="1 of 4 branches missed.">                if (oldScores.get(i) &lt;= newScore &amp;&amp; !placed) {</span>
-<span class="fc" id="L192">                    writer.write((name+&quot;,&quot;+newScore+&quot;\n&quot;));</span>
-<span class="fc" id="L193">                    writer.write((oldRecords.get(i)+&quot;\n&quot;));</span>
-<span class="fc" id="L194">                    placed = true;</span>
+<span class="fc" id="L187">            boolean placed = false;</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">            for (int i=0; i&lt;oldScores.size(); i++) {</span>
+<span class="pc bpc" id="L189" title="1 of 4 branches missed.">                if (oldScores.get(i) &lt;= newScore &amp;&amp; !placed) {</span>
+<span class="fc" id="L190">                    writer.write((name+&quot;,&quot;+newScore+&quot;\n&quot;));</span>
+<span class="fc" id="L191">                    writer.write((oldRecords.get(i)+&quot;\n&quot;));</span>
+<span class="fc" id="L192">                    placed = true;</span>
                 } else {
-<span class="fc" id="L196">                    writer.write((oldRecords.get(i)+&quot;\n&quot;));</span>
+<span class="fc" id="L194">                    writer.write((oldRecords.get(i)+&quot;\n&quot;));</span>
                 }
             }
 
             // if the score never beats existing ones, check if there is space for it anyway.
-<span class="pc bpc" id="L201" title="3 of 4 branches missed.">            if (!placed &amp;&amp; oldScores.size() &lt; 5) {</span>
-<span class="nc" id="L202">                writer.write((name+&quot;,&quot;+newScore+&quot;\n&quot;));</span>
+<span class="pc bpc" id="L199" title="3 of 4 branches missed.">            if (!placed &amp;&amp; oldScores.size() &lt; 5) {</span>
+<span class="nc" id="L200">                writer.write((name+&quot;,&quot;+newScore+&quot;\n&quot;));</span>
             }
 
             }
 
-<span class="fc" id="L207">            System.out.println(oldScores);</span>
-<span class="fc" id="L208">            System.out.println(oldRecords);</span>
+<span class="fc" id="L205">            System.out.println(oldScores);</span>
+<span class="fc" id="L206">            System.out.println(oldRecords);</span>
 
-<span class="fc" id="L210">            writer.close();</span>
+<span class="fc" id="L208">            writer.close();</span>
 
-<span class="nc" id="L212">        } catch (IOException e) {</span>
-<span class="nc" id="L213">            System.err.println(&quot;Failed to overwrite scores!&quot;);</span>
-<span class="nc" id="L214">            e.printStackTrace();</span>
-<span class="fc" id="L215">        }</span>
-<span class="fc" id="L216">    }</span>
+<span class="nc" id="L210">        } catch (IOException e) {</span>
+<span class="nc" id="L211">            System.err.println(&quot;Failed to overwrite scores!&quot;);</span>
+<span class="nc" id="L212">            e.printStackTrace();</span>
+<span class="fc" id="L213">        }</span>
+<span class="fc" id="L214">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

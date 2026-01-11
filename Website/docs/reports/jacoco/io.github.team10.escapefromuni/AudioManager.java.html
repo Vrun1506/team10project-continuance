@@ -20,7 +20,7 @@ public class AudioManager {
     private Music gameMusic;
 
     // Sound effects (played once when the even is triggered or button click)
-    private Sound npcEventSound;
+    private Sound npcEventSound; // NEW
     private Sound clickSound;
     private Sound negativeEventSound;
     private Sound positiveEventSound;
@@ -67,136 +67,138 @@ public class AudioManager {
 <span class="fc" id="L67">            negativeEventSound = Gdx.audio.newSound(Gdx.files.internal(&quot;NegMus.mp3&quot;));</span>
 <span class="fc" id="L68">            positiveEventSound = Gdx.audio.newSound(Gdx.files.internal(&quot;PosMus.mp3&quot;));</span>
 <span class="fc" id="L69">            hiddenEventSound = Gdx.audio.newSound(Gdx.files.internal(&quot;HidMus.mp3&quot;));</span>
-<span class="fc" id="L70">            npcEventSound = Gdx.audio.newSound(Gdx.files.internal(&quot;PosMus.mp3&quot;));</span>
+
+            // NEW Sound resource for the NPC
+<span class="fc" id="L72">            npcEventSound = Gdx.audio.newSound(Gdx.files.internal(&quot;PosMus.mp3&quot;));</span>
 
             // NEW CLICK SOUND
-<span class="fc" id="L73">            clickSound = Gdx.audio.newSound(Gdx.files.internal(&quot;click.mp3&quot;));</span>
+<span class="fc" id="L75">            clickSound = Gdx.audio.newSound(Gdx.files.internal(&quot;click.mp3&quot;));</span>
 
-<span class="nc" id="L75">        } catch (Exception e) {</span>
-<span class="nc" id="L76">            Gdx.app.error(&quot;AudioManager&quot;, &quot;Error loading audio files: &quot; + e.getMessage());</span>
-<span class="fc" id="L77">        }</span>
-<span class="fc" id="L78">    }</span>
+<span class="nc" id="L77">        } catch (Exception e) {</span>
+<span class="nc" id="L78">            Gdx.app.error(&quot;AudioManager&quot;, &quot;Error loading audio files: &quot; + e.getMessage());</span>
+<span class="fc" id="L79">        }</span>
+<span class="fc" id="L80">    }</span>
 
     /**
      * Plays menu music.
      */
     public void playMenuMusic() {
-<span class="nc bnc" id="L84" title="All 2 branches missed.">        if (currentMusic != menuMusic) {</span>
-<span class="nc" id="L85">            stopCurrentMusic();</span>
-<span class="nc" id="L86">            currentMusic = menuMusic;</span>
-<span class="nc" id="L87">            menuMusic.play();</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        if (currentMusic != menuMusic) {</span>
+<span class="nc" id="L87">            stopCurrentMusic();</span>
+<span class="nc" id="L88">            currentMusic = menuMusic;</span>
+<span class="nc" id="L89">            menuMusic.play();</span>
         }
-<span class="nc" id="L89">    }</span>
+<span class="nc" id="L91">    }</span>
 
     /**
      * Plays game music.
      */
     public void playGameMusic() {
-<span class="nc bnc" id="L95" title="All 2 branches missed.">        if (currentMusic != gameMusic) {</span>
-<span class="nc" id="L96">            stopCurrentMusic();</span>
-<span class="nc" id="L97">            currentMusic = gameMusic;</span>
-<span class="nc" id="L98">            gameMusic.play();</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        if (currentMusic != gameMusic) {</span>
+<span class="nc" id="L98">            stopCurrentMusic();</span>
+<span class="nc" id="L99">            currentMusic = gameMusic;</span>
+<span class="nc" id="L100">            gameMusic.play();</span>
         }
-<span class="nc" id="L100">    }</span>
+<span class="nc" id="L102">    }</span>
 
     /**
      * Plays event sound effect based on event type.
      * @param eventType The type of event (NEGATIVE, POSITIVE, or HIDDEN)
      */
     public void playEventSound(EventType eventType) {
-<span class="fc" id="L107">        Sound eventSound = null;</span>
+<span class="fc" id="L109">        Sound eventSound = null;</span>
 
-<span class="pc bpc" id="L109" title="1 of 5 branches missed.">        switch (eventType) {</span>
+<span class="pc bpc" id="L111" title="1 of 5 branches missed.">        switch (eventType) {</span>
             case NEGATIVE:
-<span class="fc" id="L111">                eventSound = negativeEventSound;</span>
-<span class="fc" id="L112">                break;</span>
+<span class="fc" id="L113">                eventSound = negativeEventSound;</span>
+<span class="fc" id="L114">                break;</span>
             case POSITIVE:
-<span class="fc" id="L114">                eventSound = positiveEventSound;</span>
-<span class="fc" id="L115">                break;</span>
+<span class="fc" id="L116">                eventSound = positiveEventSound;</span>
+<span class="fc" id="L117">                break;</span>
             case HIDDEN:
-<span class="fc" id="L117">                eventSound = hiddenEventSound;</span>
-<span class="fc" id="L118">                break;</span>
-            case NPC:
-<span class="fc" id="L120">                eventSound = npcEventSound;</span>
-<span class="fc" id="L121">                break;</span>
+<span class="fc" id="L119">                eventSound = hiddenEventSound;</span>
+<span class="fc" id="L120">                break;</span>
+            case NPC: // NEW
+<span class="fc" id="L122">                eventSound = npcEventSound;</span>
+<span class="fc" id="L123">                break;</span>
             default:
                 break;
         }
 
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">        if (eventSound != null) {</span>
-<span class="fc" id="L127">            eventSound.play(currentVolume);</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">        if (eventSound != null) {</span>
+<span class="fc" id="L129">            eventSound.play(currentVolume);</span>
         }
-<span class="fc" id="L129">    }</span>
+<span class="fc" id="L131">    }</span>
 
     /**
      * Plays click sound effect.
      */
     public void playClickSound() {
-<span class="nc bnc" id="L135" title="All 2 branches missed.">        if (clickSound != null) {</span>
-<span class="nc" id="L136">            clickSound.play(currentVolume);</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">        if (clickSound != null) {</span>
+<span class="nc" id="L138">            clickSound.play(currentVolume);</span>
         }
-<span class="nc" id="L138">    }</span>
+<span class="nc" id="L140">    }</span>
 
     /**
      * Stops the currently playing music.
      */
     private void stopCurrentMusic() {
-<span class="nc bnc" id="L144" title="All 4 branches missed.">        if (currentMusic != null &amp;&amp; currentMusic.isPlaying()) {</span>
-<span class="nc" id="L145">            currentMusic.stop();</span>
+<span class="nc bnc" id="L146" title="All 4 branches missed.">        if (currentMusic != null &amp;&amp; currentMusic.isPlaying()) {</span>
+<span class="nc" id="L147">            currentMusic.stop();</span>
         }
-<span class="nc" id="L147">    }</span>
+<span class="nc" id="L149">    }</span>
 
     /**
      * Pauses the currently playing music.
      */
     public void pauseMusic() {
-<span class="nc bnc" id="L153" title="All 4 branches missed.">        if (currentMusic != null &amp;&amp; currentMusic.isPlaying()) {</span>
-<span class="nc" id="L154">            currentMusic.pause();</span>
+<span class="nc bnc" id="L155" title="All 4 branches missed.">        if (currentMusic != null &amp;&amp; currentMusic.isPlaying()) {</span>
+<span class="nc" id="L156">            currentMusic.pause();</span>
         }
-<span class="nc" id="L156">    }</span>
+<span class="nc" id="L158">    }</span>
 
     /**
      * Resumes the currently playing music.
      */
     public void resumeMusic() {
-<span class="nc bnc" id="L162" title="All 4 branches missed.">        if (currentMusic != null &amp;&amp; !currentMusic.isPlaying()) {</span>
-<span class="nc" id="L163">            currentMusic.play();</span>
+<span class="nc bnc" id="L164" title="All 4 branches missed.">        if (currentMusic != null &amp;&amp; !currentMusic.isPlaying()) {</span>
+<span class="nc" id="L165">            currentMusic.play();</span>
         }
-<span class="nc" id="L165">    }</span>
+<span class="nc" id="L167">    }</span>
 
     /**
      * Sets the master volume for all audio from 0.1f to 1.0f
      */
     public void setVolume(float volume) {
-<span class="nc" id="L171">        this.currentVolume = Math.max(0f, Math.min(1f, volume));</span>
+<span class="nc" id="L173">        this.currentVolume = Math.max(0f, Math.min(1f, volume));</span>
 
-<span class="nc bnc" id="L173" title="All 2 branches missed.">        if (menuMusic != null) menuMusic.setVolume(currentVolume);</span>
-<span class="nc bnc" id="L174" title="All 2 branches missed.">        if (gameMusic != null) gameMusic.setVolume(currentVolume);</span>
-<span class="nc" id="L175">    }</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">        if (menuMusic != null) menuMusic.setVolume(currentVolume);</span>
+<span class="nc bnc" id="L176" title="All 2 branches missed.">        if (gameMusic != null) gameMusic.setVolume(currentVolume);</span>
+<span class="nc" id="L177">    }</span>
 
     public float getVolume() {
-<span class="nc" id="L178">        return currentVolume;</span>
+<span class="nc" id="L180">        return currentVolume;</span>
     }
 
     /**
      * Sets the volume for every audio
      */
     public void setMusicVolume(float volume) {
-<span class="nc bnc" id="L185" title="All 2 branches missed.">        if (menuMusic != null) menuMusic.setVolume(volume);</span>
-<span class="nc bnc" id="L186" title="All 2 branches missed.">        if (gameMusic != null) gameMusic.setVolume(volume);</span>
-<span class="nc" id="L187">    }</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">        if (menuMusic != null) menuMusic.setVolume(volume);</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">        if (gameMusic != null) gameMusic.setVolume(volume);</span>
+<span class="nc" id="L189">    }</span>
 
     /**
      * Disposes of all the audio.
      */
     public void dispose() {
 
-<span class="nc bnc" id="L194" title="All 2 branches missed.">        if (menuMusic != null) menuMusic.dispose();</span>
-<span class="nc bnc" id="L195" title="All 2 branches missed.">        if (gameMusic != null) gameMusic.dispose();</span>
-<span class="nc bnc" id="L196" title="All 2 branches missed.">        if (negativeEventSound != null) negativeEventSound.dispose();</span>
-<span class="nc bnc" id="L197" title="All 2 branches missed.">        if (positiveEventSound != null) positiveEventSound.dispose();</span>
-<span class="nc bnc" id="L198" title="All 2 branches missed.">        if (npcEventSound != null) npcEventSound.dispose();</span>
-<span class="nc bnc" id="L199" title="All 2 branches missed.">        if (hiddenEventSound != null) hiddenEventSound.dispose();</span>
-<span class="nc" id="L200">    }</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">        if (menuMusic != null) menuMusic.dispose();</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">        if (gameMusic != null) gameMusic.dispose();</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">        if (negativeEventSound != null) negativeEventSound.dispose();</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">        if (positiveEventSound != null) positiveEventSound.dispose();</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">        if (npcEventSound != null) npcEventSound.dispose(); // NEW</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">        if (hiddenEventSound != null) hiddenEventSound.dispose();</span>
+<span class="nc" id="L202">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -87,7 +87,7 @@ public class UsernameInputScreen implements Screen {
 
     @Override
     public void dispose() {
-<span class="nc" id="L90">        System.out.println(&quot;no more input PROCESSSSOR&quot;);</span>
+<span class="nc" id="L90">        System.out.println(&quot;The text-field input processor has been disabled.&quot;);</span>
 <span class="nc" id="L91">        Gdx.input.setInputProcessor(null);</span>
 <span class="nc" id="L92">        screen.dispose();</span>
 <span class="nc" id="L93">    }</span>
@@ -106,9 +106,9 @@ public class UsernameInputScreen implements Screen {
 <span class="nc" id="L106">                    return true;</span>
                 }
 
-<span class="nc bnc" id="L109" title="All 2 branches missed.">                if (character == '\n') {</span>
-<span class="nc" id="L110">                    System.out.println(&quot;new game over screen YAAAAAY&quot;);</span>
-                    // YAYYYYYY
+                // progress to next screen upon ENTER key press
+<span class="nc bnc" id="L110" title="All 2 branches missed.">                if (character == '\n') {</span>
+<span class="nc" id="L111">                    System.out.println(&quot;Screen changed from UsernameInput to GameOver.&quot;);</span>
 <span class="nc" id="L112">                    dispose();</span>
 <span class="nc" id="L113">                    game.setScreen(new GameOverScreen(game, true, timer, scoreManager, nameText));</span>
 

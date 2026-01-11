@@ -51,18 +51,20 @@ public class Player {
 <span class="fc" id="L51">        float centerY = game.viewport.getWorldHeight() / 2f;</span>
 <span class="fc" id="L52">        playerSprite.setCenter(centerX, centerY);</span>
 <span class="fc" id="L53">        this.movementEnabled = true;</span>
-<span class="fc" id="L54">        this.controlsInverted = false;</span>
-<span class="fc" id="L55">    }</span>
+
+        // NEW for fixing collision when controls become inverted
+<span class="fc" id="L56">        this.controlsInverted = false;</span>
+<span class="fc" id="L57">    }</span>
 
     /**
      * Called every frame to perform player logic.
      * @param delta The time in seconds since the last frame.
      */
     public void update(float delta) {
-<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (movementEnabled) {</span>
-<span class="nc" id="L63">            move(delta);</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">        if (movementEnabled) {</span>
+<span class="nc" id="L65">            move(delta);</span>
         }
-<span class="nc" id="L65">    }</span>
+<span class="nc" id="L67">    }</span>
 
     /**
      * Handles player movement and constrains movement to within screen edge boundaries.
@@ -70,57 +72,57 @@ public class Player {
      * @param delta The time in seconds since the last frame.
      */
     private void move(float delta) {
-<span class="nc" id="L73">        float worldWidth = game.viewport.getWorldWidth();</span>
-<span class="nc" id="L74">        float worldHeight = game.viewport.getWorldHeight();</span>
-<span class="nc" id="L75">        float halfWidth = playerSprite.getWidth() / 2f;</span>
-<span class="nc" id="L76">        float halfHeight = playerSprite.getHeight() / 2f;</span>
-<span class="nc" id="L77">        float playerCenterX = playerSprite.getX() + halfWidth;</span>
-<span class="nc" id="L78">        float playerCenterY = playerSprite.getY() + halfHeight;</span>
+<span class="nc" id="L75">        float worldWidth = game.viewport.getWorldWidth();</span>
+<span class="nc" id="L76">        float worldHeight = game.viewport.getWorldHeight();</span>
+<span class="nc" id="L77">        float halfWidth = playerSprite.getWidth() / 2f;</span>
+<span class="nc" id="L78">        float halfHeight = playerSprite.getHeight() / 2f;</span>
+<span class="nc" id="L79">        float playerCenterX = playerSprite.getX() + halfWidth;</span>
+<span class="nc" id="L80">        float playerCenterY = playerSprite.getY() + halfHeight;</span>
 
-<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (!controlsInverted) {</span>
-<span class="nc bnc" id="L81" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {</span>
-<span class="nc bnc" id="L82" title="All 2 branches missed.">            if (playerCenterX &lt; worldWidth - EDGE_LIMIT) {</span>
-<span class="nc" id="L83">                playerSprite.translateX(speed * delta);</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        if (!controlsInverted) {</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">            if (playerCenterX &lt; worldWidth - EDGE_LIMIT) {</span>
+<span class="nc" id="L85">                playerSprite.translateX(speed * delta);</span>
             }
         }
-<span class="nc bnc" id="L86" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {</span>
-<span class="nc bnc" id="L87" title="All 2 branches missed.">            if (playerCenterX &gt; EDGE_LIMIT) {</span>
-<span class="nc" id="L88">                playerSprite.translateX(-speed * delta);</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">            if (playerCenterX &gt; EDGE_LIMIT) {</span>
+<span class="nc" id="L90">                playerSprite.translateX(-speed * delta);</span>
             }
         }
-<span class="nc bnc" id="L91" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {</span>
-<span class="nc bnc" id="L92" title="All 2 branches missed.">            if (playerCenterY &lt; worldHeight - EDGE_LIMIT) {</span>
-<span class="nc" id="L93">                playerSprite.translateY(speed * delta);</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">            if (playerCenterY &lt; worldHeight - EDGE_LIMIT) {</span>
+<span class="nc" id="L95">                playerSprite.translateY(speed * delta);</span>
             }
         }
-<span class="nc bnc" id="L96" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {</span>
-<span class="nc bnc" id="L97" title="All 2 branches missed.">            if (playerCenterY &gt; EDGE_LIMIT) {</span>
-<span class="nc" id="L98">                playerSprite.translateY(-speed * delta);</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">            if (playerCenterY &gt; EDGE_LIMIT) {</span>
+<span class="nc" id="L100">                playerSprite.translateY(-speed * delta);</span>
             }
         }
-        } else { //if the controls are inverted, swap the collision stuff
-<span class="nc bnc" id="L102" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {</span>
-<span class="nc bnc" id="L103" title="All 2 branches missed.">            if (playerCenterX &lt; worldWidth - EDGE_LIMIT) {</span>
-<span class="nc" id="L104">                playerSprite.translateX(-speed * delta);</span>
+        } else { // NEW if the controls are inverted, also invert collision requirements
+<span class="nc bnc" id="L104" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">            if (playerCenterX &lt; worldWidth - EDGE_LIMIT) {</span>
+<span class="nc" id="L106">                playerSprite.translateX(-speed * delta);</span>
             }
         }
-<span class="nc bnc" id="L107" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {</span>
-<span class="nc bnc" id="L108" title="All 2 branches missed.">            if (playerCenterX &gt; EDGE_LIMIT) {</span>
-<span class="nc" id="L109">                playerSprite.translateX(speed * delta);</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">            if (playerCenterX &gt; EDGE_LIMIT) {</span>
+<span class="nc" id="L111">                playerSprite.translateX(speed * delta);</span>
             }
         }
-<span class="nc bnc" id="L112" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {</span>
-<span class="nc bnc" id="L113" title="All 2 branches missed.">            if (playerCenterY &lt; worldHeight - EDGE_LIMIT) {</span>
-<span class="nc" id="L114">                playerSprite.translateY(-speed * delta);</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">            if (playerCenterY &lt; worldHeight - EDGE_LIMIT) {</span>
+<span class="nc" id="L116">                playerSprite.translateY(-speed * delta);</span>
             }
         }
-<span class="nc bnc" id="L117" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {</span>
-<span class="nc bnc" id="L118" title="All 2 branches missed.">            if (playerCenterY &gt; EDGE_LIMIT) {</span>
-<span class="nc" id="L119">                playerSprite.translateY(speed * delta);</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">            if (playerCenterY &gt; EDGE_LIMIT) {</span>
+<span class="nc" id="L121">                playerSprite.translateY(speed * delta);</span>
             }
         }
         }
-<span class="nc" id="L123">    }</span>
+<span class="nc" id="L125">    }</span>
 
     /**
      * Allows enabling or disabling movement for the player.
@@ -128,20 +130,25 @@ public class Player {
      */
     public void enableMovement(boolean enabled)
     {
-<span class="nc" id="L131">        this.movementEnabled = enabled;</span>
-<span class="nc" id="L132">    }</span>
+<span class="nc" id="L133">        this.movementEnabled = enabled;</span>
+<span class="nc" id="L134">    }</span>
 
+    // NEW SUBROUTINE
+    /** 
+     * Flips or un-flips the controls of the player.
+     * @param newValue boolean representing whether the player's controls will be set to inverted.
+     */
     public void setControlsInverted(boolean newValue)
     {
-<span class="nc" id="L136">        this.controlsInverted = newValue;</span>
-<span class="nc" id="L137">    }</span>
+<span class="nc" id="L143">        this.controlsInverted = newValue;</span>
+<span class="nc" id="L144">    }</span>
 
     /**
      * Draws the player sprite.
      */
     public void draw() {
-<span class="nc" id="L143">        playerSprite.draw(game.batch);</span>
-<span class="nc" id="L144">    }</span>
+<span class="nc" id="L150">        playerSprite.draw(game.batch);</span>
+<span class="nc" id="L151">    }</span>
 
     /**
      * Checks whether the player has collided (overlaps) with another sprite.
@@ -149,7 +156,7 @@ public class Player {
      * @return boolean representing whether collision has occurred.
      */
     public boolean checkCollision(Sprite objectSprite) {
-<span class="fc" id="L152">        return playerSprite.getBoundingRectangle().overlaps(objectSprite.getBoundingRectangle());</span>
+<span class="fc" id="L159">        return playerSprite.getBoundingRectangle().overlaps(objectSprite.getBoundingRectangle());</span>
     }
 
     /**
@@ -157,8 +164,8 @@ public class Player {
      * Should be called when the GameScreen is disposed.
      */
     public void dispose() {
-<span class="fc" id="L160">        playerTexture.dispose();</span>
-<span class="fc" id="L161">    }</span>
+<span class="fc" id="L167">        playerTexture.dispose();</span>
+<span class="fc" id="L168">    }</span>
 
     // getters and setters
 
@@ -168,16 +175,16 @@ public class Player {
      * @param y The y-coord of the new position.
      */
     public void setCenter(float x, float y) {
-<span class="fc" id="L171">        playerSprite.setCenter(x, y);</span>
-<span class="fc" id="L172">    }</span>
+<span class="fc" id="L178">        playerSprite.setCenter(x, y);</span>
+<span class="fc" id="L179">    }</span>
 
     /**
      * Return the center position of the player sprite, as a Vector2.
      */
     public Vector2 getCenter() {
-<span class="nc" id="L178">        float centerX = playerSprite.getX() + playerSprite.getWidth() / 2f;</span>
-<span class="nc" id="L179">        float centerY = playerSprite.getY() + playerSprite.getHeight() / 2f;</span>
-<span class="nc" id="L180">        return new Vector2(centerX, centerY);</span>
+<span class="nc" id="L185">        float centerX = playerSprite.getX() + playerSprite.getWidth() / 2f;</span>
+<span class="nc" id="L186">        float centerY = playerSprite.getY() + playerSprite.getHeight() / 2f;</span>
+<span class="nc" id="L187">        return new Vector2(centerX, centerY);</span>
     }
 
     /**
@@ -185,19 +192,19 @@ public class Player {
      * @param speedIncrease the amount by which the speed will increase.
      */
     public void increaseSpeed(float speedIncrease) {
-<span class="nc" id="L188">        speed += speedIncrease;</span>
-<span class="nc" id="L189">    }</span>
+<span class="nc" id="L195">        speed += speedIncrease;</span>
+<span class="nc" id="L196">    }</span>
 
     /**
      * Returns the speed of the player.
      * @return the speed of the player.
      */
-<span class="nc" id="L195">    public float getSpeed() { return speed; }</span>
+<span class="nc" id="L202">    public float getSpeed() { return speed; }</span>
 
     /**
      * Set the player speed to a designated amount.
      * @param speed the value that player speed will be updated to.
      */
-<span class="nc" id="L201">    public void setSpeed(float speed) { this.speed = speed;}</span>
+<span class="nc" id="L208">    public void setSpeed(float speed) { this.speed = speed;}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

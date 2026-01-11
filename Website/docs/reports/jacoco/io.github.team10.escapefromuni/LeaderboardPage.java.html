@@ -157,77 +157,78 @@ public class LeaderboardPage implements Screen {
 
     /**
      * Displays UI elements to the screen.
+     * Is also responsible for reading from the 'leaderboard.txt' file.
      */
     public void display() {
 
-<span class="nc" id="L163">        game.viewport.apply();</span>
-<span class="nc" id="L164">        game.batch.setProjectionMatrix(game.viewport.getCamera().combined);</span>
-<span class="nc" id="L165">        game.batch.begin();</span>
-<span class="nc" id="L166">        game.batch.draw(backgroundImage, 0, 0, game.viewport.getWorldWidth(), game.viewport.getWorldHeight());</span>
-<span class="nc" id="L167">        game.batch.end();</span>
+<span class="nc" id="L164">        game.viewport.apply();</span>
+<span class="nc" id="L165">        game.batch.setProjectionMatrix(game.viewport.getCamera().combined);</span>
+<span class="nc" id="L166">        game.batch.begin();</span>
+<span class="nc" id="L167">        game.batch.draw(backgroundImage, 0, 0, game.viewport.getWorldWidth(), game.viewport.getWorldHeight());</span>
+<span class="nc" id="L168">        game.batch.end();</span>
 
-<span class="nc" id="L169">        game.uiViewport.apply();</span>
-<span class="nc" id="L170">        game.batch.setProjectionMatrix(game.uiCamera.combined);</span>
-<span class="nc" id="L171">        game.batch.begin();</span>
+<span class="nc" id="L170">        game.uiViewport.apply();</span>
+<span class="nc" id="L171">        game.batch.setProjectionMatrix(game.uiCamera.combined);</span>
+<span class="nc" id="L172">        game.batch.begin();</span>
 
         // Screen title
-<span class="nc" id="L174">        String title = &quot;LEADERBOARD&quot;;</span>
-<span class="nc" id="L175">        layout.setText(font, title);</span>
-<span class="nc" id="L176">        float titleX = (game.uiViewport.getWorldWidth() - layout.width) / 2f;</span>
-<span class="nc" id="L177">        float titleY = game.uiViewport.getWorldHeight() - 150f;</span>
-<span class="nc" id="L178">        font.setColor(Color.WHITE);</span>
-<span class="nc" id="L179">        font.draw(game.batch, layout, titleX, titleY);</span>
+<span class="nc" id="L175">        String title = &quot;LEADERBOARD&quot;;</span>
+<span class="nc" id="L176">        layout.setText(font, title);</span>
+<span class="nc" id="L177">        float titleX = (game.uiViewport.getWorldWidth() - layout.width) / 2f;</span>
+<span class="nc" id="L178">        float titleY = game.uiViewport.getWorldHeight() - 150f;</span>
+<span class="nc" id="L179">        font.setColor(Color.WHITE);</span>
+<span class="nc" id="L180">        font.draw(game.batch, layout, titleX, titleY);</span>
 
         // Draw back button
-<span class="nc" id="L182">        drawButton(backButton, &quot;Go Back&quot;, backHovered);</span>
+<span class="nc" id="L183">        drawButton(backButton, &quot;Go Back&quot;, backHovered);</span>
 
         // Read scores from save file and set text on score labels
         try {
-<span class="nc" id="L186">            File scoreFile = new File(&quot;leaderboard.txt&quot;);</span>
-<span class="nc" id="L187">            scoreFile.createNewFile(); //only creates the file if it had not existed beforehand</span>
-<span class="nc" id="L188">            BufferedReader reader = new BufferedReader(new FileReader(scoreFile));</span>
+<span class="nc" id="L187">            File scoreFile = new File(&quot;leaderboard.txt&quot;);</span>
+<span class="nc" id="L188">            scoreFile.createNewFile(); //only creates the file if it had not existed beforehand</span>
+<span class="nc" id="L189">            BufferedReader reader = new BufferedReader(new FileReader(scoreFile));</span>
 
-<span class="nc bnc" id="L190" title="All 2 branches missed.">            for (int i=1; i&lt;=5; i++) {</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">            for (int i=1; i&lt;=5; i++) {</span>
 
                 // formats the record
-<span class="nc" id="L193">                String temp = &quot;N/A&quot;;</span>
+<span class="nc" id="L194">                String temp = &quot;N/A&quot;;</span>
 
                 try {
-<span class="nc" id="L196">                    temp = reader.readLine().replace(&quot;,&quot;, &quot;:   &quot;);</span>
-<span class="nc" id="L197">                } catch (Exception e) {</span>
-<span class="nc" id="L198">                    System.err.println(&quot;Couldn't interpret the score files! This could be because no high-scores were set yet.&quot;);</span>
-<span class="nc" id="L199">                    e.printStackTrace();</span>
-<span class="nc" id="L200">                }</span>
+<span class="nc" id="L197">                    temp = reader.readLine().replace(&quot;,&quot;, &quot;:   &quot;);</span>
+<span class="nc" id="L198">                } catch (Exception e) {</span>
+<span class="nc" id="L199">                    System.err.println(&quot;Couldn't interpret the score files! This could be because no high-scores were set yet.&quot;);</span>
+<span class="nc" id="L200">                    e.printStackTrace();</span>
+<span class="nc" id="L201">                }</span>
 
                 // gets the scorelabel corresponding to i
-<span class="nc" id="L203">                Field f = this.getClass().getDeclaredField((&quot;score&quot;+i+&quot;Label&quot;));</span>
-<span class="nc" id="L204">                f.setAccessible(true);</span>
+<span class="nc" id="L204">                Field f = this.getClass().getDeclaredField((&quot;score&quot;+i+&quot;Label&quot;));</span>
+<span class="nc" id="L205">                f.setAccessible(true);</span>
 
-<span class="nc" id="L206">                drawTile((Rectangle) f.get(this), temp);</span>
+<span class="nc" id="L207">                drawTile((Rectangle) f.get(this), temp);</span>
             }
 
 
-<span class="nc" id="L210">            reader.close();</span>
+<span class="nc" id="L211">            reader.close();</span>
 
-<span class="nc" id="L212">        } catch (FileNotFoundException errorNoFile) {</span>
-<span class="nc" id="L213">            System.err.println(&quot;Failed to locate scores!&quot;);</span>
-<span class="nc" id="L214">            errorNoFile.printStackTrace();</span>
+<span class="nc" id="L213">        } catch (FileNotFoundException errorNoFile) {</span>
+<span class="nc" id="L214">            System.err.println(&quot;Failed to locate scores!&quot;);</span>
+<span class="nc" id="L215">            errorNoFile.printStackTrace();</span>
 
-<span class="nc" id="L216">        } catch (IOException errorIO) {</span>
-<span class="nc" id="L217">            System.err.println(&quot;Failed to read scores!&quot;);</span>
-<span class="nc" id="L218">            errorIO.printStackTrace();</span>
+<span class="nc" id="L217">        } catch (IOException errorIO) {</span>
+<span class="nc" id="L218">            System.err.println(&quot;Failed to read scores!&quot;);</span>
+<span class="nc" id="L219">            errorIO.printStackTrace();</span>
 
-<span class="nc" id="L220">        } catch (NoSuchFieldException errorNoField) {</span>
-<span class="nc" id="L221">            System.err.println(&quot;Failed to locate the score label fields in LeaderboardPage.&quot;);</span>
-<span class="nc" id="L222">            errorNoField.printStackTrace();</span>
+<span class="nc" id="L221">        } catch (NoSuchFieldException errorNoField) {</span>
+<span class="nc" id="L222">            System.err.println(&quot;Failed to locate the score label fields in LeaderboardPage.&quot;);</span>
+<span class="nc" id="L223">            errorNoField.printStackTrace();</span>
 
-<span class="nc" id="L224">        } catch (IllegalAccessException errorNoAccess) {</span>
-<span class="nc" id="L225">            System.err.println(&quot;Couldn't access the score labels!&quot;);</span>
-<span class="nc" id="L226">            errorNoAccess.printStackTrace();</span>
-<span class="nc" id="L227">        }</span>
+<span class="nc" id="L225">        } catch (IllegalAccessException errorNoAccess) {</span>
+<span class="nc" id="L226">            System.err.println(&quot;Couldn't access the score labels!&quot;);</span>
+<span class="nc" id="L227">            errorNoAccess.printStackTrace();</span>
+<span class="nc" id="L228">        }</span>
 
-<span class="nc" id="L229">        game.batch.end();</span>
-<span class="nc" id="L230">    }</span>
+<span class="nc" id="L230">        game.batch.end();</span>
+<span class="nc" id="L231">    }</span>
 
     /**
      * Draws the button to the screen.
@@ -237,22 +238,22 @@ public class LeaderboardPage implements Screen {
      */
     private void drawButton(Rectangle button, String text, boolean hovered) {
         // Draw button background texture
-<span class="nc bnc" id="L240" title="All 2 branches missed.">        if (hovered) {</span>
-<span class="nc" id="L241">            game.batch.setColor(1f, 1f, 0.5f, 1f);</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">        if (hovered) {</span>
+<span class="nc" id="L242">            game.batch.setColor(1f, 1f, 0.5f, 1f);</span>
         } else {
-<span class="nc" id="L243">            game.batch.setColor(Color.WHITE);</span>
+<span class="nc" id="L244">            game.batch.setColor(Color.WHITE);</span>
         }
-<span class="nc" id="L245">        game.batch.draw(buttonTexture, button.x, button.y, button.width, button.height);</span>
-<span class="nc" id="L246">        game.batch.setColor(Color.WHITE);</span>
+<span class="nc" id="L246">        game.batch.draw(buttonTexture, button.x, button.y, button.width, button.height);</span>
+<span class="nc" id="L247">        game.batch.setColor(Color.WHITE);</span>
 
         // Draw button text
-<span class="nc" id="L249">        layout.setText(font, text);</span>
-<span class="nc" id="L250">        float textX = button.x + (button.width - layout.width) / 2f;</span>
-<span class="nc" id="L251">        float textY = button.y + (button.height + layout.height) / 2f;</span>
+<span class="nc" id="L250">        layout.setText(font, text);</span>
+<span class="nc" id="L251">        float textX = button.x + (button.width - layout.width) / 2f;</span>
+<span class="nc" id="L252">        float textY = button.y + (button.height + layout.height) / 2f;</span>
 
-<span class="nc" id="L253">        font.setColor(Color.WHITE);</span>
-<span class="nc" id="L254">        font.draw(game.batch, layout, textX, textY);</span>
-<span class="nc" id="L255">    }</span>
+<span class="nc" id="L254">        font.setColor(Color.WHITE);</span>
+<span class="nc" id="L255">        font.draw(game.batch, layout, textX, textY);</span>
+<span class="nc" id="L256">    }</span>
 
     /**
      * Draws a tile to the screen.
@@ -262,13 +263,13 @@ public class LeaderboardPage implements Screen {
     private void drawTile(Rectangle tile, String text) {
 
         // Draw button text
-<span class="nc" id="L265">        game.batch.setColor(Color.WHITE);</span>
-<span class="nc" id="L266">        layout.setText(font, text);</span>
-<span class="nc" id="L267">        float textX = tile.x + (tile.width - layout.width) / 2f;</span>
-<span class="nc" id="L268">        float textY = tile.y + (tile.height + layout.height) / 2f;</span>
+<span class="nc" id="L266">        game.batch.setColor(Color.WHITE);</span>
+<span class="nc" id="L267">        layout.setText(font, text);</span>
+<span class="nc" id="L268">        float textX = tile.x + (tile.width - layout.width) / 2f;</span>
+<span class="nc" id="L269">        float textY = tile.y + (tile.height + layout.height) / 2f;</span>
 
-<span class="nc" id="L270">        font.setColor(Color.WHITE);</span>
-<span class="nc" id="L271">        font.draw(game.batch, layout, textX, textY);</span>
-<span class="nc" id="L272">    }</span>
+<span class="nc" id="L271">        font.setColor(Color.WHITE);</span>
+<span class="nc" id="L272">        font.draw(game.batch, layout, textX, textY);</span>
+<span class="nc" id="L273">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
