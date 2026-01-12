@@ -21,21 +21,14 @@ Terminal command to run the game (regardless of whether you got it from the rele
 > Tip: On some systems you may need to allow running unsigned apps. 
 
 
-## GitHub repositories 
-
-**Old Team 10 GitHub Repository due in November 2025:**
-[Old Team Repo for Nov submission prior to our takeover](https://github.com/alistudentgit/team10project)
+## GitHub repositories
 
 **New Team 7 GitHub Repository due in January 2026:**
 [Team Repo for Jan submission](https://github.com/Vrun1506/team10project-continuance)
 
+**Old Team 10 GitHub Repository due in November 2025:**
+[Old Team Repo for Nov submission prior to our takeover](https://github.com/alistudentgit/team10project)
 
-## Old Team 10 Documentation for the November submission window (PDF)
-
-- [Requirements (Req1.pdf)](Website/docs/Req1.pdf)
-- [Planning (Plan1.pdf)](Website/docs/Plan1.pdf)
-- [Architecture (Arch1.pdf)](Website/docs/Arch1.pdf)
-- [Risk Management (Risk1.pdf)](Website/docs/Risk1.pdf)
 
 ## New Documentation (PDF) for Submission 2 which is due in January from Team 7
 
@@ -59,6 +52,13 @@ Terminal command to run the game (regardless of whether you got it from the rele
 - <a href="https://docs.google.com/document/d/1TZR307NGy5QmUPvmAiwoOzqYpBWhgxfrtBh-JDMDeIk/edit?usp=sharing">Method Selection and Planning</a>
 - <a href="https://docs.google.com/document/d/18xKvHkdMsuFw3XI7MR5m13AJrqACPesA4gdmk2I01hA/edit?usp=sharing">Architecture</a>
 - <a href="https://docs.google.com/document/d/1LbXvc_7LQPnhAQ3DFHDITWTPxZoZDiuhBOFTmBKy4vQ/edit?usp=sharing">Risk Assessment and Mitigation</a>
+
+## Old Team 10 Documentation for the November submission window (PDF)
+
+- [Requirements (Req1.pdf)](Website/docs/Req1.pdf)
+- [Planning (Plan1.pdf)](Website/docs/Plan1.pdf)
+- [Architecture (Arch1.pdf)](Website/docs/Arch1.pdf)
+- [Risk Management (Risk1.pdf)](Website/docs/Risk1.pdf)
 
 ## Testing reports
 
