@@ -6,6 +6,9 @@
 ## Team repository
 - [Team repo](https://github.com/Vrun1506/team10project-continuance)
 
+## Official GitHub release for the final submission
+- [GitHub Release](https://github.com/Vrun1506/team10project-continuance/releases/tag/1.0.1)
+
 
 ## Team documentation
 - [Change Report](https://docs.google.com/document/d/1vClVzyRyB1Jl8XOTSKQOmo-ncYLR12J5jfrWSiqIPK4/edit?usp=sharing)
@@ -37,8 +40,6 @@
 - Checkout action in GitHub Actions: (https://github.com/actions/checkout)
 - GitHub Actions Bot for CI: (https://github.com/actions/checkout?tab=readme-ov-file)
 
-
-# Old team's stuff from November submission
 
 ## Old team's website
 (https://alistudentgit.github.io/team10projectsite/)
