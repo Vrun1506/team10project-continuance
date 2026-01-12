@@ -24,12 +24,12 @@ allprojects {
 }
 
 configure(subprojects) {
-  apply plugin: "java-library"
+  apply plugin: "java-library" // This plugin creates the JUnit report for our tests that we create a link for to access in our test doc
 
   // I've added these plugins for the JaCoCo reports that we need and the style checking per VLE slides on CI.
   // Looked at the slides because for some reason, we don't have a triangle/ folder so I've added it here instead.
-  apply plugin: "checkstyle"
-  apply plugin: "jacoco"
+  apply plugin: "checkstyle" // This is the plugin for the code consistency report
+  apply plugin: "jacoco" // This is the plugin for the test coverage report and we used this to identify the classes where we have to implement a manual testing schema vs an automated testing schema.
 
 
   sourceCompatibility = 8
@@ -38,7 +38,7 @@ configure(subprojects) {
     toolVersion = "0.8.14" // This is the latest version of JaCoCo so if anyone finds that the report no longer works, this is where you have to change it. 
   }
 
-  jacocoTestReport {
+  jacocoTestReport { // This is the config for the JaCoCo report. It basically says that it's dependent on the test run to complete so that all of the automated tests have completed and we can provide a report on the classes we've covered.
     dependsOn test
     reports {
       xml.required = true
