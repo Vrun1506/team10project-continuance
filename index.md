@@ -32,11 +32,11 @@ Terminal command to run the game (regardless of whether you got it from the rele
 
 ## New Documentation (PDF) for Submission 2 which is due in January from Team 7
 
-- [ChangeReport (Change2.pdf)]()
-- [Implementation (Impl2.pdf)]()
-- [Testing (Test2.pdf)]()
-- [Evaluation (Eval2.pdf)]()
-- [Continuous Integration(CI) (CI2.pdf)]()
+- [ChangeReport (Change2.pdf)](Change2.pdf)
+- [Implementation (Impl2.pdf)](Impl2.pdf)
+- [Testing (Test2.pdf)](Test2.pdf)
+- [Evaluation (Eval2.pdf)](Eval2.pdf)
+- [Continuous Integration(CI) (CI2.pdf)](CI2.pdf)
 
 ## New Documentation (Google Drive) for Submission 2 due in January from Team 7 (WITH FULL EDITOR PERMISSIONS)
 
