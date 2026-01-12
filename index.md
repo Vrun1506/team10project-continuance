@@ -16,7 +16,10 @@ Your campus breakout begins here.
 
 Alternatively, you can download the game from our official GitHub release: [Our official GitHub release](https://github.com/Vrun1506/team10project-continuance/releases/tag/1.0.1)
 
-> Tip: On some systems you may need to allow running unsigned apps. Run with: `java -jar Escape_From_Uni.jar`
+Terminal command to run the game (regardless of whether you got it from the release or the link above): `java -jar Escape_From_Uni.jar`
+
+> Tip: On some systems you may need to allow running unsigned apps. 
+
 
 ## GitHub repositories 
 
