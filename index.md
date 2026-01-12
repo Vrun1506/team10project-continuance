@@ -47,7 +47,7 @@ Terminal command to run the game (regardless of whether you got it from the rele
 - <a href="https://docs.google.com/document/d/1RcTtQWnfwZG9uEBkW1WW5IOyxctZFoSl/edit?usp=sharing">Continuous Integration (CI)</a>
 
 
-## Documents that were updated in the Change Report
+## Documents that were updated in the Change Report for the new submission (these are the ones produced by team 7 for the Jan Window)
 - <a href="https://docs.google.com/document/d/1Tg1GcIezq-MDrnzKd3zT0Lgh6ZaX3m1OKEraxmqHFK4/edit?usp=sharing">Requirements</a>
 - <a href="https://docs.google.com/document/d/1TZR307NGy5QmUPvmAiwoOzqYpBWhgxfrtBh-JDMDeIk/edit?usp=sharing">Method Selection and Planning</a>
 - <a href="https://docs.google.com/document/d/18xKvHkdMsuFw3XI7MR5m13AJrqACPesA4gdmk2I01hA/edit?usp=sharing">Architecture</a>
@@ -55,10 +55,10 @@ Terminal command to run the game (regardless of whether you got it from the rele
 
 ## Old Team 10 Documentation for the November submission window (PDF)
 
-- [Requirements (Req1.pdf)](Website/docs/Req1.pdf)
-- [Planning (Plan1.pdf)](Website/docs/Plan1.pdf)
-- [Architecture (Arch1.pdf)](Website/docs/Arch1.pdf)
-- [Risk Management (Risk1.pdf)](Website/docs/Risk1.pdf)
+- [Requirements (Req1.pdf)](Website/docs/Old-Team-Deliverables/Req1.pdf)
+- [Planning (Plan1.pdf)](Website/docs/Old-Team-Deliverables/Plan1.pdf)
+- [Architecture (Arch1.pdf)](Website/docs/Old-Team-Deliverables/Arch1.pdf)
+- [Risk Management (Risk1.pdf)](Website/docs/Old-Team-Deliverables/Risk1.pdf)
 
 ## Testing reports
 
