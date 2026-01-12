@@ -1,4 +1,4 @@
-	# Team 7 Escape From Uni Takeover in November (and submitted)
+# Team 7 Escape From Uni Takeover in November (and submitted)
 
 ## Team Website
 - [Team Website](https://github.com/Vrun1506/team10project-continuance)
