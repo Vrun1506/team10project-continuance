@@ -38,11 +38,7 @@
 - GitHub Actions Bot for CI: (https://github.com/actions/checkout?tab=readme-ov-file)
 
 
-
-
-
-
-## Old team's stuff from November submission
+# Old team's stuff from November submission
 
 ## Old team's website
 (https://alistudentgit.github.io/team10projectsite/)
