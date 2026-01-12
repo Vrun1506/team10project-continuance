@@ -1,48 +1,48 @@
 	# Team 7 Escape From Uni Takeover in November (and submitted)
 
 ## Team Website
--[Team Website](https://github.com/Vrun1506/team10project-continuance)
+- [Team Website](https://github.com/Vrun1506/team10project-continuance)
 
 ## Team repository
--[Team repo](https://github.com/Vrun1506/team10project-continuance)
+- [Team repo](https://github.com/Vrun1506/team10project-continuance)
 
 
 ## Team documentation
--[Change Report](https://docs.google.com/document/d/1vClVzyRyB1Jl8XOTSKQOmo-ncYLR12J5jfrWSiqIPK4/edit?usp=sharing)
--[Implementation](https://docs.google.com/document/d/1lBK4A56g47P9UbvHHruwrrzSc-XqoZqnNrQV8FCQE5I/edit?usp=sharing)
--[Testing](https://docs.google.com/document/d/14iI3FgdnEt2vqVst6WNV1Zwqqa02Si_jDdksdJCayFU/edit?usp=sharing)
--[User Evaluation](https://docs.google.com/document/d/1hODIOdoXncceYOCO8xjJm8qRctQoHV9sn9L-3KAYyP8/edit?usp=sharing)
--[Continuous Integration](https://docs.google.com/document/d/1RcTtQWnfwZG9uEBkW1WW5IOyxctZFoSl/edit?usp=sharing)
+- [Change Report](https://docs.google.com/document/d/1vClVzyRyB1Jl8XOTSKQOmo-ncYLR12J5jfrWSiqIPK4/edit?usp=sharing)
+- [Implementation](https://docs.google.com/document/d/1lBK4A56g47P9UbvHHruwrrzSc-XqoZqnNrQV8FCQE5I/edit?usp=sharing)
+- [Testing](https://docs.google.com/document/d/14iI3FgdnEt2vqVst6WNV1Zwqqa02Si_jDdksdJCayFU/edit?usp=sharing)
+- [User Evaluation](https://docs.google.com/document/d/1hODIOdoXncceYOCO8xjJm8qRctQoHV9sn9L-3KAYyP8/edit?usp=sharing)
+- [Continuous Integration](https://docs.google.com/document/d/1RcTtQWnfwZG9uEBkW1WW5IOyxctZFoSl/edit?usp=sharing)
 
 
 ## Docs that have been changed and mentioned in the change report from when we inherited from the other team
--[Updated Requirements](https://docs.google.com/document/d/1Tg1GcIezq-MDrnzKd3zT0Lgh6ZaX3m1OKEraxmqHFK4/edit?usp=sharing)
--[Updated Architecture](https://docs.google.com/document/d/18xKvHkdMsuFw3XI7MR5m13AJrqACPesA4gdmk2I01hA/edit?usp=sharing)
--[Updated Method Selection and Planning](https://docs.google.com/document/d/1TZR307NGy5QmUPvmAiwoOzqYpBWhgxfrtBh-JDMDeIk/edit?usp=sharing)
--[Updated Risk Assessment and Mitigation](https://docs.google.com/document/d/1LbXvc_7LQPnhAQ3DFHDITWTPxZoZDiuhBOFTmBKy4vQ/edit?usp=sharing)
+- [Updated Requirements](https://docs.google.com/document/d/1Tg1GcIezq-MDrnzKd3zT0Lgh6ZaX3m1OKEraxmqHFK4/edit?usp=sharing)
+- [Updated Architecture](https://docs.google.com/document/d/18xKvHkdMsuFw3XI7MR5m13AJrqACPesA4gdmk2I01hA/edit?usp=sharing)
+- [Updated Method Selection and Planning](https://docs.google.com/document/d/1TZR307NGy5QmUPvmAiwoOzqYpBWhgxfrtBh-JDMDeIk/edit?usp=sharing)
+- [Updated Risk Assessment and Mitigation](https://docs.google.com/document/d/1LbXvc_7LQPnhAQ3DFHDITWTPxZoZDiuhBOFTmBKy4vQ/edit?usp=sharing)
 
 
 ## Testing reports
--[JUnit test report](https://vrun1506.github.io/team10project-continuance/Website/docs/reports/tests/index.html)
--[Test Coverage Report](https://vrun1506.github.io/team10project-continuance/Website/docs/reports/jacoco/index.html)
--[Code consistency report for our game code](https://vrun1506.github.io/team10project-continuance/Website/docs/reports/checkstyle/core/main.html)
--[Code consistency report for our test code](https://vrun1506.github.io/team10project-continuance/Website/docs/reports/checkstyle/core/test.html)
+- [JUnit test report](https://vrun1506.github.io/team10project-continuance/Website/docs/reports/tests/index.html)
+- [Test Coverage Report](https://vrun1506.github.io/team10project-continuance/Website/docs/reports/jacoco/index.html)
+- [Code consistency report for our game code](https://vrun1506.github.io/team10project-continuance/Website/docs/reports/checkstyle/core/main.html)
+- [Code consistency report for our test code](https://vrun1506.github.io/team10project-continuance/Website/docs/reports/checkstyle/core/test.html)
 
 
 ## Documentation we used for developing the project
-LibGDX: (https://libgdx.com/wiki/)
-Mockito docs: (https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/junit/package-summary.html)
-JaCoCo report docs: (https://docs.gradle.org/current/userguide/jacoco_plugin.html) and (https://reflectoring.io/jacoco/)
-Checkstyle: Got it off VLE slides
-Checkout action in GitHub Actions: (https://github.com/actions/checkout)
-GitHub Actions Bot for CI: (https://github.com/actions/checkout?tab=readme-ov-file)
+- LibGDX: (https://libgdx.com/wiki/)
+- Mockito docs: (https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/junit/package-summary.html)
+- JaCoCo report docs: (https://docs.gradle.org/current/userguide/jacoco_plugin.html) and (https://reflectoring.io/jacoco/)
+- Checkstyle: Got it off VLE slides
+- Checkout action in GitHub Actions: (https://github.com/actions/checkout)
+- GitHub Actions Bot for CI: (https://github.com/actions/checkout?tab=readme-ov-file)
 
 
 
 
 
 
-### Old team's stuff from November submission
+## Old team's stuff from November submission
 
 ## Old team's website
 (https://alistudentgit.github.io/team10projectsite/)

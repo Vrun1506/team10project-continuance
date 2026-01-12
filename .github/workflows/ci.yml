@@ -122,6 +122,10 @@ jobs:
           echo "NOTE TO DEVS: If you are going to continue working on the code after pushing, run git pull to fetch all of the reports." 
           echo "It won't do it automatically and will require you to rebase if you start the next commit before pulling the files on the repo."
           echo "You might have to refresh the page before viewing the artifacts because they won't automatically appear on there."
+          echo "The run is complete, the website will be deployed in like 20 seconds or so. It will be executed as another workflow in the Actions tab."
+          echo "Don't be alarmed if you don't see it in this one."
+          echo "Wait 20 seconds and you can view the website at https://vrun1506.github.io/team10project-continuance"
+
           echo "JAR file has been created."
           echo "# Automated Tests Summary" >> $GITHUB_STEP_SUMMARY
           echo "All of the automated tests have been finished. Open index.html after downloading the test-results/ folder." >> $GITHUB_STEP_SUMMARY

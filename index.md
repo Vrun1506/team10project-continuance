@@ -16,18 +16,18 @@ Your campus breakout begins here.
 
 > Tip: On some systems you may need to allow running unsigned apps. Run with: `java -jar Escape_From_Uni.jar`
 
-Alternatively, you can download the game from our official GitHub release: [Our official GitHub release](https://github.com/Vrun1506/team10project-continuance/releases/tag/1.0.0)
+Alternatively, you can download the game from our official GitHub release: [Our official GitHub release]()
 
 ## GitHub repositories 
 
-**Old Team 10 GitHub Repository due in November 2025**
-[Old Team Repo for Nov submission prior to our takeover:](https://github.com/alistudentgit/team10project)
+**Old Team 10 GitHub Repository due in November 2025:**
+[Old Team Repo for Nov submission prior to our takeover](https://github.com/alistudentgit/team10project)
 
-**New Team 7 GitHub Repository due in January 2026**
+**New Team 7 GitHub Repository due in January 2026:**
 [Team Repo for Jan submission](https://github.com/Vrun1506/team10project-continuance)
 
 
-## Old Team 7 Documentation for the November submission window (PDF)
+## Old Team 10 Documentation for the November submission window (PDF)
 
 - [Requirements (Req1.pdf)](Website/docs/Req1.pdf)
 - [Planning (Plan1.pdf)](Website/docs/Plan1.pdf)
@@ -52,6 +52,10 @@ Alternatively, you can download the game from our official GitHub release: [Our 
 
 
 ## Documents that were updated in the Change Report
+- <a href="https://docs.google.com/document/d/1Tg1GcIezq-MDrnzKd3zT0Lgh6ZaX3m1OKEraxmqHFK4/edit?usp=sharing">Requirements</a>
+- <a href="https://docs.google.com/document/d/1TZR307NGy5QmUPvmAiwoOzqYpBWhgxfrtBh-JDMDeIk/edit?usp=sharing">Method Selection and Planning</a>
+- <a href="https://docs.google.com/document/d/18xKvHkdMsuFw3XI7MR5m13AJrqACPesA4gdmk2I01hA/edit?usp=sharing">Architecture</a>
+- <a href="https://docs.google.com/document/d/1LbXvc_7LQPnhAQ3DFHDITWTPxZoZDiuhBOFTmBKy4vQ/edit?usp=sharing">Risk Assessment and Mitigation</a>
 
 ## Testing reports
 
